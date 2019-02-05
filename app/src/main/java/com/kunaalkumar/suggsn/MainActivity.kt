@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
             val request = service.getSimilarMovies("Drive")
             try {
                 val response = request.await()
-                text_view.text = response.body().toString()
+                text_view.text = response.body()!!.Similar.Results[0].Name
             } catch (e: HttpException) {
                 text_view.text = "Error"
             } catch (e: Throwable) {
