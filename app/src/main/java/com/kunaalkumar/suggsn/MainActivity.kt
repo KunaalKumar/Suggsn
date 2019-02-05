@@ -1,31 +1,31 @@
 package com.kunaalkumar.suggsn
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kunaalkumar.suggsn.taste_dive.ITasteDiveService
-import com.kunaalkumar.suggsn.taste_dive.TDResult
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val service = RetrofitClientInstance.retrofitInstance?.create(ITasteDiveService::class.java)
-        val call = service?.getSimilarMovies("Drive")
-        call?.enqueue(object : Callback<TDResult> {
-            override fun onFailure(call: Call<TDResult>, t: Throwable) {
-                text_view.text = "Failed call"
+        val service = RetrofitFactory.makeRetrofitService()
+        GlobalScope.launch(Dispatchers.Main) {
+            val request = service.getSimilarMovies("Drive")
+            try {
+                val response = request.await()
+                text_view.text = response.body().toString()
+            } catch (e: HttpException) {
+                text_view.text = "Error"
+            } catch (e: Throwable) {
+                text_view.text = "Something went wrong"
             }
-
-            override fun onResponse(call: Call<TDResult>, response: Response<TDResult>) {
-                text_view.text = "Success!"
-            }
-
-        })
+        }
     }
 }
