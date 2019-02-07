@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.taste_dive.RetrofitFactory
-import com.kunaalkumar.suggsn.taste_dive.TDItem
+import com.kunaalkumar.suggsn.RetrofitFactory
+import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import kotlinx.android.synthetic.main.fragment_search_results.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -56,14 +56,14 @@ class SearchResults : Fragment() {
             search_edit_text.setTextColor(ContextCompat.getColor(context!!, R.color.colorAccentDark))
             searchInProgress(true)
 
-            val service = RetrofitFactory.makeRetrofitService()
+            val service = RetrofitFactory.makeTMDbRetrofitService()
             GlobalScope.launch(Dispatchers.Main) {
-                // Request to get similar movies
-                val request = service.getSimilarMovies(search_edit_text.text.toString())
+                // TODO: Change page and includeAdult fields based on UI selection
+                val request = service.searchMulti(search_edit_text.text.toString(), 1, false)
                 try {
                     val response = request.await()
                     searchInProgress(false)
-                    initRecyclerView(response.body()!!.Similar.Results)
+                    initRecyclerView(response.body()!!.results)
                 } catch (e: Throwable) {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
@@ -71,7 +71,7 @@ class SearchResults : Fragment() {
         }
     }
 
-    private fun initRecyclerView(dataSet: List<TDItem>) {
+    private fun initRecyclerView(dataSet: List<TMDbItem>) {
         viewManager = LinearLayoutManager(context)
         viewAdapter = ResultsAdapter(dataSet)
         recyclerView = recycler_view.apply {

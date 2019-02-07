@@ -2,15 +2,20 @@ package com.kunaalkumar.suggsn.ui.Results
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.kunaalkumar.suggsn.taste_dive.TDItem
+import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
+import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import kotlinx.android.synthetic.main.result_list_item.view.*
 
 class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val TAG: String = "ResultViewHolder"
 
-    fun bindView(data: TDItem) {
-        itemView.result_name.text = data.Name
-        itemView.result_description.text = data.wTeaser
+    fun bindView(data: TMDbItem) {
+        if (data.media_type == MOVIE_MEDIA_TYPE)
+            itemView.result_name.text = data.title
+        else
+            itemView.result_name.text = data.name
+
+        itemView.result_description.text = data.overview
     }
 }

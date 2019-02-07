@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.taste_dive.TDItem
+import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
-class ResultsAdapter(val dataSet: List<TDItem>) : RecyclerView.Adapter<ResultViewHolder>() {
+class ResultsAdapter(val dataSet: List<TMDbItem>) : RecyclerView.Adapter<ResultViewHolder>() {
 
     private val TAG: String = "ResultsAdapter"
 

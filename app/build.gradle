@@ -14,7 +14,7 @@ android {
     }
     buildTypes {
         buildTypes.each {
-            it.buildConfigField 'String', 'TASTE_DIVE_API_KEY', TASTE_DIVE_API_KEY
+            it.buildConfigField 'String', 'TMDb_API_KEY', THE_MOVIE_DB_API_KEY
         }
         release {
             minifyEnabled false
