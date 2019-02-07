@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.SearchResults"
+        tools:context=".ui.Results.SearchResults"
         android:id="@+id/fragment_search_results_layout">
 
     <com.google.android.material.textfield.TextInputEditText
@@ -36,13 +36,14 @@
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintTop_toBottomOf="@+id/search_edit_text"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="150dp"
             android:id="@+id/recycler_view"
-            android:text="This is where the RV will be shown"
+            tools:listitem="@layout/result_list_item"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

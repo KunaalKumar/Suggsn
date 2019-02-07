@@ -1,16 +1,21 @@
-package com.kunaalkumar.suggsn.ui
+package com.kunaalkumar.suggsn.ui.Results
 
 
 import android.os.Bundle
 import android.transition.TransitionManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.taste_dive.RetrofitFactory
+import com.kunaalkumar.suggsn.taste_dive.TDItem
 import kotlinx.android.synthetic.main.fragment_search_results.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,46 +28,63 @@ import kotlinx.coroutines.launch
  */
 class SearchResults : Fragment() {
 
-    val constraintSetOld = ConstraintSet()
-    val constraintSetNew = ConstraintSet()
+    private val TAG: String = "SearchResults"
+    private val constraintSetOld = ConstraintSet()
+    private val constraintSetNew = ConstraintSet()
+
+    lateinit var recyclerView: RecyclerView
+    lateinit var viewAdapter: ResultsAdapter
+    lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_results, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         constraintSetOld.clone(fragment_search_results_layout)
-        constraintSetNew.clone(context, R.layout.fragment_search_results_info)
+        constraintSetNew.clone(context, R.layout.fragment_search_results_alt)
 
         search_button.setOnClickListener {
             TransitionManager.beginDelayedTransition(fragment_search_results_layout)
             constraintSetNew.applyTo(fragment_search_results_layout)
-
-            search_button.text = "Searching"
-            search_button.isEnabled = false
-            search_edit_text.isEnabled = false
+            search_edit_text.background = null
+            search_edit_text.setTextColor(ContextCompat.getColor(context!!, R.color.colorAccentDark))
+            searchInProgress(true)
 
             val service = RetrofitFactory.makeRetrofitService()
             GlobalScope.launch(Dispatchers.Main) {
+                // Request to get similar movies
                 val request = service.getSimilarMovies(search_edit_text.text.toString())
                 try {
                     val response = request.await()
-                    search_button.text = "Search"
-                    search_button.isEnabled = true
-                    search_edit_text.isEnabled = true
-
-                    Toast.makeText(context, response.body()!!.Similar.Results[0].Name, Toast.LENGTH_LONG).show()
+                    searchInProgress(false)
+                    initRecyclerView(response.body()!!.Similar.Results)
                 } catch (e: Throwable) {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
             }
         }
+    }
+
+    private fun initRecyclerView(dataSet: List<TDItem>) {
+        viewManager = LinearLayoutManager(context)
+        viewAdapter = ResultsAdapter(dataSet)
+        recyclerView = recycler_view.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+        Log.d(TAG, "initRecyclerView: Successfully initialized recycler view and data set size ${dataSet.size}")
+    }
+
+    // Sets UI elements accordingly to bool argument
+    private fun searchInProgress(inProgress: Boolean) {
+        search_button.isEnabled = !inProgress
+        search_edit_text.isEnabled = !inProgress
     }
 }

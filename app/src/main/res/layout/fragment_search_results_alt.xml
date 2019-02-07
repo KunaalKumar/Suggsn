@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.SearchResults"
+        tools:context=".ui.Results.SearchResults"
         android:id="@+id/fragment_search_results_layout">
 
     <com.google.android.material.textfield.TextInputEditText
@@ -22,6 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/search_button"/>
+
     <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,18 +32,22 @@
             android:layout_margin="8dp"
             android:id="@+id/search_button"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="28dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/search_edit_text" app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="@+id/search_edit_text"/>
+            android:layout_marginTop="28dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/search_edit_text"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/search_edit_text"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/recycler_view"
-            android:text="This is where the RV will be shown"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/search_edit_text"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+            tools:listitem="@layout/result_list_item"
+            app:layout_constraintTop_toBottomOf="@id/search_button"
+            android:padding="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
