@@ -16,47 +16,45 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.RetrofitFactory
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
-import kotlinx.android.synthetic.main.fragment_search_results.*
+import com.kunaalkumar.suggsn.ui.MainActivity.Companion.BASE_BACKDROP_SIZE
+import com.kunaalkumar.suggsn.ui.MainActivity.Companion.BASE_IMAGE_URL
+import com.kunaalkumar.suggsn.ui.MainActivity.Companion.BASE_POSTER_SIZE
+import kotlinx.android.synthetic.main.fragment_search_loading.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class SearchResults : Fragment() {
 
     private val TAG: String = "SearchResults"
-    private val constraintSetOld = ConstraintSet()
-    private val constraintSetNew = ConstraintSet()
+    private val constraintSet = ConstraintSet()
 
     lateinit var recyclerView: RecyclerView
     lateinit var viewAdapter: ResultsAdapter
     lateinit var viewManager: RecyclerView.LayoutManager
+
+    val service = RetrofitFactory.makeTMDbRetrofitService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_results, container, false)
+        return inflater.inflate(R.layout.fragment_search_loading, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        constraintSetOld.clone(fragment_search_results_layout)
-        constraintSetNew.clone(context, R.layout.fragment_search_results_alt)
+        initConfig()
 
         search_button.setOnClickListener {
+            constraintSet.clone(context, R.layout.fragment_search_results_alt)
             TransitionManager.beginDelayedTransition(fragment_search_results_layout)
-            constraintSetNew.applyTo(fragment_search_results_layout)
+            constraintSet.applyTo(fragment_search_results_layout)
             search_edit_text.background = null
             search_edit_text.setTextColor(ContextCompat.getColor(context!!, R.color.colorAccentDark))
             searchInProgress(true)
 
-            val service = RetrofitFactory.makeTMDbRetrofitService()
             GlobalScope.launch(Dispatchers.Main) {
                 // TODO: Change page and includeAdult fields based on UI selection
                 val request = service.searchMulti(search_edit_text.text.toString(), 1, false)
@@ -67,6 +65,30 @@ class SearchResults : Fragment() {
                 } catch (e: Throwable) {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
+            }
+        }
+    }
+
+    private fun initConfig() {
+
+        GlobalScope.launch(Dispatchers.Main) {
+            val request = service.config()
+            try {
+                val response = request.await()
+                BASE_IMAGE_URL = response.body()!!.images.base_url
+                BASE_POSTER_SIZE = response.body()!!.images.poster_sizes[response.body()!!.images.poster_sizes.size - 1]
+                BASE_BACKDROP_SIZE =
+                        response.body()!!.images.backdrop_sizes[response.body()!!.images.backdrop_sizes.size - 1]
+
+                // Transition to alt layout
+                constraintSet.clone(context, R.layout.fragment_search_results)
+                TransitionManager.beginDelayedTransition(fragment_search_results_layout)
+                constraintSet.applyTo(fragment_search_results_layout)
+
+                Toast.makeText(context, "Success!", Toast.LENGTH_LONG).show()
+            } catch (e: Throwable) {
+                Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                Log.d(TAG, "Something went wrong: $e")
             }
         }
     }

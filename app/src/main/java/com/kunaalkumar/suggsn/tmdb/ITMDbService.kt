@@ -16,4 +16,7 @@ interface ITMDbService {
         @Query("query") query: String, @Query("page") page: Int,
         @Query("include_adult") includeAdult: Boolean
     ): Deferred<Response<TMDbCallback>>
+
+    @GET("configuration?api_key=${BuildConfig.TMDb_API_KEY}")
+    fun config(): Deferred<Response<TMDbConfigCallback>>
 }
