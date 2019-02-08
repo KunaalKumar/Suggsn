@@ -20,6 +20,13 @@ data class TMDbItem(
         }
         return MainActivity.BASE_IMAGE_URL + MainActivity.BASE_POSTER_SIZE + poster_path
     }
+
+    fun getBackdrop(): String? {
+        if (backdrop_path == null) {
+            return null
+        }
+        return MainActivity.BASE_IMAGE_URL + MainActivity.BASE_BACKDROP_SIZE + backdrop_path
+    }
 }
 
 data class TMDbConfigCallback(val images: TMDbImageConfig)

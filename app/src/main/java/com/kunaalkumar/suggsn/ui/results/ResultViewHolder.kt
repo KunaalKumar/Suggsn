@@ -12,13 +12,15 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindView(data: TMDbItem) {
         if (data.media_type == MOVIE_MEDIA_TYPE)
-            itemView.result_name.text = data.title
+            itemView.name.text = data.title
         else
-            itemView.result_name.text = data.name
+            itemView.name.text = data.name
 
-        itemView.result_description.text = data.overview
 
         if (data.getPoster() != null)
-            itemView.result_image_view.displayImage(data.getPoster().toString())
+            itemView.poster.displayImage(data.getPoster().toString())
+
+        if (data.getBackdrop() != null)
+            itemView.backdrop.displayImage(data.getBackdrop().toString())
     }
 }

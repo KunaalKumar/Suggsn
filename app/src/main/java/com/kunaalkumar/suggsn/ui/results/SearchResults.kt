@@ -3,11 +3,13 @@ package com.kunaalkumar.suggsn.ui.results
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -57,9 +59,14 @@ class SearchResults : Fragment() {
 
         initConfig()
 
+        search_edit_text.setOnClickListener {
+            activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        }
+
         search_button.setOnClickListener {
+
             constraintSet.clone(context, R.layout.fragment_search_results_alt)
-            TransitionManager.beginDelayedTransition(fragment_search_results_layout)
+            TransitionManager.beginDelayedTransition(fragment_search_results_layout, AutoTransition().setDuration(500))
             constraintSet.applyTo(fragment_search_results_layout)
             search_edit_text.background = null
             search_edit_text.setTextColor(ContextCompat.getColor(context!!, R.color.colorAccentDark))
@@ -76,6 +83,8 @@ class SearchResults : Fragment() {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
             }
+
+            activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 

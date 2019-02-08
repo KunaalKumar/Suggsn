@@ -14,21 +14,21 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:id="@+id/search_edit_text"
             android:layout_margin="8dp"
-            android:hint="Enter movie title"
+            android:hint="@string/enter_movie_title"
             android:inputType="textCapWords"
             android:textSize="26sp"
-            android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/search_button"/>
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintEnd_toStartOf="@+id/search_button"
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view"/>
 
     <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button"
             android:textColor="@android:color/black"
-            android:text="Search"
+            android:text="@string/search"
             android:layout_margin="8dp"
             android:id="@+id/search_button"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,23 +40,26 @@
             app:layout_constraintBottom_toBottomOf="@+id/search_edit_text"/>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:id="@+id/recycler_view"
             tools:listitem="@layout/result_list_item"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:fitsSystemWindows="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_edit_text"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            app:layout_constraintHorizontal_bias="0.5"/>
 
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loading_text_view"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Loading"
+            android:text="@string/loading"
             android:textSize="56sp"
             android:textColor="?colorAccent"/>
 

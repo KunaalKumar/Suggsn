@@ -14,7 +14,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:id="@+id/search_edit_text"
             android:layout_margin="8dp"
-            android:hint="Enter movie title"
+            android:hint="@string/enter_movie_title"
             android:inputType="textCapWords"
             android:textSize="26sp"
             android:textAlignment="center"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button"
             android:textColor="@android:color/black"
-            android:text="Search"
+            android:text="@string/search"
             android:layout_margin="32dp"
             android:id="@+id/search_button"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,13 +50,12 @@
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="?"
             android:id="@+id/loading_text_view"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:text="Loading"
+            android:text="@string/loading"
             android:textSize="56sp"
             android:textColor="?colorAccent"/>
 

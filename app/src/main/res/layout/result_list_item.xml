@@ -3,49 +3,62 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:padding="8dp"
         android:layout_marginBottom="8dp"
-        app:cardElevation="4dp"
         android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/result_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="Result Name"
-                android:textSize="24sp"
-                android:padding="8dp"
-                />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="Name"
+                android:textSize="26sp"
+                android:textAlignment="center"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeMaxTextSize="24sp"
+                android:autoSizeStepGranularity="2sp"
+                android:gravity="center"
+                android:id="@+id/name"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/poster"
+                app:layout_constraintTop_toTopOf="@+id/guideline2"/>
 
         <me.panpf.sketch.SketchImageView
-                android:layout_width="150dp"
-                android:layout_height="225dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/backdrop"
+                android:tint="#40000000"
+                android:scaleType="centerCrop"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/result_name"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                android:id="@+id/result_image_view"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintBottom_toTopOf="@+id/guideline2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
+
+        <me.panpf.sketch.SketchImageView
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:id="@+id/poster"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/result_description"
-                android:text="Short Result Description"
-                android:textSize="16sp"
-                android:lines="1"
-                android:padding="8dp"
-                app:layout_constraintTop_toBottomOf="@id/result_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/result_image_view"
-                android:layout_marginStart="8dp"/>
+                android:id="@+id/guideline2"
+                app:layout_constraintGuide_percent="0.8"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
