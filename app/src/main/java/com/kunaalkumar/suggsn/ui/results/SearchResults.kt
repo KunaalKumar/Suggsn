@@ -1,6 +1,7 @@
-package com.kunaalkumar.suggsn.ui.Results
+package com.kunaalkumar.suggsn.ui.results
 
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.util.Log
@@ -45,6 +46,15 @@ class SearchResults : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        // Animate loading text
+        ObjectAnimator.ofFloat(loading_text_view, "alpha", 0f, 1f).apply {
+            duration = 2500
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+            start()
+        }
+
         initConfig()
 
         search_button.setOnClickListener {
@@ -78,8 +88,9 @@ class SearchResults : Fragment() {
                 BASE_IMAGE_URL = response.body()!!.images.base_url
                 BASE_POSTER_SIZE = response.body()!!.images.poster_sizes[response.body()!!.images.poster_sizes.size - 1]
                 BASE_BACKDROP_SIZE =
-                        response.body()!!.images.backdrop_sizes[response.body()!!.images.backdrop_sizes.size - 1]
+                    response.body()!!.images.backdrop_sizes[response.body()!!.images.backdrop_sizes.size - 1]
 
+                loading_text_view.clearAnimation()
                 // Transition to alt layout
                 constraintSet.clone(context, R.layout.fragment_search_results)
                 TransitionManager.beginDelayedTransition(fragment_search_results_layout)

@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.ui.Results
+package com.kunaalkumar.suggsn.ui.results
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -17,5 +17,8 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.result_name.text = data.name
 
         itemView.result_description.text = data.overview
+
+        if (data.getPoster() != null)
+            itemView.result_image_view.displayImage(data.getPoster().toString())
     }
 }

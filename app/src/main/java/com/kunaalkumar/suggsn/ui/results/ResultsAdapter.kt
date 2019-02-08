@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.ui.Results
+package com.kunaalkumar.suggsn.ui.results
 
 import android.util.Log
 import android.view.LayoutInflater

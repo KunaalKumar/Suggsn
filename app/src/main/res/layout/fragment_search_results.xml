@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.Results.SearchResults"
+        tools:context=".ui.results.SearchResults"
         android:id="@+id/fragment_search_results_layout2">
 
     <com.google.android.material.textfield.TextInputEditText
@@ -55,7 +55,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loading_text_view"
-            app:layout_constraintBottom_toTopOf="parent"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="Loading"
