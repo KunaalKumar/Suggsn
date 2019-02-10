@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -25,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_search_loading.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 
 class SearchResults : Fragment() {
 
@@ -66,6 +66,7 @@ class SearchResults : Fragment() {
             search_edit_text_layout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_NONE)
             search_edit_text_layout.isHintEnabled = false
             search_edit_text.hint = null
+            background.visibility = View.GONE
 
             // Start search transition
             constraintSet.clone(context, R.layout.fragment_search_results_alt)
@@ -84,8 +85,6 @@ class SearchResults : Fragment() {
                     Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
             }
-
-            activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
@@ -111,7 +110,7 @@ class SearchResults : Fragment() {
                 Toast.makeText(context, "Success!", Toast.LENGTH_LONG).show()
             } catch (e: Throwable) {
                 Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
-                Log.d(TAG, "Something went wrong: $e")
+                Log.d(TAG, "(initConfig) Something went wrong: $e")
             }
         }
     }

@@ -9,9 +9,9 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
 
     companion object {
-        lateinit var BASE_IMAGE_URL: String
-        lateinit var BASE_POSTER_SIZE: String
-        lateinit var BASE_BACKDROP_SIZE: String
+        var BASE_IMAGE_URL: String = "http://image.tmdb.org/t/p/"
+        var BASE_POSTER_SIZE: String = "original"
+        var BASE_BACKDROP_SIZE: String = "original"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

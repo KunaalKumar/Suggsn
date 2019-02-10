@@ -8,13 +8,6 @@
         tools:context=".ui.results.SearchResults"
         android:id="@+id/fragment_search_results_layout2">
 
-    <me.panpf.sketch.SketchImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:tint="#40000000"
-            android:id="@+id/background"/>
-
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -57,13 +50,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
-            android:layout_height="150dp"
+            android:layout_height="0dp"
             android:id="@+id/recycler_view"
             tools:listitem="@layout/result_list_item"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <androidx.appcompat.widget.AppCompatTextView
