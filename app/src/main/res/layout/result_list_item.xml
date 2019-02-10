@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
@@ -18,6 +18,7 @@
                 android:textAlignment="center"
                 android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="8sp"
+                android:textStyle="bold"
                 android:autoSizeMaxTextSize="24sp"
                 android:autoSizeStepGranularity="2sp"
                 android:gravity="center"
@@ -25,8 +26,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/poster"
-                app:layout_constraintTop_toTopOf="@+id/guideline2"/>
+                app:layout_constraintTop_toTopOf="@+id/guideline2"
+                app:layout_constraintStart_toEndOf="@+id/circularRatingView"
+                app:layout_constraintHorizontal_bias="0.5"/>
 
         <me.panpf.sketch.SketchImageView
                 android:layout_width="0dp"
@@ -59,6 +61,15 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/guideline2"
                 app:layout_constraintGuide_percent="0.8"/>
+
+        <com.kunaalkumar.suggsn.views.CircularRatingView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintStart_toEndOf="@+id/poster"
+                app:layout_constraintTop_toTopOf="@+id/guideline2"
+                android:id="@+id/circularRatingView"
+                app:layout_constraintEnd_toStartOf="@+id/name"
+                app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

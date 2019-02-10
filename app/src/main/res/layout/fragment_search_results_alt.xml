@@ -8,36 +8,42 @@
         tools:context=".ui.results.SearchResults"
         android:id="@+id/fragment_search_results_layout3">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <me.panpf.sketch.SketchImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:id="@+id/background"/>
+
+    <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            android:id="@+id/search_edit_text"
+            android:padding="8dp"
+            android:id="@+id/search_edit_text_layout"
             android:layout_margin="8dp"
-            android:hint="@string/enter_movie_title"
-            android:inputType="textCapWords"
-            android:textSize="26sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintEnd_toStartOf="@+id/search_button"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view"/>
+            app:layout_constraintBottom_toTopOf="@+id/recycler_view">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/search_edit_text"
+                android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Button"
             android:textColor="@android:color/black"
-            android:text="@string/search"
             android:layout_margin="8dp"
             android:id="@+id/search_button"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="28dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/search_edit_text"
+            app:layout_constraintStart_toEndOf="@+id/search_edit_text_layout"
             app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/search_edit_text"/>
+            app:layout_constraintBottom_toBottomOf="@+id/search_edit_text_layout"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
@@ -48,7 +54,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:fitsSystemWindows="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_edit_text"
+            app:layout_constraintTop_toBottomOf="@+id/search_edit_text_layout"
             app:layout_constraintHorizontal_bias="0.5"/>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -58,9 +64,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/loading"
-            android:textSize="56sp"
-            android:textColor="?colorAccent"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

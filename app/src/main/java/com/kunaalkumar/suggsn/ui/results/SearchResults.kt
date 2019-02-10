@@ -3,7 +3,6 @@ package com.kunaalkumar.suggsn.ui.results
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,10 +11,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputLayout
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.RetrofitFactory
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
@@ -32,9 +31,9 @@ class SearchResults : Fragment() {
     private val TAG: String = "SearchResults"
     private val constraintSet = ConstraintSet()
 
-    lateinit var recyclerView: RecyclerView
-    lateinit var viewAdapter: ResultsAdapter
-    lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: ResultsAdapter
+    private lateinit var viewManager: RecyclerView.LayoutManager
 
     val service = RetrofitFactory.makeTMDbRetrofitService()
 
@@ -58,18 +57,20 @@ class SearchResults : Fragment() {
         }
 
         initConfig()
+        loadBackdrop()
 
-        search_edit_text.setOnClickListener {
-            activity!!.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        }
 
         search_button.setOnClickListener {
 
+            // Customize edit text to show as header
+            search_edit_text_layout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_NONE)
+            search_edit_text_layout.isHintEnabled = false
+            search_edit_text.hint = null
+
+            // Start search transition
             constraintSet.clone(context, R.layout.fragment_search_results_alt)
-            TransitionManager.beginDelayedTransition(fragment_search_results_layout, AutoTransition().setDuration(500))
+            TransitionManager.beginDelayedTransition(fragment_search_results_layout)
             constraintSet.applyTo(fragment_search_results_layout)
-            search_edit_text.background = null
-            search_edit_text.setTextColor(ContextCompat.getColor(context!!, R.color.colorAccentDark))
             searchInProgress(true)
 
             GlobalScope.launch(Dispatchers.Main) {
@@ -88,6 +89,8 @@ class SearchResults : Fragment() {
         }
     }
 
+
+    // Fetch configurations for image paths
     private fun initConfig() {
 
         GlobalScope.launch(Dispatchers.Main) {
@@ -113,6 +116,23 @@ class SearchResults : Fragment() {
         }
     }
 
+    // Fetch and load a random poster for a popular movie
+    private fun loadBackdrop() {
+        GlobalScope.launch(Dispatchers.Main) {
+            val request = service.getPopularMovies()
+            try {
+                val response = request.await()
+                val randomImageNum = (0..19).random()
+                val imageUrl = response.body()!!.results[randomImageNum].getPoster().toString()
+                background.displayImage(imageUrl)
+                Log.d(TAG, "Loaded background #$randomImageNum ==> ${imageUrl}")
+            } catch (e: Throwable) {
+                Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
+                Log.d(TAG, "Something went wrong: $e")
+            }
+        }
+    }
+
     private fun initRecyclerView(dataSet: List<TMDbItem>) {
         viewManager = LinearLayoutManager(context)
         viewAdapter = ResultsAdapter(dataSet)
@@ -127,6 +147,6 @@ class SearchResults : Fragment() {
     // Sets UI elements accordingly to bool argument
     private fun searchInProgress(inProgress: Boolean) {
         search_button.isEnabled = !inProgress
-        search_edit_text.isEnabled = !inProgress
+        search_edit_text_layout.isEnabled = !inProgress
     }
 }

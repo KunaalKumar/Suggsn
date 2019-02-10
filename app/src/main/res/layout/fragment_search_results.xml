@@ -8,25 +8,39 @@
         tools:context=".ui.results.SearchResults"
         android:id="@+id/fragment_search_results_layout2">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <me.panpf.sketch.SketchImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:tint="#40000000"
+            android:id="@+id/background"/>
+
+    <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/search_edit_text"
-            android:layout_margin="8dp"
-            android:hint="Enter movie title"
-            android:inputType="textCapWords"
-            android:textSize="26sp"
-            android:textAlignment="center"
-            android:layout_marginTop="8dp"
+            android:id="@+id/search_edit_text_layout"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/colorPrimary"
+            app:hintEnabled="true"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorAccentDark"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
+            android:layout_margin="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"/>
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            app:layout_constraintHorizontal_bias="0.5">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:inputType="textCapWords"
+                android:textColor="@color/colorAccentDark"
+                android:hint="Movie"
+                android:id="@+id/search_edit_text"
+                android:textAlignment="center"
+                android:textSize="26sp"
+                android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
@@ -39,7 +53,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toBottomOf="@+id/search_edit_text"/>
+            app:layout_constraintTop_toBottomOf="@+id/search_edit_text_layout"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
@@ -56,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loading_text_view"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

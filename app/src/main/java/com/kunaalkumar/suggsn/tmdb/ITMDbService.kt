@@ -19,4 +19,7 @@ interface ITMDbService {
 
     @GET("configuration?api_key=${BuildConfig.TMDb_API_KEY}")
     fun config(): Deferred<Response<TMDbConfigCallback>>
+
+    @GET("movie/popular?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
+    fun getPopularMovies(): Deferred<Response<TMDbCallback>>
 }
