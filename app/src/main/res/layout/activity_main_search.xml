@@ -8,6 +8,13 @@
         tools:context=".ui.results.SearchResults"
         android:id="@+id/fragment_search_results_layout2">
 
+    <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tint="#80000000"
+            android:scaleType="centerCrop"
+            android:id="@+id/background"/>
+
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"

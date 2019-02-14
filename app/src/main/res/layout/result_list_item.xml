@@ -30,7 +30,7 @@
                 app:layout_constraintStart_toEndOf="@+id/circularRatingView"
                 app:layout_constraintHorizontal_bias="0.5"/>
 
-        <me.panpf.sketch.SketchImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/backdrop"
@@ -45,7 +45,7 @@
                 app:layout_constraintVertical_bias="0.0"/>
 
 
-        <me.panpf.sketch.SketchImageView
+        <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="100dp"
                 android:layout_height="150dp"
                 android:id="@+id/poster"

@@ -2,6 +2,7 @@ package com.kunaalkumar.suggsn.ui.results
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.kunaalkumar.suggsn.GlideAPI.GlideApp
 import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import kotlinx.android.synthetic.main.result_list_item.view.*
@@ -16,11 +17,16 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         else
             itemView.name.text = data.name
 
-
         if (data.getPoster() != null)
-            itemView.poster.displayImage(data.getPoster().toString())
+            GlideApp.with(itemView)
+                .load(data.getPoster().toString())
+                .centerCrop()
+                .into(itemView.poster)
 
         if (data.getBackdrop() != null)
-            itemView.backdrop.displayImage(data.getBackdrop().toString())
+            GlideApp.with(itemView)
+                .load(data.getBackdrop().toString())
+                .centerCrop()
+                .into(itemView.backdrop)
     }
 }
