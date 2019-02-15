@@ -2,7 +2,7 @@ package com.kunaalkumar.suggsn.ui.results
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.kunaalkumar.suggsn.GlideAPI.GlideApp
+import com.kunaalkumar.suggsn.glide_API.GlideApp
 import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import kotlinx.android.synthetic.main.result_list_item.view.*

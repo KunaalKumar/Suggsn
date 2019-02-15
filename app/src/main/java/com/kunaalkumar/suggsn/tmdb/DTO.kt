@@ -1,6 +1,6 @@
 package com.kunaalkumar.suggsn.tmdb
 
-import com.kunaalkumar.suggsn.ui.MainActivity
+import com.kunaalkumar.suggsn.repositories.TmdbRepository
 
 val TV_MEDIA_TYPE: String = "tv"
 val MOVIE_MEDIA_TYPE: String = "movie"
@@ -10,7 +10,7 @@ data class TMDbCallback(val page: Int, val total_results: Int, val total_pages: 
 
 data class TMDbItem(
     private val poster_path: String?, val adult: Boolean, val overview: String, val release_data: String,
-    val id: Int, val media_type: String, val title: String?, val backdrop_path: String,
+    val id: Int, val media_type: String, val title: String?, val backdrop_path: String?,
     val popularity: Double, val vote_average: Double, val genre_ids: List<Int>,
     val first_air_date: String, val profile_path: String, val name: String?, val known_for: List<TMDbItem>?
 ) {
@@ -18,14 +18,14 @@ data class TMDbItem(
         if (poster_path == null) {
             return null
         }
-        return MainActivity.BASE_IMAGE_URL + MainActivity.BASE_POSTER_SIZE + poster_path
+        return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_POSTER_SIZE + poster_path
     }
 
     fun getBackdrop(): String? {
         if (backdrop_path == null) {
             return null
         }
-        return MainActivity.BASE_IMAGE_URL + MainActivity.BASE_BACKDROP_SIZE + backdrop_path
+        return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_BACKDROP_SIZE + backdrop_path
     }
 }
 

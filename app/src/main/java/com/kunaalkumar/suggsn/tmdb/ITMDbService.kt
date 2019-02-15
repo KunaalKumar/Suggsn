@@ -1,8 +1,7 @@
 package com.kunaalkumar.suggsn.tmdb
 
 import com.kunaalkumar.suggsn.BuildConfig
-import kotlinx.coroutines.Deferred
-import retrofit2.Response
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -15,11 +14,11 @@ interface ITMDbService {
     fun searchMulti(
         @Query("query") query: String, @Query("page") page: Int,
         @Query("include_adult") includeAdult: Boolean
-    ): Deferred<Response<TMDbCallback>>
+    ): Call<TMDbCallback>
 
     @GET("configuration?api_key=${BuildConfig.TMDb_API_KEY}")
-    fun config(): Deferred<Response<TMDbConfigCallback>>
+    fun config(): Call<TMDbConfigCallback>
 
     @GET("movie/popular?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
-    fun getPopularMovies(): Deferred<Response<TMDbCallback>>
+    fun getPopularMovies(): Call<TMDbCallback>
 }
