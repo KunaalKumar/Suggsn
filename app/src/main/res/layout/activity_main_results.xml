@@ -5,46 +5,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.results.SearchResults"
+        tools:context=".ui.MainActivity"
         android:id="@+id/fragment_search_results_layout3">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <include
+            layout="@layout/search_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:tint="#80000000"
-            android:visibility="gone"
-            android:scaleType="centerCrop"
-            android:id="@+id/background"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/search_edit_text_layout"
-            android:layout_margin="8dp"
+            android:id="@+id/edit_text_relative_layout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/search_button"
-            >
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:id="@+id/search_edit_text"
-                android:layout_height="match_parent"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button"
-            android:textColor="@android:color/black"
-            android:layout_margin="8dp"
-            android:id="@+id/search_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/search_edit_text_layout"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintBottom_toBottomOf="@+id/search_edit_text_layout"/>
+            app:layout_constraintEnd_toStartOf="@+id/search_button"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
@@ -55,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:fitsSystemWindows="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_edit_text_layout"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_relative_layout"
             app:layout_constraintHorizontal_bias="0.5"/>
 
     <androidx.appcompat.widget.AppCompatTextView

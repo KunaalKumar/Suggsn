@@ -5,55 +5,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.results.SearchResults"
-        android:id="@+id/fragment_search_results_layout2">
+        tools:context=".ui.MainActivity">
 
-    <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:tint="#80000000"
-            android:scaleType="centerCrop"
-            android:id="@+id/background"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/search_edit_text_layout"
+    <include
+            layout="@layout/search_main"
+            android:id="@+id/edit_text_relative_layout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:hintEnabled="true"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorAccentDark"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="8dp"
-            app:layout_constraintStart_toStartOf="parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            app:layout_constraintHorizontal_bias="0.5">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:inputType="textCapWords"
-                android:textColor="@color/colorAccentDark"
-                android:hint="Movie"
-                android:id="@+id/search_edit_text"
-                android:textAlignment="center"
-                android:textSize="26sp"
-                android:layout_height="wrap_content"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button"
-            android:textColor="@android:color/black"
-            android:text="Search"
-            android:layout_margin="32dp"
-            android:id="@+id/search_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toBottomOf="@+id/search_edit_text_layout"/>
+            app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"

@@ -11,8 +11,7 @@ class MainViewModel : ViewModel() {
 
     private lateinit var searchResults: LiveData<ArrayList<TMDbItem>>
     private lateinit var backdropImageUrl: LiveData<String>
-    private val tmdbRepo = TmdbRepository()
-
+    var tmdbRepo: TmdbRepository = TmdbRepository()
 
 //    fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
 //            : LiveData<ArrayList<TMDbItem>> {
@@ -23,6 +22,10 @@ class MainViewModel : ViewModel() {
     fun getBackdropImageUrl(): LiveData<String> {
         backdropImageUrl = tmdbRepo.getBackdropUrl()
         return backdropImageUrl
+    }
+
+    fun getConfigStatus(): LiveData<Boolean> {
+        return tmdbRepo.getConfigStatus()
     }
 
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.kunaalkumar.suggsn.RetrofitFactory
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbConfigCallback
-import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,9 +17,7 @@ class TmdbRepository {
 
     val TAG: String = "TmdbRepository"
     private val tmdbService = RetrofitFactory.makeTMDbRetrofitService()
-
-    lateinit var searchResults: ArrayList<TMDbItem>
-
+    private var isConfigured = false
 
     companion object {
         val instance = TmdbRepository()
@@ -33,13 +30,19 @@ class TmdbRepository {
         tmdbConfig()
     }
 
-    fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
-            : MutableLiveData<ArrayList<TMDbItem>> {
-//        tmdbMultiSearch(query, pageNum, includeAdult)
-        val retval = MutableLiveData<ArrayList<TMDbItem>>()
-        retval.value = searchResults
+    fun getConfigStatus(): LiveData<Boolean> {
+        val retval = MutableLiveData<Boolean>()
+        retval.value = isConfigured
         return retval
     }
+
+//    fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
+//            : MutableLiveData<ArrayList<TMDbItem>> {
+//        tmdbMultiSearch(query, pageNum, includeAdult)
+//        val retval = MutableLiveData<ArrayList<TMDbItem>>()
+//        retval.value = searchResults
+//        return retval
+//    }
 
     // Fetch configurations for image paths
     private fun tmdbConfig() {
@@ -50,6 +53,7 @@ class TmdbRepository {
                 BASE_POSTER_SIZE = response.body()!!.images.poster_sizes[response.body()!!.images.poster_sizes.size - 1]
                 BASE_BACKDROP_SIZE =
                     response.body()!!.images.backdrop_sizes[response.body()!!.images.backdrop_sizes.size - 1]
+                isConfigured = true
             }
 
             override fun onFailure(call: Call<TMDbConfigCallback>, t: Throwable) {
