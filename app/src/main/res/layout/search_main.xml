@@ -15,16 +15,21 @@
             android:layout_margin="8dp"
             android:textColor="@color/colorAccent"
             android:textAlignment="center"
+            app:errorEnabled="true"
             android:textColorHint="@color/colorAccentDark"
+            app:boxStrokeColor="@color/colorAccent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords"
-                android:hint="Movie"
+                android:textAlignment="center"
+                android:hint="Movie or tv show"
                 android:id="@+id/search_edit_text"
                 android:textSize="26sp"
                 android:textColor="@color/colorAccent"/>

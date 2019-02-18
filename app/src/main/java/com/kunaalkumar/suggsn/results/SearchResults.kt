@@ -1,4 +1,4 @@
-//package com.kunaalkumar.suggsn.ui.results
+//package com.kunaalkumar.suggsn.results
 //
 //
 //import android.animation.ObjectAnimator
@@ -47,11 +47,6 @@
 //
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        super.onActivityCreated(savedInstanceState)
-//
-//
-//        initConfig()
-//        loadBackdrop()
-//
 //
 //        search_button.setOnClickListener {
 //

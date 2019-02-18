@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.ui.results
+package com.kunaalkumar.suggsn.results
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

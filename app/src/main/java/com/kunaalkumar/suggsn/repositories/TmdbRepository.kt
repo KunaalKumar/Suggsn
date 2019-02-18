@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.kunaalkumar.suggsn.RetrofitFactory
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbConfigCallback
+import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,7 +16,7 @@ import retrofit2.Response
  */
 class TmdbRepository {
 
-    val TAG: String = "TmdbRepository"
+    val TAG: String = "Suggsn@TmdbRepository"
     private val tmdbService = RetrofitFactory.makeTMDbRetrofitService()
     private var isConfigured = false
 
@@ -35,14 +36,6 @@ class TmdbRepository {
         retval.value = isConfigured
         return retval
     }
-
-//    fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
-//            : MutableLiveData<ArrayList<TMDbItem>> {
-//        tmdbMultiSearch(query, pageNum, includeAdult)
-//        val retval = MutableLiveData<ArrayList<TMDbItem>>()
-//        retval.value = searchResults
-//        return retval
-//    }
 
     // Fetch configurations for image paths
     private fun tmdbConfig() {
@@ -64,6 +57,7 @@ class TmdbRepository {
 
     // Fetch and load a random poster for a popular movie
     fun getBackdropUrl(): LiveData<String> {
+
         val data = MutableLiveData<String>()
 
         tmdbService.getPopularMovies().enqueue(object : Callback<TMDbCallback> {
@@ -85,25 +79,22 @@ class TmdbRepository {
     /**
      * Search movies, tv shows, people, etc for given query
      */
-//    private fun tmdbMultiSearch(query: String, pageNum: Int, includeAdult: Boolean) {
-//        GlobalScope.launch(Dispatchers.Main) {
-//            // TODO: Change page and includeAdult fields based on UI selection
-//            val request = tmdbService.searchMulti(query, pageNum, includeAdult)
-//            try {
-//                val response = request.await()
-////                searchInProgress(false)
-////                initRecyclerView(response.body()!!.results)
-//                if (pageNum != 1) { // Append data to searchResults
-//                    searchResults!!.addAll(response.body()!!.results)
-//                    return@launch
-//                }
-//                searchResults = ArrayList(response.body()!!.results)
-//            } catch (e: Throwable) {
-////                Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
-//                Log.d(TAG, "(tmdbMultiSearch) Something went wrong: $e")
-//            }
-//        }
-//    }
+    fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
+            : LiveData<ArrayList<TMDbItem>> {
+
+        val data = MutableLiveData<ArrayList<TMDbItem>>()
+
+        tmdbService.searchMulti(query, pageNum, includeAdult).enqueue(object : Callback<TMDbCallback> {
+            override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+                data.value = ArrayList(response.body()!!.results)
+            }
+
+            override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+                android.util.Log.d(TAG, "getSearchResults: Something went wrong \n$t\n")
+            }
+        })
+        return data
+    }
 
 
 }
