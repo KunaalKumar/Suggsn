@@ -2,6 +2,7 @@ package com.kunaalkumar.suggsn.results
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kunaalkumar.suggsn.glide_API.GlideApp
 import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
@@ -20,12 +21,14 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (data.getPoster() != null)
             GlideApp.with(itemView)
                 .load(data.getPoster().toString())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(itemView.poster)
 
         if (data.getBackdrop() != null)
             GlideApp.with(itemView)
                 .load(data.getBackdrop().toString())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(itemView.backdrop)
     }

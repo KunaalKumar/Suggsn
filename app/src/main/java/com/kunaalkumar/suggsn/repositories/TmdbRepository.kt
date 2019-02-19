@@ -20,14 +20,16 @@ class TmdbRepository {
     private val tmdbService = RetrofitFactory.makeTMDbRetrofitService()
     private var isConfigured = false
 
+    private var searchResults = ArrayList<TMDbItem>()
+
     companion object {
-        val instance = TmdbRepository()
+        val instance: TmdbRepository by lazy { TmdbRepository() }
         lateinit var BASE_IMAGE_URL: String
         lateinit var BASE_POSTER_SIZE: String
         lateinit var BASE_BACKDROP_SIZE: String
     }
 
-    init {
+    private constructor() {
         tmdbConfig()
     }
 
@@ -47,6 +49,7 @@ class TmdbRepository {
                 BASE_BACKDROP_SIZE =
                     response.body()!!.images.backdrop_sizes[response.body()!!.images.backdrop_sizes.size - 1]
                 isConfigured = true
+                android.util.Log.d(TAG, "tmdbConfig: Configured URLs")
             }
 
             override fun onFailure(call: Call<TMDbConfigCallback>, t: Throwable) {
@@ -56,7 +59,7 @@ class TmdbRepository {
     }
 
     // Fetch and load a random poster for a popular movie
-    fun getBackdropUrl(): LiveData<String> {
+    fun getBackdropUrl(): MutableLiveData<String> {
 
         val data = MutableLiveData<String>()
 
@@ -80,13 +83,13 @@ class TmdbRepository {
      * Search movies, tv shows, people, etc for given query
      */
     fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
-            : LiveData<ArrayList<TMDbItem>> {
+            : MutableLiveData<ArrayList<TMDbItem>> {
 
         val data = MutableLiveData<ArrayList<TMDbItem>>()
 
         tmdbService.searchMulti(query, pageNum, includeAdult).enqueue(object : Callback<TMDbCallback> {
             override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
-                data.value = ArrayList(response.body()!!.results)
+                data.postValue(ArrayList(response.body()!!.results))
             }
 
             override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {

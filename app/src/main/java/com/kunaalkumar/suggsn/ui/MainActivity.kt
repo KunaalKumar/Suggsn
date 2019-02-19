@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "Suggsn@ MainActivity"
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -45,15 +44,7 @@ class MainActivity : AppCompatActivity() {
                 start()
             }
 
-        // Load backdrop image
-        viewModel.getBackdropImageUrl().observe(this, Observer {
-            Log.d(TAG, "Got image: $it")
-            GlideApp.with(this)
-                .load(it)
-                .centerCrop()
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(background)
-        })
+        initRecyclerView()
 
         search_button.setOnClickListener {
             if (search_edit_text.text!!.isEmpty()) { // Check for valid search term
@@ -62,8 +53,15 @@ class MainActivity : AppCompatActivity() {
             }
             transitionToResultsLayout()
 
-            viewModel.getSearchResults(search_edit_text.text.toString(), 1, true)
+            viewModel.getSearchResults(search_edit_text.text.toString(), 1, false)
+                .observe(this, Observer {
+                    android.util.Log.d(TAG, "onCreate: searchResults changed")
+                    viewAdapter.setResults(it)
+                })
+        }
 
+        button2.setOnClickListener {
+            viewModel.nextPage()
         }
 
         // Switch to activity_main_search
@@ -80,6 +78,16 @@ class MainActivity : AppCompatActivity() {
         constraintSet1.clone(this, R.layout.activity_main_search)
         TransitionManager.beginDelayedTransition(activity_main_layout)
         constraintSet1.applyTo(activity_main_layout)
+
+        // Load backdrop image
+        viewModel.getBackdropImageUrl().observe(this, Observer {
+            Log.d(TAG, "Got image: $it")
+            GlideApp.with(this)
+                .load(it)
+                .centerCrop()
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(background)
+        })
     }
 
     // Transition to activity_main_results
@@ -105,7 +113,14 @@ class MainActivity : AppCompatActivity() {
         search_edit_text_layout.isHintEnabled = false
     }
 
+    // Initialize recycler view
     private fun initRecyclerView() {
         viewManager = LinearLayoutManager(this)
+        viewAdapter = ResultsAdapter()
+        recycler_view.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
     }
 }

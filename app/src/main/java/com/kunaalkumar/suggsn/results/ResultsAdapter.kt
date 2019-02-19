@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
-class ResultsAdapter(val dataSet: List<TMDbItem>) : RecyclerView.Adapter<ResultViewHolder>() {
+class ResultsAdapter : RecyclerView.Adapter<ResultViewHolder>() {
 
     private val TAG: String = "ResultsAdapter"
+    private val dataSet = ArrayList<TMDbItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.result_list_item, parent, false)
@@ -23,5 +24,18 @@ class ResultsAdapter(val dataSet: List<TMDbItem>) : RecyclerView.Adapter<ResultV
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder: Binding $position")
         holder.bindView(dataSet[position])
+    }
+
+    // Clear dataSet and add contents of results into it
+    fun setResults(results: ArrayList<TMDbItem>) {
+        dataSet.clear()
+        dataSet.addAll(results)
+        notifyDataSetChanged()
+    }
+
+    // Append results into dataSet
+    fun addResults(results: ArrayList<TMDbItem>) {
+        dataSet.addAll(results)
+        notifyDataSetChanged()
     }
 }
