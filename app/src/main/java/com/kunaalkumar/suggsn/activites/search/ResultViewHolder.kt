@@ -1,16 +1,23 @@
-package com.kunaalkumar.suggsn.results
+package com.kunaalkumar.suggsn.activites.search
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.View
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.kunaalkumar.suggsn.glide_API.GlideApp
 import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import kotlinx.android.synthetic.main.result_list_item.view.*
 
+@Suppress("DEPRECATION")
 class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val TAG: String = "ResultViewHolder"
+    lateinit var palette: Palette
 
     fun bindView(data: TMDbItem) {
         if (data.media_type == MOVIE_MEDIA_TYPE)
@@ -18,12 +25,23 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         else
             itemView.name.text = data.name
 
+        // Reset Image views to avoid errors
+        itemView.poster.setImageDrawable(null)
+        itemView.backdrop.setImageDrawable(null)
+
         if (data.getPoster() != null)
             GlideApp.with(itemView)
+                .asBitmap()
                 .load(data.getPoster().toString())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
-                .into(itemView.poster)
+                .into(object : SimpleTarget<Bitmap>() {
+                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                        palette = Palette.from(resource).generate()
+                        itemView.poster.setImageBitmap(resource)
+                        itemView.name.setTextColor(palette.getLightVibrantColor(Color.WHITE))
+                    }
+                })
 
         if (data.getBackdrop() != null)
             GlideApp.with(itemView)

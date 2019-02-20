@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.results
+package com.kunaalkumar.suggsn.activites.search
 
 import android.util.Log
 import android.view.LayoutInflater

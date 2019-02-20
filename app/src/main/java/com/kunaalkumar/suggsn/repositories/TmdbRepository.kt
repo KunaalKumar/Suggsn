@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.kunaalkumar.suggsn.RetrofitFactory
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbConfigCallback
-import com.kunaalkumar.suggsn.tmdb.TMDbItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,13 +13,11 @@ import retrofit2.Response
 /**
  * Singleton class to get data from TMDB
  */
-class TmdbRepository {
+class TmdbRepository private constructor() {
 
     val TAG: String = "Suggsn@TmdbRepository"
     private val tmdbService = RetrofitFactory.makeTMDbRetrofitService()
     private var isConfigured = false
-
-    private var searchResults = ArrayList<TMDbItem>()
 
     companion object {
         val instance: TmdbRepository by lazy { TmdbRepository() }
@@ -29,7 +26,7 @@ class TmdbRepository {
         lateinit var BASE_BACKDROP_SIZE: String
     }
 
-    private constructor() {
+    init {
         tmdbConfig()
     }
 
@@ -83,13 +80,13 @@ class TmdbRepository {
      * Search movies, tv shows, people, etc for given query
      */
     fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
-            : MutableLiveData<ArrayList<TMDbItem>> {
+            : MutableLiveData<TMDbCallback> {
 
-        val data = MutableLiveData<ArrayList<TMDbItem>>()
+        val data = MutableLiveData<TMDbCallback>()
 
         tmdbService.searchMulti(query, pageNum, includeAdult).enqueue(object : Callback<TMDbCallback> {
             override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
-                data.postValue(ArrayList(response.body()!!.results))
+                data.postValue(response.body())
             }
 
             override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {

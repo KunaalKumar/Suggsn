@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.ui
+package com.kunaalkumar.suggsn.activites.search
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -16,11 +16,16 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.textfield.TextInputLayout
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.glide_API.GlideApp
-import com.kunaalkumar.suggsn.results.ResultsAdapter
 import com.kunaalkumar.suggsn.view_model.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.search_main.*
 
+/**
+ * Shows the following:
+ * 1) Loading screen
+ * 2) Home screen
+ * 3) Results screen
+ */
 class MainActivity : AppCompatActivity() {
 
     private val TAG = "Suggsn@ MainActivity"
@@ -53,15 +58,16 @@ class MainActivity : AppCompatActivity() {
             }
             transitionToResultsLayout()
 
-            viewModel.getSearchResults(search_edit_text.text.toString(), 1, false)
-                .observe(this, Observer {
-                    android.util.Log.d(TAG, "onCreate: searchResults changed")
-                    viewAdapter.setResults(it)
-                })
-        }
+            viewModel.searchFor(search_edit_text.text.toString(), 1, false)
+                .observe(this, Observer {})
 
-        button2.setOnClickListener {
-            viewModel.nextPage()
+            viewModel.getResults()
+                .observe(this, Observer {
+                    android.util.Log.d(TAG, "onCreate: searchFor changed")
+                    if (it != null) {
+                        viewAdapter.setResults(it)
+                    }
+                })
         }
 
         // Switch to activity_main_search
@@ -69,7 +75,6 @@ class MainActivity : AppCompatActivity() {
             android.util.Log.d(TAG, "onCreate: Config status change")
             transitionToSearchLayout()
         })
-
     }
 
     // Transition to activity_main_search
@@ -115,6 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     // Initialize recycler view
     private fun initRecyclerView() {
+        android.util.Log.d(TAG, "initRecyclerView: Initializing recycler view")
         viewManager = LinearLayoutManager(this)
         viewAdapter = ResultsAdapter()
         recycler_view.apply {
@@ -122,5 +128,15 @@ class MainActivity : AppCompatActivity() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
+
+        // Detect when recycler view is at bottom
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.nextPage()
+                }
+            }
+        })
     }
 }

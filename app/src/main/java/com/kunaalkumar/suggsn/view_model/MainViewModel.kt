@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
+import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
 class MainViewModel : ViewModel() {
@@ -12,25 +13,35 @@ class MainViewModel : ViewModel() {
     val TAG: String = "Suggsn@MainViewModel"
     private var tmdbRepo = TmdbRepository.instance
 
-    private var currentPage: Int = 1
-    private var maxPage: Int = 0
+    private var currentPage: Int = 0
+    private var lastPage: Int = 0
+    private var currentQuery = String()
 
     private lateinit var backdropImageUrl: MutableLiveData<String>
     private var searchResults = MediatorLiveData<ArrayList<TMDbItem>>()
+    private var searchCallback = MediatorLiveData<TMDbCallback>()
 
-    fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
-            : LiveData<ArrayList<TMDbItem>> {
-        searchResults.addSource(tmdbRepo.getSearchResults(query, pageNum, includeAdult)) {
-            searchResults.postValue(it)
+    fun searchFor(query: String, pageNum: Int, includeAdult: Boolean)
+            : LiveData<TMDbCallback> {
+        currentQuery = query
+        searchCallback.addSource(tmdbRepo.getSearchResults(query, pageNum, includeAdult)) {
+            currentPage = it.page
+            lastPage = it.total_pages
+            searchResults.postValue(ArrayList(it.results))
         }
-        TODO("Implement callback watcher and arraylist watcher")
+        return searchCallback
+    }
+
+    fun getResults(): LiveData<ArrayList<TMDbItem>> {
         return searchResults
     }
 
     fun nextPage() {
-        searchResults.addSource(tmdbRepo.getSearchResults("Drive", ++currentPage, false)) {
-            searchResults.value!!.addAll(it)
-            searchResults.value = searchResults.value
+        if (currentPage != lastPage) {
+            searchResults.addSource(tmdbRepo.getSearchResults(currentQuery, ++currentPage, false)) {
+                searchResults.value!!.addAll(it.results)
+                searchResults.value = searchResults.value
+            }
         }
     }
 
