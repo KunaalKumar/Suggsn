@@ -1,5 +1,6 @@
-package com.kunaalkumar.suggsn.activites.search
+package com.kunaalkumar.suggsn.activities.search
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.kunaalkumar.suggsn.activities.details.DetailsActivity
 import com.kunaalkumar.suggsn.glide_API.GlideApp
 import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
@@ -25,9 +27,10 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         else
             itemView.name.text = data.name
 
-        // Reset Image views to avoid errors
+        // Reset view properties to avoid errors
         itemView.poster.setImageDrawable(null)
         itemView.backdrop.setImageDrawable(null)
+        itemView.name.setTextColor(Color.WHITE)
 
         if (data.getPoster() != null)
             GlideApp.with(itemView)
@@ -49,5 +52,9 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(itemView.backdrop)
+
+        itemView.parent_card_view.setOnClickListener {
+            itemView.context.startActivity(Intent(itemView.context, DetailsActivity::class.java))
+        }
     }
 }

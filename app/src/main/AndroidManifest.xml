@@ -14,16 +14,18 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activites.details.DetailsActivity">
-        </activity>
-        <activity
-                android:name=".activites.search.MainActivity"
-                android:windowSoftInputMode="adjustResize|stateVisible">
+        <activity android:name=".activities.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".activities.details.DetailsActivity">
+        </activity>
+        <activity
+                android:name=".activities.search.MainActivity"
+                android:windowSoftInputMode="adjustResize|adjustPan">
         </activity>
     </application>
 

@@ -21,9 +21,9 @@ class TmdbRepository private constructor() {
 
     companion object {
         val instance: TmdbRepository by lazy { TmdbRepository() }
-        lateinit var BASE_IMAGE_URL: String
-        lateinit var BASE_POSTER_SIZE: String
-        lateinit var BASE_BACKDROP_SIZE: String
+        var BASE_IMAGE_URL: String = ""
+        var BASE_POSTER_SIZE: String = ""
+        var BASE_BACKDROP_SIZE: String = ""
     }
 
     init {

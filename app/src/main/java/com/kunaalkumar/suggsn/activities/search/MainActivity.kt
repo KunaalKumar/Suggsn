@@ -1,10 +1,9 @@
-package com.kunaalkumar.suggsn.activites.search
+package com.kunaalkumar.suggsn.activities.search
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -13,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.android.material.textfield.TextInputLayout
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.glide_API.GlideApp
 import com.kunaalkumar.suggsn.view_model.MainViewModel
@@ -21,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.search_main.*
 
 /**
- * Shows the following:
+ *  Responsible for the following:
  * 1) Loading screen
  * 2) Home screen
  * 3) Results screen
@@ -77,6 +75,12 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        GlideApp.get(this).clearMemory()
+        GlideApp.get(this).clearDiskCache()
+    }
+
     // Transition to activity_main_search
     private fun transitionToSearchLayout() {
         val constraintSet1 = ConstraintSet()
@@ -104,18 +108,10 @@ class MainActivity : AppCompatActivity() {
         constraintSet.clone(this, R.layout.activity_main_results)
         constraintSet2.clone(this, R.layout.search_results)
         TransitionManager.beginDelayedTransition(activity_main_layout)
-        constraintSet2.applyTo(edit_text_relative_layout as ConstraintLayout)
+        constraintSet2.applyTo(include as ConstraintLayout)
         constraintSet.applyTo(activity_main_layout)
 
-        setupLayoutForSearch()
-    }
-
-    // Modify search layout for results view
-    private fun setupLayoutForSearch() {
-        background.visibility = View.GONE
         search_edit_text.hint = null
-        search_edit_text_layout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_NONE)
-        search_edit_text_layout.isHintEnabled = false
     }
 
     // Initialize recycler view
@@ -125,6 +121,7 @@ class MainActivity : AppCompatActivity() {
         viewAdapter = ResultsAdapter()
         recycler_view.apply {
             setHasFixedSize(true)
+            setItemViewCacheSize(40) // Cache 40 items to ensure minimum loading times
             layoutManager = viewManager
             adapter = viewAdapter
         }

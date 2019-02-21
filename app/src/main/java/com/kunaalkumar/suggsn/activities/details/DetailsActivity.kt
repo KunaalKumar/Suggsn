@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.activites.details
+package com.kunaalkumar.suggsn.activities.details
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

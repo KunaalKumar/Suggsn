@@ -51,6 +51,8 @@ dependencies {
     // Palette
     implementation 'androidx.palette:palette:1.0.0'
 
+    implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0-beta02'
+    implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0-beta02'
 
 
 }
