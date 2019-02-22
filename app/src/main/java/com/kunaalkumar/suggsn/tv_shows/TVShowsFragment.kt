@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.activities.tv_shows
+package com.kunaalkumar.suggsn.tv_shows
 
 import android.os.Bundle
 import android.view.LayoutInflater

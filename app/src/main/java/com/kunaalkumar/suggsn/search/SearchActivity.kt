@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.activities.search
+package com.kunaalkumar.suggsn.search
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.glide_API.GlideApp
-import com.kunaalkumar.suggsn.view_model.MainViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import com.kunaalkumar.suggsn.results_components.ResultsAdapter
+import com.kunaalkumar.suggsn.view_model.SearchViewModel
+import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_main.*
 
 /**
@@ -27,16 +28,16 @@ import kotlinx.android.synthetic.main.search_main.*
 class SearchActivity : AppCompatActivity() {
 
     private val TAG = "Suggsn@ SearchActivity"
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: SearchViewModel
 
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_search)
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
 
         // Animate loading text
         ObjectAnimator.ofFloat(loading_text_view, "alpha", 0.25f, 1f)
@@ -68,7 +69,7 @@ class SearchActivity : AppCompatActivity() {
                 })
         }
 
-        // Switch to activity_main_search
+        // Switch to activity_search_search
         viewModel.getConfigStatus().observe(this, Observer {
             android.util.Log.d(TAG, "onCreate: Config status change")
             transitionToSearchLayout()
@@ -81,10 +82,10 @@ class SearchActivity : AppCompatActivity() {
         GlideApp.get(this).clearDiskCache()
     }
 
-    // Transition to activity_main_search
+    // Transition to activity_search_search
     private fun transitionToSearchLayout() {
         val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(this, R.layout.activity_main_search)
+        constraintSet1.clone(this, R.layout.activity_search_search)
         TransitionManager.beginDelayedTransition(activity_main_layout)
         constraintSet1.applyTo(activity_main_layout)
 
@@ -99,13 +100,13 @@ class SearchActivity : AppCompatActivity() {
         })
     }
 
-    // Transition to activity_main_results
+    // Transition to activity_search_results
     private fun transitionToResultsLayout() {
         search_edit_text.clearFocus()
 
         val constraintSet = ConstraintSet()
         val constraintSet2 = ConstraintSet() // Transition for search layout
-        constraintSet.clone(this, R.layout.activity_main_results)
+        constraintSet.clone(this, R.layout.activity_search_results)
         constraintSet2.clone(this, R.layout.search_results)
         TransitionManager.beginDelayedTransition(activity_main_layout)
         constraintSet2.applyTo(include as ConstraintLayout)
@@ -118,7 +119,7 @@ class SearchActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         android.util.Log.d(TAG, "initRecyclerView: Initializing recycler view")
         viewManager = LinearLayoutManager(this)
-        viewAdapter = ResultsAdapter()
+        viewAdapter = ResultsAdapter(null)
         recycler_view.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(40) // Cache 40 items to ensure minimum loading times

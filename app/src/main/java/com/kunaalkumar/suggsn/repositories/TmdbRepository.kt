@@ -60,7 +60,7 @@ class TmdbRepository private constructor() {
 
         val data = MutableLiveData<String>()
 
-        tmdbService.getPopularMovies().enqueue(object : Callback<TMDbCallback> {
+        tmdbService.popularMovies().enqueue(object : Callback<TMDbCallback> {
 
             override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
                 val randomImageNum = (0..19).random()
@@ -91,6 +91,21 @@ class TmdbRepository private constructor() {
 
             override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
                 android.util.Log.d(TAG, "getSearchResults: Something went wrong \n$t\n")
+            }
+        })
+        return data
+    }
+
+    fun getDiscoverMovies(): MutableLiveData<TMDbCallback> {
+        val data = MutableLiveData<TMDbCallback>()
+
+        tmdbService.discoverMovies().enqueue(object : Callback<TMDbCallback> {
+            override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+                data.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+                android.util.Log.d(TAG, "getDiscoverMovies: Something went wrong \n$t\n")
             }
         })
         return data

@@ -43,6 +43,7 @@
                 app:layout_constraintVertical_bias="0.100"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:text="Name"
@@ -55,7 +56,6 @@
                 android:autoSizeMaxTextSize="24sp"
                 android:autoSizeStepGranularity="2sp"
                 android:gravity="center"
-                android:id="@+id/name"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
                 android:layout_marginTop="8dp"

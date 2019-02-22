@@ -21,10 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.details.DetailsActivity">
+        <activity android:name="com.kunaalkumar.suggsn.details.DetailsActivity">
         </activity>
         <activity
-                android:name=".activities.search.SearchActivity"
+                android:name="com.kunaalkumar.suggsn.search.SearchActivity"
                 android:windowSoftInputMode="adjustResize|adjustPan">
         </activity>
     </application>

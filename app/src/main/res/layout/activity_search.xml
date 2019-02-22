@@ -5,36 +5,40 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.search.SearchActivity"
-        android:id="@+id/fragment_search_results_layout3">
+        android:background="@android:color/black"
+        android:id="@+id/activity_main_layout"
+        tools:context=".search.SearchActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tint="#80000000"
+            android:id="@+id/background"/>
 
     <include
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/include"
-            layout="@layout/search_results"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            layout="@layout/search_main"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:id="@+id/recycler_view"
             tools:listitem="@layout/result_list_item"
+            app:layout_constraintTop_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/loading_text_view"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/loading"
+            android:textSize="56sp"
+            android:textColor="?colorAccent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

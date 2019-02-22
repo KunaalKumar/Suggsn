@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.activities.home
+package com.kunaalkumar.suggsn.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,17 +10,19 @@ import com.kunaalkumar.suggsn.R
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [HomeFragment.OnFragmentInteractionListener] interface
+ * [HomeTvShows.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [HomeFragment.newInstance] factory method to
+ * Use the [HomeTvShows.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class HomeFragment : Fragment() {
+class HomeTvShows : Fragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home_tv_shows, container, false)
     }
 }

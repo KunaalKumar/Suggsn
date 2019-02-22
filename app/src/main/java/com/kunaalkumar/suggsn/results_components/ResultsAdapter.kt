@@ -1,4 +1,4 @@
-package com.kunaalkumar.suggsn.activities.search
+package com.kunaalkumar.suggsn.results_components
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
-class ResultsAdapter : RecyclerView.Adapter<ResultViewHolder>() {
+class ResultsAdapter(private val mediaType: String?) : RecyclerView.Adapter<ResultViewHolder>() {
 
     private val TAG: String = "ResultsAdapter"
     private val dataSet = ArrayList<TMDbItem>()
@@ -23,7 +23,7 @@ class ResultsAdapter : RecyclerView.Adapter<ResultViewHolder>() {
 
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder: Binding $position")
-        holder.bindView(dataSet[position])
+        holder.bindView(dataSet[position], mediaType)
     }
 
     // Clear dataSet and add contents of results into it

@@ -8,9 +8,9 @@ import com.kunaalkumar.suggsn.repositories.TmdbRepository
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
-class MainViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
 
-    val TAG: String = "Suggsn@MainViewModel"
+    val TAG: String = "Suggsn@SearchViewModel"
     private var tmdbRepo = TmdbRepository.instance
 
     private var currentPage: Int = 0
