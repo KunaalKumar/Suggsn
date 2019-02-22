@@ -14,7 +14,7 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.home.HomeActivity">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -24,7 +24,7 @@
         <activity android:name=".activities.details.DetailsActivity">
         </activity>
         <activity
-                android:name=".activities.search.MainActivity"
+                android:name=".activities.search.SearchActivity"
                 android:windowSoftInputMode="adjustResize|adjustPan">
         </activity>
     </application>

@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.search.MainActivity"
+        tools:context=".activities.search.SearchActivity"
         android:id="@+id/fragment_search_results_layout3">
 
     <include

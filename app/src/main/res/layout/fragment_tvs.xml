@@ -3,7 +3,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".TVFragment">
+             tools:context=".activities.tv_shows.TVFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -24,9 +24,9 @@ import kotlinx.android.synthetic.main.search_main.*
  * 2) Home screen
  * 3) Results screen
  */
-class MainActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
-    private val TAG = "Suggsn@ MainActivity"
+    private val TAG = "Suggsn@ SearchActivity"
     private lateinit var viewModel: MainViewModel
 
     private lateinit var viewAdapter: ResultsAdapter
