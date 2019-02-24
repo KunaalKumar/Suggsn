@@ -64,6 +64,14 @@ class HomeMovies : Fragment() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
-        Log.i(TAG, "initRecyclerView: initialized recyclerview")
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.nextPage()
+                }
+            }
+        })
+        Log.i(TAG, "initRecyclerView: initialized recycler view")
     }
 }

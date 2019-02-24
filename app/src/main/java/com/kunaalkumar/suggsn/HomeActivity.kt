@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlin.math.roundToInt
 
 class HomeActivity : AppCompatActivity() {
 
@@ -21,9 +22,8 @@ class HomeActivity : AppCompatActivity() {
         // Get screen size and convert to pixels from dpi for poster images
         val displayMetric = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetric)
-        val scale = resources.displayMetrics.density
-        TmdbRepository.WIDTH = ((displayMetric.xdpi / 2) * scale + 0.5).toInt()
-        TmdbRepository.HEIGHT = ((displayMetric.ydpi / 2) * scale + 0.5).toInt()
+        TmdbRepository.WIDTH = (displayMetric.widthPixels * 0.5).roundToInt()
+        TmdbRepository.HEIGHT = (TmdbRepository.WIDTH * 1.5).roundToInt()
 
         bottom_nav_bar.setOnNavigationItemSelectedListener {
             when (it.itemId) {

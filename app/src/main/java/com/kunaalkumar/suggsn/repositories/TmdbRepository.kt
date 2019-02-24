@@ -98,10 +98,10 @@ class TmdbRepository private constructor() {
         return data
     }
 
-    fun getDiscoverMovies(): MutableLiveData<TMDbCallback> {
+    fun getDiscoverMovies(pageNum: Int): MutableLiveData<TMDbCallback> {
         val data = MutableLiveData<TMDbCallback>()
 
-        tmdbService.discoverMovies().enqueue(object : Callback<TMDbCallback> {
+        tmdbService.discoverMovies(pageNum).enqueue(object : Callback<TMDbCallback> {
             override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
                 data.postValue(response.body())
             }

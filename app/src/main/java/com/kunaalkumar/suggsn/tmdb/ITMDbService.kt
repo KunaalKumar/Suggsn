@@ -23,5 +23,5 @@ interface ITMDbService {
     fun popularMovies(): Call<TMDbCallback>
 
     @GET("discover/movie?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
-    fun discoverMovies(): Call<TMDbCallback>
+    fun discoverMovies(@Query("page") page: Int): Call<TMDbCallback>
 }

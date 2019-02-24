@@ -15,7 +15,9 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindView(data: TMDbItem, mediaType: String?) {
 
+//        itemView.poster.layoutParams.width = 200 * itemView.context.resources.displayMetrics.density.roundToInt()
         itemView.poster.layoutParams.width = TmdbRepository.WIDTH
+        itemView.poster.layoutParams.height = TmdbRepository.HEIGHT
         if (data.getPoster() != null)
             GlideApp.with(itemView)
                 .load(data.getPoster())
