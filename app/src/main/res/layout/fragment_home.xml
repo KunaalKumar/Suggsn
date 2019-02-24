@@ -23,9 +23,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:contentScrim="?colorAccent"
                 app:titleEnabled="false"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+                app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/htab_toolbar"
@@ -34,6 +33,7 @@
                     android:layout_gravity="top"
                     android:layout_marginBottom="48dp"
                     app:layout_collapseMode="pin"
+                    app:layout_scrollFlags=""
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
             <androidx.appcompat.widget.AppCompatTextView

@@ -24,6 +24,8 @@ class TmdbRepository private constructor() {
         var BASE_IMAGE_URL: String = ""
         var BASE_POSTER_SIZE: String = ""
         var BASE_BACKDROP_SIZE: String = ""
+        var WIDTH: Int = 0
+        var HEIGHT: Int = 0
     }
 
     init {

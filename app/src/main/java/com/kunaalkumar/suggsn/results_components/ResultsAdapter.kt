@@ -14,6 +14,7 @@ class ResultsAdapter(private val mediaType: String?) : RecyclerView.Adapter<Resu
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.result_list_item, parent, false)
+//        val height = parent.measuredHeight.
         return ResultViewHolder(view)
     }
 
