@@ -1,5 +1,6 @@
 package com.kunaalkumar.suggsn.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.kunaalkumar.suggsn.RetrofitFactory
@@ -26,6 +27,8 @@ class TmdbRepository private constructor() {
         var BASE_BACKDROP_SIZE: String = ""
         var WIDTH: Int = 0
         var HEIGHT: Int = 0
+        const val DISCOVER_MOVIE = "MOVIE"
+        const val DISCOVER_TV = "TV"
     }
 
     init {
@@ -92,26 +95,44 @@ class TmdbRepository private constructor() {
             }
 
             override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
-                android.util.Log.d(TAG, "getSearchResults: Something went wrong \n$t\n")
+                Log.e(TAG, "getSearchResults: Something went wrong \n$t\n")
             }
         })
         return data
     }
 
-    fun getDiscoverMovies(pageNum: Int): MutableLiveData<TMDbCallback> {
+    /**
+     * Types must be chosen from public tags provided in this class
+     * Types: 1) Movie
+     *        2) TV Shows
+     */
+    fun getDiscover(type: String, pageNum: Int): MutableLiveData<TMDbCallback> {
         val data = MutableLiveData<TMDbCallback>()
 
-        tmdbService.discoverMovies(pageNum).enqueue(object : Callback<TMDbCallback> {
-            override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
-                data.postValue(response.body())
-            }
+        when (type) {
+            DISCOVER_MOVIE -> {
+                tmdbService.discoverMovies(pageNum).enqueue(object : Callback<TMDbCallback> {
+                    override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+                        data.postValue(response.body())
+                    }
 
-            override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
-                android.util.Log.d(TAG, "getDiscoverMovies: Something went wrong \n$t\n")
+                    override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+                        Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
+                    }
+                })
             }
-        })
+            DISCOVER_TV -> {
+                tmdbService.discoverTVShows(pageNum).enqueue(object : Callback<TMDbCallback> {
+                    override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+                        data.postValue(response.body())
+                    }
+
+                    override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+                        Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
+                    }
+                })
+            }
+        }
         return data
     }
-
-
 }

@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val adapter = HomePagerAdapter(activity!!.supportFragmentManager)
         adapter.addFragment(HomeMovies(), "Movies")
-        adapter.addFragment(HomeTvShows(), "TV Shows")
+        adapter.addFragment(HomeTVShows(), "TV Shows")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }
