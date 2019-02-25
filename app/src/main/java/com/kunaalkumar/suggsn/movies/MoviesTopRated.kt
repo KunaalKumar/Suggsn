@@ -1,5 +1,6 @@
 package com.kunaalkumar.suggsn.movies
 
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,21 +12,28 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_POPULAR
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_TOP_RATED
 import com.kunaalkumar.suggsn.results_components.ResultsAdapter
 import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.suggsn.view_model.MoviesViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
-class MoviesPopular : Fragment() {
+/**
+ * A simple [Fragment] subclass.
+ *
+ */
+class MoviesTopRated : Fragment() {
 
-    val TAG: String = "Suggsn@MoviesPopular"
+    val TAG: String = "Sugssn@MoviesTopRated"
 
     private lateinit var viewModel: MoviesViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragments_recylcer_view, container, false)
     }
 
@@ -34,9 +42,9 @@ class MoviesPopular : Fragment() {
         viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getMovies(MOVIES_POPULAR).observe(this, Observer { })
+        viewModel.getMovies(MOVIES_TOP_RATED).observe(this, Observer { })
 
-        viewModel.getPopularList().observe(this, Observer {
+        viewModel.getTopRatedList().observe(this, Observer {
             if (it != null)
                 viewAdapter.setResults(it)
         })
@@ -55,10 +63,11 @@ class MoviesPopular : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.nextPage(MOVIES_POPULAR)
+                    viewModel.nextPage(MOVIES_TOP_RATED)
                 }
             }
         })
         Log.i(TAG, "initRecyclerView: initialized recycler view")
     }
+
 }
