@@ -15,7 +15,7 @@ import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.DISCOVER_TV
 import com.kunaalkumar.suggsn.results_components.ResultsAdapter
 import com.kunaalkumar.suggsn.tmdb.TV_MEDIA_TYPE
 import com.kunaalkumar.suggsn.view_model.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home_movies.*
+import kotlinx.android.synthetic.main.fragments_recylcer_view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -39,7 +39,7 @@ class HomeTVShows : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_tv_shows, container, false)
+        return inflater.inflate(R.layout.fragments_recylcer_view, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

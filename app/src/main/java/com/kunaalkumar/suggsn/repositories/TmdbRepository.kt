@@ -29,6 +29,7 @@ class TmdbRepository private constructor() {
         var HEIGHT: Int = 0
         const val DISCOVER_MOVIE = "MOVIE"
         const val DISCOVER_TV = "TV"
+        const val MOVIES_POPULAR = "MOVIE_POPULAR"
     }
 
     init {
@@ -65,7 +66,7 @@ class TmdbRepository private constructor() {
 
         val data = MutableLiveData<String>()
 
-        tmdbService.popularMovies().enqueue(object : Callback<TMDbCallback> {
+        tmdbService.popularMovies(1).enqueue(object : Callback<TMDbCallback> {
 
             override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
                 val randomImageNum = (0..19).random()
@@ -129,6 +130,25 @@ class TmdbRepository private constructor() {
 
                     override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
                         Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
+                    }
+                })
+            }
+        }
+        return data
+    }
+
+    fun getMovies(type: String, pageNum: Int): MutableLiveData<TMDbCallback> {
+        val data = MutableLiveData<TMDbCallback>()
+
+        when (type) {
+            MOVIES_POPULAR -> {
+                tmdbService.popularMovies(pageNum).enqueue(object : Callback<TMDbCallback> {
+                    override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+                        data.postValue(response.body())
+                    }
+
+                    override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+                        Log.e(TAG, "getMovies: Something went wrong \n$t\n")
                     }
                 })
             }

@@ -1,10 +1,10 @@
-package com.kunaalkumar.suggsn.home
+package com.kunaalkumar.suggsn
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 
-class HomePagerAdapter(fragmentManager: FragmentManager) :
+class TabsPagerAdapter(fragmentManager: FragmentManager) :
     FragmentStatePagerAdapter(fragmentManager) {
 
     private val fragmentList: ArrayList<Fragment> = ArrayList()

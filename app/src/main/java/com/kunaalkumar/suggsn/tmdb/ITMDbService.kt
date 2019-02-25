@@ -19,12 +19,12 @@ interface ITMDbService {
     @GET("configuration?api_key=${BuildConfig.TMDb_API_KEY}")
     fun config(): Call<TMDbConfigCallback>
 
-    @GET("movie/popular?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
-    fun popularMovies(): Call<TMDbCallback>
-
     @GET("discover/movie?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
     fun discoverMovies(@Query("page") page: Int): Call<TMDbCallback>
 
     @GET("discover/tv?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
     fun discoverTVShows(@Query("page") page: Int): Call<TMDbCallback>
+
+    @GET("movie/popular?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
+    fun popularMovies(@Query("page") page: Int): Call<TMDbCallback>
 }

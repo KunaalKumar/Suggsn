@@ -53,6 +53,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     style="@style/Widget.MaterialComponents.TabLayout"
+                    app:tabSelectedTextColor="@color/colorAccent"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabRippleColor="@color/colorAccentLight"
                     app:tabMode="fixed"
                     app:tabPadding="4dp"/>
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kunaalkumar.suggsn.R
+import com.kunaalkumar.suggsn.TabsPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -28,7 +29,7 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adapter = HomePagerAdapter(activity!!.supportFragmentManager)
+        val adapter = TabsPagerAdapter(activity!!.supportFragmentManager)
         adapter.addFragment(HomeMovies(), "Movies")
         adapter.addFragment(HomeTVShows(), "TV Shows")
         viewPager.adapter = adapter
