@@ -1,4 +1,5 @@
-package com.kunaalkumar.suggsn.home
+package com.kunaalkumar.suggsn.movies
+
 
 import android.os.Bundle
 import android.util.Log
@@ -11,26 +12,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.DISCOVER_TV
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_UPCOMING
 import com.kunaalkumar.suggsn.results_components.ResultsAdapter
-import com.kunaalkumar.suggsn.tmdb.TV_MEDIA_TYPE
-import com.kunaalkumar.suggsn.view_model.HomeViewModel
-import kotlinx.android.synthetic.main.fragments_recylcer_view.*
+import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
+import com.kunaalkumar.suggsn.view_model.MoviesViewModel
+import kotlinx.android.synthetic.main.activity_search.*
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [HomeTVShows.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [HomeTVShows.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
-class HomeTVShows : Fragment() {
+class Upcoming : Fragment() {
 
-    val TAG: String = "Suggsn@HomeTVShows"
+    val TAG: String = "Suggsn@Upcoming"
 
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: MoviesViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -38,18 +30,17 @@ class HomeTVShows : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragments_recylcer_view, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getDiscover(DISCOVER_TV).observe(this, Observer {})
+        viewModel.getMovies(MOVIES_UPCOMING).observe(this, Observer { })
 
-        viewModel.getTVList().observe(this, Observer {
+        viewModel.getUpcomingList().observe(this, Observer {
             if (it != null)
                 viewAdapter.setResults(it)
         })
@@ -57,7 +48,7 @@ class HomeTVShows : Fragment() {
 
     private fun initRecyclerView() {
         viewManager = GridLayoutManager(context, 2)
-        viewAdapter = ResultsAdapter(TV_MEDIA_TYPE)
+        viewAdapter = ResultsAdapter(MOVIE_MEDIA_TYPE)
         recycler_view.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(40)
@@ -68,7 +59,7 @@ class HomeTVShows : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.nextPage(DISCOVER_TV)
+                    viewModel.nextPage(MOVIES_UPCOMING)
                 }
             }
         })

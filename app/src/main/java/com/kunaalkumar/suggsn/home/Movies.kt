@@ -1,5 +1,4 @@
-package com.kunaalkumar.suggsn.movies
-
+package com.kunaalkumar.suggsn.home
 
 import android.os.Bundle
 import android.util.Log
@@ -12,21 +11,26 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_TOP_RATED
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.DISCOVER_MOVIE
 import com.kunaalkumar.suggsn.results_components.ResultsAdapter
 import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
-import com.kunaalkumar.suggsn.view_model.MoviesViewModel
-import kotlinx.android.synthetic.main.activity_search.*
+import com.kunaalkumar.suggsn.view_model.HomeViewModel
+import kotlinx.android.synthetic.main.fragments_recylcer_view.*
 
 /**
  * A simple [Fragment] subclass.
+ * Activities that contain this fragment must implement the
+ * [Movies.OnFragmentInteractionListener] interface
+ * to handle interaction events.
+ * Use the [Movies.newInstance] factory method to
+ * create an instance of this fragment.
  *
  */
-class MoviesTopRated : Fragment() {
+class Movies : Fragment() {
 
-    val TAG: String = "Sugssn@MoviesTopRated"
+    val TAG: String = "Suggsn@Movies"
 
-    private lateinit var viewModel: MoviesViewModel
+    private lateinit var viewModel: HomeViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -34,17 +38,18 @@ class MoviesTopRated : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragments_recylcer_view, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getMovies(MOVIES_TOP_RATED).observe(this, Observer { })
+        viewModel.getDiscover(DISCOVER_MOVIE).observe(this, Observer {})
 
-        viewModel.getTopRatedList().observe(this, Observer {
+        viewModel.getMovieList().observe(this, Observer {
             if (it != null)
                 viewAdapter.setResults(it)
         })
@@ -63,11 +68,10 @@ class MoviesTopRated : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.nextPage(MOVIES_TOP_RATED)
+                    viewModel.nextPage(DISCOVER_MOVIE)
                 }
             }
         })
         Log.i(TAG, "initRecyclerView: initialized recycler view")
     }
-
 }

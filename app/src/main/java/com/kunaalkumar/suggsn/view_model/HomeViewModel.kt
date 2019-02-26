@@ -27,20 +27,19 @@ class HomeViewModel : ViewModel() {
 
     fun getDiscover(type: String): LiveData<TMDbCallback> {
         when (type) {
-            DISCOVER_MOVIE -> {
+            DISCOVER_MOVIE ->
                 currentCallback.addSource(tmdbRepo.getDiscover(DISCOVER_MOVIE, 1)) {
                     currentMoviesPage = it.page
                     lastMoviesPage = it.total_pages
                     moviesList.postValue(ArrayList(it.results))
                 }
-            }
-            DISCOVER_TV -> {
+
+            DISCOVER_TV ->
                 currentCallback.addSource(tmdbRepo.getDiscover(DISCOVER_TV, 1)) {
                     currentShowsPage = it.page
                     lastShowsPage = it.total_pages
                     showsList.postValue(ArrayList(it.results))
                 }
-            }
         }
         return currentCallback
     }

@@ -17,9 +17,9 @@ import com.kunaalkumar.suggsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.suggsn.view_model.MoviesViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
-class MoviesPopular : Fragment() {
+class Popular : Fragment() {
 
-    val TAG: String = "Suggsn@MoviesPopular"
+    val TAG: String = "Suggsn@Popular"
 
     private lateinit var viewModel: MoviesViewModel
     private lateinit var viewAdapter: ResultsAdapter

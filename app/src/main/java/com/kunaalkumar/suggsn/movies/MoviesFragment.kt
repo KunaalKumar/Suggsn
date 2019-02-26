@@ -31,8 +31,9 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val adapter = TabsPagerAdapter(activity!!.supportFragmentManager)
-        adapter.addFragment(MoviesPopular(), "Popular")
-        adapter.addFragment(MoviesTopRated(), "Top Rated")
+        adapter.addFragment(Popular(), "Popular")
+        adapter.addFragment(TopRated(), "Top Rated")
+        adapter.addFragment(Upcoming(), "Upcoming")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
 import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_POPULAR
 import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_TOP_RATED
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_UPCOMING
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
@@ -15,12 +16,15 @@ class MoviesViewModel : ViewModel() {
 
     private var popularCurrentPage: Int = 0
     private var topRatedCurrentPage: Int = 0
+    private var upcomingCurrentPage: Int = 0
 
     private var lastPopularPage: Int = 0
     private var lastTopRatedPage: Int = 0
+    private var lastUpcomingPage: Int = 0
 
     private var popularList = MediatorLiveData<ArrayList<TMDbItem>>()
     private var topRatedList = MediatorLiveData<ArrayList<TMDbItem>>()
+    private var upcomingList = MediatorLiveData<ArrayList<TMDbItem>>()
 
     private var tmdbRepo = TmdbRepository.instance
     private var currentCallback = MediatorLiveData<TMDbCallback>()
@@ -41,6 +45,13 @@ class MoviesViewModel : ViewModel() {
                     lastTopRatedPage = it.total_pages
                     topRatedList.postValue(ArrayList(it.results))
                 }
+
+            MOVIES_UPCOMING ->
+                currentCallback.addSource(tmdbRepo.getMovies(MOVIES_UPCOMING, 1)) {
+                    upcomingCurrentPage = it.page
+                    lastUpcomingPage = it.total_pages
+                    upcomingList.postValue(ArrayList(it.results))
+                }
         }
         return currentCallback
     }
@@ -54,11 +65,20 @@ class MoviesViewModel : ViewModel() {
                         popularList.value = popularList.value
                     }
                 }
+
             MOVIES_TOP_RATED ->
                 if (topRatedCurrentPage != lastTopRatedPage) {
                     topRatedList.addSource(tmdbRepo.getMovies(MOVIES_TOP_RATED, ++topRatedCurrentPage)) {
                         topRatedList.value!!.addAll(it.results)
                         topRatedList.value = topRatedList.value
+                    }
+                }
+
+            MOVIES_UPCOMING ->
+                if (upcomingCurrentPage != lastUpcomingPage) {
+                    upcomingList.addSource(tmdbRepo.getMovies(MOVIES_UPCOMING, ++upcomingCurrentPage)) {
+                        upcomingList.value!!.addAll(it.results)
+                        upcomingList.value = upcomingList.value
                     }
                 }
         }
@@ -71,5 +91,9 @@ class MoviesViewModel : ViewModel() {
 
     fun getTopRatedList(): LiveData<ArrayList<TMDbItem>> {
         return topRatedList
+    }
+
+    fun getUpcomingList(): LiveData<ArrayList<TMDbItem>> {
+        return upcomingList
     }
 }
