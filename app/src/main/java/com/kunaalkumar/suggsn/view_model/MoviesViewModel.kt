@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_NOW_PLAYING
 import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_POPULAR
 import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_TOP_RATED
 import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_UPCOMING
@@ -17,14 +18,17 @@ class MoviesViewModel : ViewModel() {
     private var popularCurrentPage: Int = 0
     private var topRatedCurrentPage: Int = 0
     private var upcomingCurrentPage: Int = 0
+    private var nowPlayingCurrentPage: Int = 0
 
     private var lastPopularPage: Int = 0
     private var lastTopRatedPage: Int = 0
     private var lastUpcomingPage: Int = 0
+    private var lastNowPlayingPage: Int = 0
 
     private var popularList = MediatorLiveData<ArrayList<TMDbItem>>()
     private var topRatedList = MediatorLiveData<ArrayList<TMDbItem>>()
     private var upcomingList = MediatorLiveData<ArrayList<TMDbItem>>()
+    private var nowPlayingList = MediatorLiveData<ArrayList<TMDbItem>>()
 
     private var tmdbRepo = TmdbRepository.instance
     private var currentCallback = MediatorLiveData<TMDbCallback>()
@@ -51,6 +55,13 @@ class MoviesViewModel : ViewModel() {
                     upcomingCurrentPage = it.page
                     lastUpcomingPage = it.total_pages
                     upcomingList.postValue(ArrayList(it.results))
+                }
+
+            MOVIES_NOW_PLAYING ->
+                currentCallback.addSource(tmdbRepo.getMovies(MOVIES_NOW_PLAYING, 1)) {
+                    nowPlayingCurrentPage = it.page
+                    lastNowPlayingPage = it.total_pages
+                    nowPlayingList.postValue(ArrayList(it.results))
                 }
         }
         return currentCallback
@@ -81,6 +92,14 @@ class MoviesViewModel : ViewModel() {
                         upcomingList.value = upcomingList.value
                     }
                 }
+
+            MOVIES_NOW_PLAYING ->
+                if (nowPlayingCurrentPage != lastNowPlayingPage) {
+                    nowPlayingList.addSource(tmdbRepo.getMovies(MOVIES_NOW_PLAYING, ++nowPlayingCurrentPage)) {
+                        nowPlayingList.value!!.addAll(it.results)
+                        nowPlayingList.value = nowPlayingList.value
+                    }
+                }
         }
 
     }
@@ -95,5 +114,9 @@ class MoviesViewModel : ViewModel() {
 
     fun getUpcomingList(): LiveData<ArrayList<TMDbItem>> {
         return upcomingList
+    }
+
+    fun getNowPlayingList(): LiveData<ArrayList<TMDbItem>> {
+        return nowPlayingList
     }
 }

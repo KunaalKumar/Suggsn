@@ -27,7 +27,7 @@
                 app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed">
 
             <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/htab_toolbar"
+                    android:id="@+id/tab_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="top"
@@ -45,7 +45,7 @@
                     android:textStyle="bold"
                     android:padding="8dp"
                     android:textSize="34sp"
-                    android:text="Movies"/>
+                    android:text="@string/movies"/>
 
             <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
@@ -56,7 +56,7 @@
                     app:tabSelectedTextColor="@color/colorAccent"
                     app:tabIndicatorColor="@color/colorAccent"
                     app:tabRippleColor="@color/colorAccentLight"
-                    app:tabMode="fixed"
+                    app:tabMode="scrollable"
                     app:tabPadding="4dp"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

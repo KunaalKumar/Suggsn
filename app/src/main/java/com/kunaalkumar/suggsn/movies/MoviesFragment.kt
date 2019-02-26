@@ -34,6 +34,7 @@ class MoviesFragment : Fragment() {
         adapter.addFragment(Popular(), "Popular")
         adapter.addFragment(TopRated(), "Top Rated")
         adapter.addFragment(Upcoming(), "Upcoming")
+        adapter.addFragment(NowPlaying(), "Now Playing")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }

@@ -31,6 +31,9 @@ interface ITMDbService {
     @GET("movie/top_rated?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US&region=US")
     fun topRatedMovies(@Query("page") page: Int): Call<TMDbCallback>
 
-    @GET("movie/upcoming?api_key=${BuildConfig.TMDb_API_KEY}&language=end-US&region=US")
+    @GET("movie/upcoming?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US&region=US")
     fun upcomingMovies(@Query("page") page: Int): Call<TMDbCallback>
+
+    @GET("movie/now_playing?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US&region=US")
+    fun nowPlayingMovies(@Query("page") page: Int): Call<TMDbCallback>
 }
