@@ -37,15 +37,15 @@
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|bottom"
                     android:layout_marginBottom="?actionBarSize"
                     style="@style/TextAppearance.AppCompat.Headline"
                     android:textStyle="bold"
                     android:padding="8dp"
-                    android:textSize="34sp"
-                    android:text="Discover"/>
+                    android:textSize="26sp"
+                    android:text="@string/discover"/>
 
             <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"

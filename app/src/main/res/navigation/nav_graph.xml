@@ -22,7 +22,7 @@
             tools:layout="@layout/fragment_people"/>
     <fragment
             android:id="@+id/tvs_dest"
-            android:name="com.kunaalkumar.suggsn.tv_shows.TVFragment"
+            android:name="com.kunaalkumar.suggsn.shows.TVFragment"
             android:label="fragment_tvs"
-            tools:layout="@layout/fragment_tvs"/>
+            tools:layout="@layout/fragment_shows"/>
 </navigation>

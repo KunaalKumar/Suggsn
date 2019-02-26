@@ -33,6 +33,10 @@ class TmdbRepository private constructor() {
         const val MOVIES_TOP_RATED = "MOVIES_TOP_RATED"
         const val MOVIES_UPCOMING = "MOVIES_UPCOMING"
         const val MOVIES_NOW_PLAYING = "MOVIES_NOW_PLAYING"
+        const val SHOWS_POPULAR = "SHOWS_POPULAR"
+        const val SHOWS_TOP_RATED = "SHOWS_TOP_RATED"
+        const val SHOWS_ON_AIR = "SHOWS_ON_AIR"
+        const val SHOWS_AIRING_TODAY = "SHOWS_AIRING_TODAY"
     }
 
     init {
@@ -155,6 +159,22 @@ class TmdbRepository private constructor() {
 
             MOVIES_NOW_PLAYING ->
                 tmdbService.nowPlayingMovies(pageNum).enqueue(ApiCallback(data))
+        }
+        return data
+    }
+
+    fun getShows(type: String, pageNum: Int): MutableLiveData<TMDbCallback> {
+        val data = MutableLiveData<TMDbCallback>()
+
+        when (type) {
+            SHOWS_POPULAR ->
+                tmdbService.popularShows(pageNum).enqueue(ApiCallback(data))
+            SHOWS_TOP_RATED ->
+                tmdbService.topRatedShows(pageNum).enqueue(ApiCallback(data))
+            SHOWS_ON_AIR ->
+                tmdbService.onAirShows(pageNum).enqueue(ApiCallback(data))
+            SHOWS_AIRING_TODAY ->
+                tmdbService.airingTodayShows(pageNum).enqueue(ApiCallback(data))
         }
         return data
     }

@@ -45,7 +45,7 @@
                     android:textStyle="bold"
                     android:padding="8dp"
                     android:textSize="26sp"
-                    android:text="@string/movies"/>
+                    android:text="@string/tv_shows"/>
 
             <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabs"
