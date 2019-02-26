@@ -179,6 +179,12 @@ class TmdbRepository private constructor() {
         return data
     }
 
+    fun getPopularPeople(pageNum: Int): MutableLiveData<TMDbCallback> {
+        val data = MutableLiveData<TMDbCallback>()
+        tmdbService.popularPeople(pageNum).enqueue(ApiCallback(data))
+        return data
+    }
+
     private class ApiCallback(val data: MutableLiveData<TMDbCallback>) : Callback<TMDbCallback> {
         val TAG: String = "Suggsn@apiCallback"
         override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {

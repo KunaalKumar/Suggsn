@@ -48,4 +48,7 @@ interface ITMDbService {
 
     @GET("tv/airing_today?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US&region=US")
     fun airingTodayShows(@Query("page") page: Int): Call<TMDbCallback>
+
+    @GET("person/popular?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
+    fun popularPeople(@Query("page") page: Int): Call<TMDbCallback>
 }

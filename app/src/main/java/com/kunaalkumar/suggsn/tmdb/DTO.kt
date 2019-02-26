@@ -12,7 +12,7 @@ data class TMDbItem(
     private val poster_path: String?, val adult: Boolean, val overview: String, val release_data: String,
     val id: Int, val media_type: String, val title: String?, val backdrop_path: String?,
     val popularity: Double, val vote_average: Double, val genre_ids: List<Int>,
-    val first_air_date: String, val profile_path: String, val name: String?, val known_for: List<TMDbItem>?
+    val first_air_date: String, val profile_path: String?, val name: String?, val known_for: List<TMDbItem>?
 ) {
     fun getPoster(): String? {
         if (poster_path == null) {
@@ -26,6 +26,13 @@ data class TMDbItem(
             return null
         }
         return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_BACKDROP_SIZE + backdrop_path
+    }
+
+    fun getProfilePath(): String? {
+        if (profile_path == null) {
+            return null
+        }
+        return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_POSTER_SIZE + profile_path
     }
 }
 
