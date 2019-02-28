@@ -1,9 +1,16 @@
 package com.kunaalkumar.suggsn.results_components
 
+import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.kunaalkumar.suggsn.details.DetailsActivity
 import com.kunaalkumar.suggsn.glide_API.GlideApp
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
 import com.kunaalkumar.suggsn.tmdb.PERSON_MEDIA_TYPE
@@ -16,22 +23,16 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     fun bindView(data: TMDbItem, mediaType: String?) {
 
-//        itemView.poster.layoutParams.width = 200 * itemView.context.resources.displayMetrics.density.roundToInt()
         itemView.poster.layoutParams.width = TmdbRepository.WIDTH
         itemView.poster.layoutParams.height = TmdbRepository.HEIGHT
+
         if (mediaType.equals(PERSON_MEDIA_TYPE)) {
             if (data.getProfilePath() != null) {
-                GlideApp.with(itemView)
-                    .load(data.getProfilePath())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(itemView.poster)
+                loadImage(data.getProfilePath().toString())
             }
         } else {
             if (data.getPoster() != null)
-                GlideApp.with(itemView)
-                    .load(data.getPoster())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(itemView.poster)
+                loadImage(data.getPoster().toString())
         }
 
         // Show item title/name on long press
@@ -45,6 +46,37 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         itemView.poster.setOnClickListener {
+            itemView.context.startActivity(Intent(itemView.context, DetailsActivity::class.java))
         }
+    }
+
+    private fun loadImage(image: String) {
+        GlideApp.with(itemView)
+            .load(image)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    itemView.progress_bar.visibility = View.GONE
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    itemView.progress_bar.visibility = View.GONE
+                    return false
+                }
+            })
+            .thumbnail(0.1f)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(itemView.poster)
     }
 }
