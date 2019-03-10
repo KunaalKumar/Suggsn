@@ -19,10 +19,10 @@ class SearchViewModel : ViewModel() {
 
     private lateinit var backdropImageUrl: MutableLiveData<String>
     private var searchResults = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var searchCallback = MediatorLiveData<TMDbCallback>()
+    private var searchCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
 
     fun searchFor(query: String, pageNum: Int, includeAdult: Boolean)
-            : LiveData<TMDbCallback> {
+            : LiveData<TMDbCallback<TMDbItem>> {
         currentQuery = query
         searchCallback.addSource(tmdbRepo.getSearchResults(query, pageNum, includeAdult)) {
             currentPage = it.page

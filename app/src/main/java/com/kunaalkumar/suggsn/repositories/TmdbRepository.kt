@@ -6,10 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import com.kunaalkumar.suggsn.RetrofitFactory
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbConfigCallback
+import com.kunaalkumar.suggsn.tmdb.TMDbItem
+import com.kunaalkumar.suggsn.tmdb.TMDbMovieItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 /**
  * Singleton class to get data from TMDB
@@ -73,15 +74,15 @@ class TmdbRepository private constructor() {
 
         val data = MutableLiveData<String>()
 
-        tmdbService.popularMovies(1).enqueue(object : Callback<TMDbCallback> {
+        tmdbService.popularMovies(1).enqueue(object : Callback<TMDbCallback<TMDbItem>> {
 
-            override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+            override fun onResponse(call: Call<TMDbCallback<TMDbItem>>, response: Response<TMDbCallback<TMDbItem>>) {
                 val randomImageNum = (0..19).random()
                 val imageUrl = response.body()!!.results[randomImageNum].getPoster().toString()
                 data.value = imageUrl
             }
 
-            override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+            override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
                 android.util.Log.d(TAG, "getBackdropUrl: Something went wrong \n$t\n")
             }
         })
@@ -93,16 +94,16 @@ class TmdbRepository private constructor() {
      * Search movies, tv shows, people, etc for given query
      */
     fun getSearchResults(query: String, pageNum: Int, includeAdult: Boolean)
-            : MutableLiveData<TMDbCallback> {
+            : MutableLiveData<TMDbCallback<TMDbItem>> {
 
-        val data = MutableLiveData<TMDbCallback>()
+        val data = MutableLiveData<TMDbCallback<TMDbItem>>()
 
-        tmdbService.searchMulti(query, pageNum, includeAdult).enqueue(object : Callback<TMDbCallback> {
-            override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+        tmdbService.searchMulti(query, pageNum, includeAdult).enqueue(object : Callback<TMDbCallback<TMDbItem>> {
+            override fun onResponse(call: Call<TMDbCallback<TMDbItem>>, response: Response<TMDbCallback<TMDbItem>>) {
                 data.postValue(response.body())
             }
 
-            override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+            override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
                 Log.e(TAG, "getSearchResults: Something went wrong \n$t\n")
             }
         })
@@ -114,28 +115,34 @@ class TmdbRepository private constructor() {
      * Types: 1) Movie
      *        2) TV Shows
      */
-    fun getDiscover(type: String, pageNum: Int): MutableLiveData<TMDbCallback> {
-        val data = MutableLiveData<TMDbCallback>()
+    fun getDiscover(type: String, pageNum: Int): MutableLiveData<TMDbCallback<TMDbItem>> {
+        val data = MutableLiveData<TMDbCallback<TMDbItem>>()
 
         when (type) {
             DISCOVER_MOVIE -> {
-                tmdbService.discoverMovies(pageNum).enqueue(object : Callback<TMDbCallback> {
-                    override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+                tmdbService.discoverMovies(pageNum).enqueue(object : Callback<TMDbCallback<TMDbItem>> {
+                    override fun onResponse(
+                        call: Call<TMDbCallback<TMDbItem>>,
+                        response: Response<TMDbCallback<TMDbItem>>
+                    ) {
                         data.postValue(response.body())
                     }
 
-                    override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+                    override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
                         Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
                     }
                 })
             }
             DISCOVER_TV -> {
-                tmdbService.discoverTVShows(pageNum).enqueue(object : Callback<TMDbCallback> {
-                    override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+                tmdbService.discoverTVShows(pageNum).enqueue(object : Callback<TMDbCallback<TMDbItem>> {
+                    override fun onResponse(
+                        call: Call<TMDbCallback<TMDbItem>>,
+                        response: Response<TMDbCallback<TMDbItem>>
+                    ) {
                         data.postValue(response.body())
                     }
 
-                    override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+                    override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
                         Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
                     }
                 })
@@ -144,8 +151,8 @@ class TmdbRepository private constructor() {
         return data
     }
 
-    fun getMovies(type: String, pageNum: Int): MutableLiveData<TMDbCallback> {
-        val data = MutableLiveData<TMDbCallback>()
+    fun getMovies(type: String, pageNum: Int): MutableLiveData<TMDbCallback<TMDbItem>> {
+        val data = MutableLiveData<TMDbCallback<TMDbItem>>()
 
         when (type) {
             MOVIES_POPULAR ->
@@ -163,8 +170,8 @@ class TmdbRepository private constructor() {
         return data
     }
 
-    fun getShows(type: String, pageNum: Int): MutableLiveData<TMDbCallback> {
-        val data = MutableLiveData<TMDbCallback>()
+    fun getShows(type: String, pageNum: Int): MutableLiveData<TMDbCallback<TMDbItem>> {
+        val data = MutableLiveData<TMDbCallback<TMDbItem>>()
 
         when (type) {
             SHOWS_POPULAR ->
@@ -179,21 +186,28 @@ class TmdbRepository private constructor() {
         return data
     }
 
-    fun getPopularPeople(pageNum: Int): MutableLiveData<TMDbCallback> {
-        val data = MutableLiveData<TMDbCallback>()
+    fun getPopularPeople(pageNum: Int): MutableLiveData<TMDbCallback<TMDbItem>> {
+        val data = MutableLiveData<TMDbCallback<TMDbItem>>()
         tmdbService.popularPeople(pageNum).enqueue(ApiCallback(data))
         return data
     }
 
-    private class ApiCallback(val data: MutableLiveData<TMDbCallback>) : Callback<TMDbCallback> {
+    // Get movie details by id
+    fun getMovieDetails(id: Int): MutableLiveData<TMDbCallback<TMDbMovieItem>> {
+        val data = MutableLiveData<TMDbCallback<TMDbMovieItem>>()
+        tmdbService.movieDetails(id).enqueue(ApiCallback(data))
+        return data
+    }
+
+    // Standard ApiCallback wrapper class
+    private class ApiCallback<T>(val data: MutableLiveData<TMDbCallback<T>>) : Callback<TMDbCallback<T>> {
         val TAG: String = "Suggsn@apiCallback"
-        override fun onResponse(call: Call<TMDbCallback>, response: Response<TMDbCallback>) {
+        override fun onResponse(call: Call<TMDbCallback<T>>, response: Response<TMDbCallback<T>>) {
             data.postValue(response.body())
         }
 
-        override fun onFailure(call: Call<TMDbCallback>, t: Throwable) {
+        override fun onFailure(call: Call<TMDbCallback<T>>, t: Throwable) {
             Log.e(TAG, "getMovies: Something went wrong \n$t\n")
         }
     }
-
 }

@@ -31,9 +31,9 @@ class ShowsViewModel : ViewModel() {
     private var airingTodayList = MediatorLiveData<ArrayList<TMDbItem>>()
 
     private var tmdbRepo = TmdbRepository.instance
-    private var currentCallback = MediatorLiveData<TMDbCallback>()
+    private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
 
-    fun getShows(type: String): LiveData<TMDbCallback> {
+    fun getShows(type: String): LiveData<TMDbCallback<TMDbItem>> {
         when (type) {
             SHOWS_POPULAR ->
                 currentCallback.addSource(tmdbRepo.getShows(SHOWS_POPULAR, 1)) {

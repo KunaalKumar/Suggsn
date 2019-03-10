@@ -31,10 +31,10 @@ class MoviesViewModel : ViewModel() {
     private var nowPlayingList = MediatorLiveData<ArrayList<TMDbItem>>()
 
     private var tmdbRepo = TmdbRepository.instance
-    private var currentCallback = MediatorLiveData<TMDbCallback>()
+    private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
 
 
-    fun getMovies(type: String): LiveData<TMDbCallback> {
+    fun getMovies(type: String): LiveData<TMDbCallback<TMDbItem>> {
         when (type) {
             MOVIES_POPULAR ->
                 currentCallback.addSource(tmdbRepo.getMovies(MOVIES_POPULAR, 1)) {

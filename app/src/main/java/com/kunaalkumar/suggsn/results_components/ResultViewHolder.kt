@@ -1,9 +1,12 @@
 package com.kunaalkumar.suggsn.results_components
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -46,7 +49,17 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         itemView.poster.setOnClickListener {
-            itemView.context.startActivity(Intent(itemView.context, DetailsActivity::class.java))
+            val intent = Intent(itemView.context, DetailsActivity::class.java)
+
+            // Shared element transition elements
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                itemView.context as Activity, itemView.poster,
+                ViewCompat.getTransitionName(itemView.poster)!!
+            )
+
+            //TODO: Pass id, image and additional data to details activity
+
+            itemView.context.startActivity(intent, options.toBundle())
         }
     }
 

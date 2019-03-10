@@ -20,12 +20,12 @@ class HomeViewModel : ViewModel() {
     private var lastShowsPage: Int = 0
 
     private var tmdbRepo = TmdbRepository.instance
-    private var currentCallback = MediatorLiveData<TMDbCallback>()
+    private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
 
     private var moviesList = MediatorLiveData<ArrayList<TMDbItem>>()
     private var showsList = MediatorLiveData<ArrayList<TMDbItem>>()
 
-    fun getDiscover(type: String): LiveData<TMDbCallback> {
+    fun getDiscover(type: String): LiveData<TMDbCallback<TMDbItem>> {
         when (type) {
             DISCOVER_MOVIE ->
                 currentCallback.addSource(tmdbRepo.getDiscover(DISCOVER_MOVIE, 1)) {
