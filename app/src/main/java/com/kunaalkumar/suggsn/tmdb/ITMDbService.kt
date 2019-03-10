@@ -3,6 +3,7 @@ package com.kunaalkumar.suggsn.tmdb
 import com.kunaalkumar.suggsn.BuildConfig
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -51,4 +52,16 @@ interface ITMDbService {
 
     @GET("person/popular?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
     fun popularPeople(@Query("page") page: Int): Call<TMDbCallback>
+
+//    $$\      $$\                      $$\
+//    $$$\    $$$ |                     \__|
+//    $$$$\  $$$$ | $$$$$$\  $$\    $$\ $$\  $$$$$$\
+//    $$\$$\$$ $$ |$$  __$$\ \$$\  $$  |$$ |$$  __$$\
+//    $$ \$$$  $$ |$$ /  $$ | \$$\$$  / $$ |$$$$$$$$ |
+//    $$ |\$  /$$ |$$ |  $$ |  \$$$  /  $$ |$$   ____|
+//    $$ | \_/ $$ |\$$$$$$  |   \$  /   $$ |\$$$$$$$\
+//    \__|     \__| \______/     \_/    \__| \_______|
+
+    @GET("movie/{id}?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
+    fun movieDetails(@Path("id") id: Int): Call<TMDbMovieCallback>
 }
