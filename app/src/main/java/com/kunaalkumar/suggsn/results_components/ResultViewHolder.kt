@@ -60,7 +60,8 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             //TODO: Implement TV and People
 
             //WARNING: ONLY FOR MOVIES
-            // Poster url, movie id and name
+            // Poster/Backdrop url, movie id, and name
+            intent.putExtra(DetailsActivity.POSTER, data.getPoster().toString())
             intent.putExtra(DetailsActivity.BACKDROP, data.getBackdrop().toString())
             intent.putExtra(DetailsActivity.MOVIE_ID, data.id)
             intent.putExtra(DetailsActivity.ITEM_NAME, data.title.toString())

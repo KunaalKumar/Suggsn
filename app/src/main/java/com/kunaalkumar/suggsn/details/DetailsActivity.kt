@@ -1,9 +1,15 @@
 package com.kunaalkumar.suggsn.details
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.alpha
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -16,11 +22,10 @@ import kotlinx.android.synthetic.main.activity_details.*
 
 class DetailsActivity : AppCompatActivity() {
 
-
     companion object {
-        //TODO: Implement poster and fix shared element transition linking
         const val ITEM_NAME = "ITEM_NAME"
         const val BACKDROP = "BACKDROP"
+        const val POSTER = "POSTER"
         const val MOVIE_ID = "MOVIE_ID"
     }
 
@@ -35,10 +40,11 @@ class DetailsActivity : AppCompatActivity() {
 
         //TODO: Make viewmodel to get movie/item data via id passed
 
-        loadImage(intent.getStringExtra(BACKDROP))
+        loadImage(intent.getStringExtra(BACKDROP), item_backdrop)
+        loadImageWithPalette(intent.getStringExtra(POSTER), item_poster)
     }
 
-    private fun loadImage(image: String) {
+    private fun loadImageWithPalette(image: String, imageView: ImageView) {
         GlideApp.with(this)
             .asBitmap()
             .load(image)
@@ -69,12 +75,25 @@ class DetailsActivity : AppCompatActivity() {
                             )
                         )
                         collapsing_toolbar.setCollapsedTitleTextColor(collapsedColor)
+                        val tintedColor = Color.argb(
+                            collapsedColor.alpha / 4,
+                            collapsedColor.red,
+                            collapsedColor.green,
+                            collapsedColor.blue
+                        )
+                        item_backdrop.setColorFilter(tintedColor)
                     }
                     return false
                 }
             })
-            .thumbnail(0.01f)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(item_poster)
+            .into(imageView)
+    }
+
+    private fun loadImage(image: String, imageView: ImageView) {
+        GlideApp.with(this)
+            .load(image)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
     }
 }
