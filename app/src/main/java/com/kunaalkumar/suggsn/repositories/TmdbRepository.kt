@@ -193,9 +193,9 @@ class TmdbRepository private constructor() {
     }
 
     // Get movie details by id
-    fun getMovieDetails(id: Int): MutableLiveData<TMDbCallback<TMDbMovieItem>> {
-        val data = MutableLiveData<TMDbCallback<TMDbMovieItem>>()
-        tmdbService.movieDetails(id).enqueue(ApiCallback(data))
+    fun getMovieDetails(id: Int): MutableLiveData<TMDbMovieItem> {
+        val data = MutableLiveData<TMDbMovieItem>()
+        tmdbService.movieDetails(id).enqueue(DetailedCallback(data))
         return data
     }
 
@@ -207,6 +207,18 @@ class TmdbRepository private constructor() {
         }
 
         override fun onFailure(call: Call<TMDbCallback<T>>, t: Throwable) {
+            Log.e(TAG, "getMovies: Something went wrong \n$t\n")
+        }
+    }
+
+    // Detailed item callback
+    private class DetailedCallback<T>(val data: MutableLiveData<T>) : Callback<T> {
+        val TAG: String = "Suggsn@apiCallback"
+        override fun onResponse(call: Call<T>, response: Response<T>) {
+            data.postValue(response.body())
+        }
+
+        override fun onFailure(call: Call<T>, t: Throwable) {
             Log.e(TAG, "getMovies: Something went wrong \n$t\n")
         }
     }

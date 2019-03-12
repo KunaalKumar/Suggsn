@@ -63,7 +63,7 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             // Poster/Backdrop url, movie id, and name
             intent.putExtra(DetailsActivity.POSTER, data.getPoster().toString())
             intent.putExtra(DetailsActivity.BACKDROP, data.getBackdrop().toString())
-            intent.putExtra(DetailsActivity.MOVIE_ID, data.id)
+            intent.putExtra(DetailsActivity.MOVIE_ID, data.id.toString())
             intent.putExtra(DetailsActivity.ITEM_NAME, data.title.toString())
 
             itemView.context.startActivity(intent, options.toBundle())
@@ -95,7 +95,7 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     return false
                 }
             })
-            .thumbnail(0.01f)
+            .thumbnail(0.05f)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(itemView.poster)
     }

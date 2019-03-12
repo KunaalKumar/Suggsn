@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.kunaalkumar.suggsn.details.DetailsActivity">
+        <activity
+                android:name="com.kunaalkumar.suggsn.details.DetailsActivity"
+                android:theme="@style/AppTheme.Transparent">
         </activity>
         <activity
                 android:name="com.kunaalkumar.suggsn.search.SearchActivity"

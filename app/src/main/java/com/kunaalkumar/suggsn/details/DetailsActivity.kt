@@ -10,6 +10,8 @@ import androidx.core.graphics.alpha
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -18,30 +20,45 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.kunaalkumar.suggsn.R
 import com.kunaalkumar.suggsn.glide_API.GlideApp
+import com.kunaalkumar.suggsn.view_model.DetailsViewModel
 import kotlinx.android.synthetic.main.activity_details.*
 
 class DetailsActivity : AppCompatActivity() {
 
     companion object {
+        // Intent extra tags
         const val ITEM_NAME = "ITEM_NAME"
         const val BACKDROP = "BACKDROP"
         const val POSTER = "POSTER"
         const val MOVIE_ID = "MOVIE_ID"
     }
 
+    private var detailColor: Int = 1
+    private lateinit var viewModel: DetailsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
+
+        viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+        detailColor = ContextCompat.getColor(
+            applicationContext,
+            R.color.colorPrimary
+        )
+
         setSupportActionBar(toolbar)
 
         collapsing_toolbar.title = intent.getStringExtra(ITEM_NAME)
         collapsing_toolbar.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent))
         collapsing_toolbar.setCollapsedTitleTextColor(ContextCompat.getColor(this, android.R.color.black))
 
-        //TODO: Make viewmodel to get movie/item data via id passed
-
         loadImage(intent.getStringExtra(BACKDROP), item_backdrop)
         loadImageWithPalette(intent.getStringExtra(POSTER), item_poster)
+
+        viewModel.getMovieDetails(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer {})
+        viewModel.getMovieData().observe(this, Observer {
+            // TODO: Populate UI with data
+        })
     }
 
     private fun loadImageWithPalette(image: String, imageView: ImageView) {
@@ -68,20 +85,13 @@ class DetailsActivity : AppCompatActivity() {
                 ): Boolean {
 //                    itemView.progress_bar.visibility = View.GONE
                     Palette.from(resource).generate { palette: Palette? ->
-                        val collapsedColor = palette!!.getVibrantColor(
+                        detailColor = palette!!.getVibrantColor(
                             ContextCompat.getColor(
                                 applicationContext,
                                 android.R.color.black
                             )
                         )
-                        collapsing_toolbar.setCollapsedTitleTextColor(collapsedColor)
-                        val tintedColor = Color.argb(
-                            collapsedColor.alpha / 4,
-                            collapsedColor.red,
-                            collapsedColor.green,
-                            collapsedColor.blue
-                        )
-                        item_backdrop.setColorFilter(tintedColor)
+                        applyDynamicColor()
                     }
                     return false
                 }
@@ -95,5 +105,16 @@ class DetailsActivity : AppCompatActivity() {
             .load(image)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
+    }
+
+    private fun applyDynamicColor() {
+        collapsing_toolbar.setCollapsedTitleTextColor(detailColor)
+        val tintedColor = Color.argb(
+            detailColor.alpha / 3,
+            detailColor.red,
+            detailColor.green,
+            detailColor.blue
+        )
+        item_backdrop.setColorFilter(tintedColor)
     }
 }
