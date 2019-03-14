@@ -32,7 +32,7 @@ class HomeActivity : AppCompatActivity() {
                 R.id.nav_movies ->
                     navController.navigate(R.id.movies_dest)
                 R.id.nav_tv ->
-                    navController.navigate(R.id.tvs_dest)
+                    navController.navigate(R.id.shows_dest)
                 R.id.nav_people ->
                     navController.navigate(R.id.people_dest)
             }

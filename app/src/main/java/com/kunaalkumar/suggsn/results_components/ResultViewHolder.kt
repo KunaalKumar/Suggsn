@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.kunaalkumar.suggsn.details.DetailsActivity
+import com.kunaalkumar.suggsn.details.MovieDetailsActivity
 import com.kunaalkumar.suggsn.glide_API.GlideApp
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
 import com.kunaalkumar.suggsn.tmdb.PERSON_MEDIA_TYPE
@@ -49,7 +49,7 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
 
         itemView.poster.setOnClickListener {
-            val intent = Intent(itemView.context, DetailsActivity::class.java)
+            val intent = Intent(itemView.context, MovieDetailsActivity::class.java)
 
             // Shared element transition elements
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -61,10 +61,10 @@ class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             //WARNING: ONLY FOR MOVIES
             // Poster/Backdrop url, movie id, and name
-            intent.putExtra(DetailsActivity.POSTER, data.getPoster().toString())
-            intent.putExtra(DetailsActivity.BACKDROP, data.getBackdrop().toString())
-            intent.putExtra(DetailsActivity.MOVIE_ID, data.id.toString())
-            intent.putExtra(DetailsActivity.ITEM_NAME, data.title.toString())
+            intent.putExtra(MovieDetailsActivity.POSTER, data.getPoster().toString())
+            intent.putExtra(MovieDetailsActivity.BACKDROP, data.getBackdrop().toString())
+            intent.putExtra(MovieDetailsActivity.MOVIE_ID, data.id.toString())
+            intent.putExtra(MovieDetailsActivity.ITEM_NAME, data.title.toString())
 
             itemView.context.startActivity(intent, options.toBundle())
         }
