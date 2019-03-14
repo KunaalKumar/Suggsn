@@ -1,15 +1,10 @@
 package com.kunaalkumar.suggsn.details
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.alpha
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.palette.graphics.Palette
@@ -33,7 +28,9 @@ class DetailsActivity : AppCompatActivity() {
         const val MOVIE_ID = "MOVIE_ID"
     }
 
-    private var detailColor: Int = 1
+    private var detailColor: Int = 0
+    private var textColor: Int = 0
+
     private lateinit var viewModel: DetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,19 +38,24 @@ class DetailsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
         viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+
+        // Default colors
         detailColor = ContextCompat.getColor(
             applicationContext,
             R.color.colorPrimary
+        )
+        textColor = ContextCompat.getColor(
+            applicationContext,
+            android.R.color.black
         )
 
         setSupportActionBar(toolbar)
 
         collapsing_toolbar.title = intent.getStringExtra(ITEM_NAME)
-        collapsing_toolbar.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent))
-        collapsing_toolbar.setCollapsedTitleTextColor(ContextCompat.getColor(this, android.R.color.black))
 
-        loadImage(intent.getStringExtra(BACKDROP), item_backdrop)
-        loadImageWithPalette(intent.getStringExtra(POSTER), item_poster)
+        // Load image and enable colors
+        loadImage(intent.getStringExtra(BACKDROP), movie_backdrop)
+        loadImageAndSetDetailColor(intent.getStringExtra(POSTER), movie_poster)
 
         viewModel.getMovieDetails(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer {})
         viewModel.getMovieData().observe(this, Observer {
@@ -61,7 +63,8 @@ class DetailsActivity : AppCompatActivity() {
         })
     }
 
-    private fun loadImageWithPalette(image: String, imageView: ImageView) {
+    // Load image into given imageView and extract detail color using palette
+    private fun loadImageAndSetDetailColor(image: String, imageView: ImageView) {
         GlideApp.with(this)
             .asBitmap()
             .load(image)
@@ -88,10 +91,21 @@ class DetailsActivity : AppCompatActivity() {
                         detailColor = palette!!.getVibrantColor(
                             ContextCompat.getColor(
                                 applicationContext,
-                                android.R.color.black
+                                R.color.darkGray
                             )
                         )
-                        applyDynamicColor()
+
+                        // Same as detailed color except that it defaults to white
+                        val expandedColor = palette.getVibrantColor(
+                            ContextCompat.getColor(
+                                applicationContext,
+                                android.R.color.white
+                            )
+                        )
+
+                        // Set colors
+                        collapsing_toolbar.setCollapsedTitleTextColor(detailColor)
+                        collapsing_toolbar.setExpandedTitleColor(expandedColor)
                     }
                     return false
                 }
@@ -105,16 +119,5 @@ class DetailsActivity : AppCompatActivity() {
             .load(image)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(imageView)
-    }
-
-    private fun applyDynamicColor() {
-        collapsing_toolbar.setCollapsedTitleTextColor(detailColor)
-        val tintedColor = Color.argb(
-            detailColor.alpha / 3,
-            detailColor.red,
-            detailColor.green,
-            detailColor.blue
-        )
-        item_backdrop.setColorFilter(tintedColor)
     }
 }

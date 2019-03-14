@@ -33,35 +33,45 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="325dp"
+                app:title="Movie Title"
                 android:background="@android:color/transparent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:contentScrim="@android:color/white"
                 app:statusBarScrim="@android:color/white"
-                app:expandedTitleMarginStart="48dp"
-                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMargin="16dp"
                 android:fitsSystemWindows="true">
 
             <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/item_backdrop"
+                    android:id="@+id/movie_backdrop"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:tint="#80000000"
+                    android:tint="#A6000000"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.75"
+                    android:layout_gravity="top|center"
                     app:srcCompat="@mipmap/ic_launcher"
                     android:fitsSystemWindows="true"/>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/item_poster"
-                    android:layout_width="125dp"
-                    android:layout_height="206dp"
-                    android:layout_gravity="center"
-                    android:transitionName="poster_transition"
-                    app:layout_collapseParallaxMultiplier="0.1"
-                    app:layout_collapseMode="parallax"
-                    android:fitsSystemWindows="true"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/movie_poster"
+                        android:layout_width="125dp"
+                        android:layout_height="206dp"
+                        android:layout_gravity="center"
+                        android:transitionName="poster_transition"
+                        app:layout_collapseParallaxMultiplier="0.1"
+                        app:layout_collapseMode="parallax"
+                        android:fitsSystemWindows="true"
+                        android:layout_margin="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
