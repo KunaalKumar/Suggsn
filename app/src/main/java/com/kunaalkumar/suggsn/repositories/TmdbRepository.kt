@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.kunaalkumar.suggsn.RetrofitFactory
-import com.kunaalkumar.suggsn.tmdb.TMDbCallback
-import com.kunaalkumar.suggsn.tmdb.TMDbConfigCallback
-import com.kunaalkumar.suggsn.tmdb.TMDbItem
-import com.kunaalkumar.suggsn.tmdb.TMDbMovieItem
+import com.kunaalkumar.suggsn.tmdb.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -199,9 +196,16 @@ class TmdbRepository private constructor() {
         return data
     }
 
+    // Get videos related to movie
+    fun getMovieVideos(id: Int): MutableLiveData<TMDbVideos> {
+        val data = MutableLiveData<TMDbVideos>()
+        tmdbService.movieVideos(id).enqueue(DetailedCallback(data))
+        return data
+    }
+
     // Standard ApiCallback wrapper class
     private class ApiCallback<T>(val data: MutableLiveData<TMDbCallback<T>>) : Callback<TMDbCallback<T>> {
-        val TAG: String = "Suggsn@apiCallback"
+        val TAG: String = "Suggsn@ApiCallback"
         override fun onResponse(call: Call<TMDbCallback<T>>, response: Response<TMDbCallback<T>>) {
             data.postValue(response.body())
         }
@@ -213,7 +217,7 @@ class TmdbRepository private constructor() {
 
     // Detailed item callback
     private class DetailedCallback<T>(val data: MutableLiveData<T>) : Callback<T> {
-        val TAG: String = "Suggsn@apiCallback"
+        val TAG: String = "Suggsn@DetailedCallback"
         override fun onResponse(call: Call<T>, response: Response<T>) {
             data.postValue(response.body())
         }

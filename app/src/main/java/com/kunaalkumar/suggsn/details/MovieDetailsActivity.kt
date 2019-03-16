@@ -57,9 +57,14 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         viewModel.getMovieDetails(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer {})
         viewModel.getMovieData().observe(this, Observer {
-            // TODO: Populate UI with data
             item_tagline.text = it.tagline
             item_rating.text = it.vote_average.toString()
+        })
+
+        viewModel.getMovieVideos(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer { })
+        viewModel.getMovieVideos().observe(this, Observer {
+            //TODO: Link Video by setting on click listener
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=${it.results[0].key}")))
         })
     }
 

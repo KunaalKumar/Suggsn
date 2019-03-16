@@ -64,4 +64,7 @@ interface ITMDbService {
 
     @GET("movie/{id}?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
     fun movieDetails(@Path("id") id: Int): Call<TMDbMovieItem>
+
+    @GET("movie/{id}/videos?api_key=${BuildConfig.TMDb_API_KEY}&language=en-US")
+    fun movieVideos(@Path("id") id: Int): Call<TMDbVideos>
 }

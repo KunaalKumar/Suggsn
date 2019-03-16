@@ -62,3 +62,7 @@ data class TMDbConfigCallback(val images: TMDbImageConfig)
 data class TMDbImageConfig(val base_url: String, val backdrop_sizes: List<String>, val poster_sizes: List<String>)
 
 data class TMDbGenre(val id: Int, val name: String)
+
+data class TMDbVideos(val id: Int, val results: List<TMDbVideo>)
+
+data class TMDbVideo(val id: String, val name: String, val key: String, val type: String)
