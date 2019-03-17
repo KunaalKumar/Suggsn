@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.SHOWS_AIRING_TODAY
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.SHOWS_AIRING_TODAY
 import com.kunaalkumar.suggsn.results_components.ResultsAdapter
 import com.kunaalkumar.suggsn.view_model.ShowsViewModel
 import kotlinx.android.synthetic.main.activity_search.*

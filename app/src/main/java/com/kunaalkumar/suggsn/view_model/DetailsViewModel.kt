@@ -10,14 +10,13 @@ import com.kunaalkumar.suggsn.tmdb.TMDbVideos
 class DetailsViewModel : ViewModel() {
     val TAG: String = "Suggsn@DetailsViewModel"
 
-    private var tmdbRepo = TmdbRepository.instance
     private var currentCallback = MediatorLiveData<TMDbMovieItem>()
     private var movieData = MediatorLiveData<TMDbMovieItem>()
     private var movieVideosCallback = MediatorLiveData<TMDbVideos>()
     private var movieVideos = MediatorLiveData<TMDbVideos>()
 
     fun getMovieDetails(id: Int): LiveData<TMDbMovieItem> {
-        currentCallback.addSource(tmdbRepo.getMovieDetails(id)) {
+        currentCallback.addSource(TmdbRepository.getMovieDetails(id)) {
             movieData.postValue(it)
         }
         return currentCallback
@@ -28,7 +27,7 @@ class DetailsViewModel : ViewModel() {
     }
 
     fun getMovieVideos(id: Int): LiveData<TMDbVideos> {
-        movieVideosCallback.addSource(tmdbRepo.getMovieVideos(id)) {
+        movieVideosCallback.addSource(TmdbRepository.getMovieVideos(id)) {
             movieVideos.postValue(it)
         }
         return movieVideosCallback

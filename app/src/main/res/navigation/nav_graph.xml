@@ -23,6 +23,6 @@
     <fragment
             android:id="@+id/shows_dest"
             android:name="com.kunaalkumar.suggsn.shows.TVFragment"
-            android:label="fragment_tvs"
+            android:label="fragment_shows"
             tools:layout="@layout/fragment_shows"/>
 </navigation>

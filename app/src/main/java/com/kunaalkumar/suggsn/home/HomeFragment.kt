@@ -35,4 +35,5 @@ class HomeFragment : Fragment() {
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }
+
 }

@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_NOW_PLAYING
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_POPULAR
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_TOP_RATED
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.MOVIES_UPCOMING
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.MOVIES_NOW_PLAYING
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.MOVIES_POPULAR
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.MOVIES_TOP_RATED
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.MOVIES_UPCOMING
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
@@ -29,36 +29,33 @@ class MoviesViewModel : ViewModel() {
     private var topRatedList = MediatorLiveData<ArrayList<TMDbItem>>()
     private var upcomingList = MediatorLiveData<ArrayList<TMDbItem>>()
     private var nowPlayingList = MediatorLiveData<ArrayList<TMDbItem>>()
-
-    private var tmdbRepo = TmdbRepository.instance
     private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
-
 
     fun getMovies(type: String): LiveData<TMDbCallback<TMDbItem>> {
         when (type) {
             MOVIES_POPULAR ->
-                currentCallback.addSource(tmdbRepo.getMovies(MOVIES_POPULAR, 1)) {
+                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_POPULAR, 1)) {
                     popularCurrentPage = it.page
                     lastPopularPage = it.total_pages
                     popularList.postValue(ArrayList(it.results))
                 }
 
             MOVIES_TOP_RATED ->
-                currentCallback.addSource(tmdbRepo.getMovies(MOVIES_TOP_RATED, 1)) {
+                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_TOP_RATED, 1)) {
                     topRatedCurrentPage = it.page
                     lastTopRatedPage = it.total_pages
                     topRatedList.postValue(ArrayList(it.results))
                 }
 
             MOVIES_UPCOMING ->
-                currentCallback.addSource(tmdbRepo.getMovies(MOVIES_UPCOMING, 1)) {
+                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_UPCOMING, 1)) {
                     upcomingCurrentPage = it.page
                     lastUpcomingPage = it.total_pages
                     upcomingList.postValue(ArrayList(it.results))
                 }
 
             MOVIES_NOW_PLAYING ->
-                currentCallback.addSource(tmdbRepo.getMovies(MOVIES_NOW_PLAYING, 1)) {
+                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_NOW_PLAYING, 1)) {
                     nowPlayingCurrentPage = it.page
                     lastNowPlayingPage = it.total_pages
                     nowPlayingList.postValue(ArrayList(it.results))
@@ -71,7 +68,7 @@ class MoviesViewModel : ViewModel() {
         when (type) {
             MOVIES_POPULAR ->
                 if (popularCurrentPage != lastPopularPage) {
-                    popularList.addSource(tmdbRepo.getMovies(MOVIES_POPULAR, ++popularCurrentPage)) {
+                    popularList.addSource(TmdbRepository.getMovies(MOVIES_POPULAR, ++popularCurrentPage)) {
                         popularList.value!!.addAll(it.results)
                         popularList.value = popularList.value
                     }
@@ -79,7 +76,7 @@ class MoviesViewModel : ViewModel() {
 
             MOVIES_TOP_RATED ->
                 if (topRatedCurrentPage != lastTopRatedPage) {
-                    topRatedList.addSource(tmdbRepo.getMovies(MOVIES_TOP_RATED, ++topRatedCurrentPage)) {
+                    topRatedList.addSource(TmdbRepository.getMovies(MOVIES_TOP_RATED, ++topRatedCurrentPage)) {
                         topRatedList.value!!.addAll(it.results)
                         topRatedList.value = topRatedList.value
                     }
@@ -87,7 +84,7 @@ class MoviesViewModel : ViewModel() {
 
             MOVIES_UPCOMING ->
                 if (upcomingCurrentPage != lastUpcomingPage) {
-                    upcomingList.addSource(tmdbRepo.getMovies(MOVIES_UPCOMING, ++upcomingCurrentPage)) {
+                    upcomingList.addSource(TmdbRepository.getMovies(MOVIES_UPCOMING, ++upcomingCurrentPage)) {
                         upcomingList.value!!.addAll(it.results)
                         upcomingList.value = upcomingList.value
                     }
@@ -95,7 +92,7 @@ class MoviesViewModel : ViewModel() {
 
             MOVIES_NOW_PLAYING ->
                 if (nowPlayingCurrentPage != lastNowPlayingPage) {
-                    nowPlayingList.addSource(tmdbRepo.getMovies(MOVIES_NOW_PLAYING, ++nowPlayingCurrentPage)) {
+                    nowPlayingList.addSource(TmdbRepository.getMovies(MOVIES_NOW_PLAYING, ++nowPlayingCurrentPage)) {
                         nowPlayingList.value!!.addAll(it.results)
                         nowPlayingList.value = nowPlayingList.value
                     }

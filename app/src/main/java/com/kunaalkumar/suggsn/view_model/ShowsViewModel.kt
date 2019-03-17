@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.SHOWS_AIRING_TODAY
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.SHOWS_ON_AIR
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.SHOWS_POPULAR
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.SHOWS_TOP_RATED
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.SHOWS_AIRING_TODAY
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.SHOWS_ON_AIR
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.SHOWS_POPULAR
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.SHOWS_TOP_RATED
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
@@ -30,34 +30,33 @@ class ShowsViewModel : ViewModel() {
     private var onAirList = MediatorLiveData<ArrayList<TMDbItem>>()
     private var airingTodayList = MediatorLiveData<ArrayList<TMDbItem>>()
 
-    private var tmdbRepo = TmdbRepository.instance
     private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
 
     fun getShows(type: String): LiveData<TMDbCallback<TMDbItem>> {
         when (type) {
             SHOWS_POPULAR ->
-                currentCallback.addSource(tmdbRepo.getShows(SHOWS_POPULAR, 1)) {
+                currentCallback.addSource(TmdbRepository.getShows(SHOWS_POPULAR, 1)) {
                     popularCurrentPage = it.page
                     lastPopularPage = it.total_pages
                     popularList.postValue(ArrayList(it.results))
                 }
 
             SHOWS_TOP_RATED ->
-                currentCallback.addSource(tmdbRepo.getShows(SHOWS_TOP_RATED, 1)) {
+                currentCallback.addSource(TmdbRepository.getShows(SHOWS_TOP_RATED, 1)) {
                     topRatedCurrentPage = it.page
                     lastTopRatedPage = it.total_pages
                     topRatedList.postValue(ArrayList(it.results))
                 }
 
             SHOWS_ON_AIR ->
-                currentCallback.addSource(tmdbRepo.getShows(SHOWS_ON_AIR, 1)) {
+                currentCallback.addSource(TmdbRepository.getShows(SHOWS_ON_AIR, 1)) {
                     onAirCurrentPage = it.page
                     lastOnAirPage = it.total_pages
                     onAirList.postValue(ArrayList(it.results))
                 }
 
             SHOWS_AIRING_TODAY ->
-                currentCallback.addSource(tmdbRepo.getShows(SHOWS_AIRING_TODAY, 1)) {
+                currentCallback.addSource(TmdbRepository.getShows(SHOWS_AIRING_TODAY, 1)) {
                     airTodayCurrentPage = it.page
                     lastAiringTodayPage = it.total_pages
                     airingTodayList.postValue(ArrayList(it.results))
@@ -70,7 +69,7 @@ class ShowsViewModel : ViewModel() {
         when (type) {
             SHOWS_POPULAR ->
                 if (popularCurrentPage != lastPopularPage) {
-                    popularList.addSource(tmdbRepo.getShows(SHOWS_POPULAR, ++popularCurrentPage)) {
+                    popularList.addSource(TmdbRepository.getShows(SHOWS_POPULAR, ++popularCurrentPage)) {
                         popularList.value!!.addAll(it.results)
                         popularList.value = popularList.value
                     }
@@ -78,7 +77,7 @@ class ShowsViewModel : ViewModel() {
 
             SHOWS_TOP_RATED ->
                 if (topRatedCurrentPage != lastTopRatedPage) {
-                    topRatedList.addSource(tmdbRepo.getShows(SHOWS_TOP_RATED, ++topRatedCurrentPage)) {
+                    topRatedList.addSource(TmdbRepository.getShows(SHOWS_TOP_RATED, ++topRatedCurrentPage)) {
                         topRatedList.value!!.addAll(it.results)
                         topRatedList.value = topRatedList.value
                     }
@@ -86,7 +85,7 @@ class ShowsViewModel : ViewModel() {
 
             SHOWS_ON_AIR ->
                 if (onAirCurrentPage != lastOnAirPage) {
-                    onAirList.addSource(tmdbRepo.getShows(SHOWS_ON_AIR, ++onAirCurrentPage)) {
+                    onAirList.addSource(TmdbRepository.getShows(SHOWS_ON_AIR, ++onAirCurrentPage)) {
                         onAirList.value!!.addAll(it.results)
                         onAirList.value = onAirList.value
                     }
@@ -94,7 +93,7 @@ class ShowsViewModel : ViewModel() {
 
             SHOWS_AIRING_TODAY ->
                 if (airTodayCurrentPage != lastAiringTodayPage) {
-                    airingTodayList.addSource(tmdbRepo.getShows(SHOWS_AIRING_TODAY, ++airTodayCurrentPage)) {
+                    airingTodayList.addSource(TmdbRepository.getShows(SHOWS_AIRING_TODAY, ++airTodayCurrentPage)) {
                         airingTodayList.value!!.addAll(it.results)
                         airingTodayList.value = airingTodayList.value
                     }

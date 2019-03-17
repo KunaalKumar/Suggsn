@@ -15,12 +15,11 @@ class PeopleViewModel : ViewModel() {
     private var lastPage: Int = 0
 
     private var popularPeopleList = MediatorLiveData<ArrayList<TMDbItem>>()
-
-    private var tmdbRepo = TmdbRepository.instance
+    
     private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
 
     fun getPopularPeople(): LiveData<TMDbCallback<TMDbItem>> {
-        currentCallback.addSource(tmdbRepo.getPopularPeople(1)) {
+        currentCallback.addSource(TmdbRepository.getPopularPeople(1)) {
             currentPage = it.page
             lastPage = it.total_pages
             popularPeopleList.postValue(ArrayList(it.results))
@@ -31,7 +30,7 @@ class PeopleViewModel : ViewModel() {
 
     fun nextPage() {
         if (currentPage != lastPage) {
-            popularPeopleList.addSource(tmdbRepo.getPopularPeople(++currentPage)) {
+            popularPeopleList.addSource(TmdbRepository.getPopularPeople(++currentPage)) {
                 popularPeopleList.value!!.addAll(it.results)
                 popularPeopleList.value = popularPeopleList.value
             }

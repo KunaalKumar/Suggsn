@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.suggsn.repositories.TmdbRepository
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.DISCOVER_MOVIE
-import com.kunaalkumar.suggsn.repositories.TmdbRepository.Companion.DISCOVER_TV
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.DISCOVER_MOVIE
+import com.kunaalkumar.suggsn.repositories.TmdbRepository.DISCOVER_TV
 import com.kunaalkumar.suggsn.tmdb.TMDbCallback
 import com.kunaalkumar.suggsn.tmdb.TMDbItem
 
@@ -19,7 +19,6 @@ class HomeViewModel : ViewModel() {
     private var currentShowsPage: Int = 0
     private var lastShowsPage: Int = 0
 
-    private var tmdbRepo = TmdbRepository.instance
     private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
 
     private var moviesList = MediatorLiveData<ArrayList<TMDbItem>>()
@@ -28,14 +27,14 @@ class HomeViewModel : ViewModel() {
     fun getDiscover(type: String): LiveData<TMDbCallback<TMDbItem>> {
         when (type) {
             DISCOVER_MOVIE ->
-                currentCallback.addSource(tmdbRepo.getDiscover(DISCOVER_MOVIE, 1)) {
+                currentCallback.addSource(TmdbRepository.getDiscover(DISCOVER_MOVIE, 1)) {
                     currentMoviesPage = it.page
                     lastMoviesPage = it.total_pages
                     moviesList.postValue(ArrayList(it.results))
                 }
 
             DISCOVER_TV ->
-                currentCallback.addSource(tmdbRepo.getDiscover(DISCOVER_TV, 1)) {
+                currentCallback.addSource(TmdbRepository.getDiscover(DISCOVER_TV, 1)) {
                     currentShowsPage = it.page
                     lastShowsPage = it.total_pages
                     showsList.postValue(ArrayList(it.results))
@@ -56,7 +55,7 @@ class HomeViewModel : ViewModel() {
         when (type) {
             DISCOVER_MOVIE -> {
                 if (currentMoviesPage != lastMoviesPage) {
-                    moviesList.addSource(tmdbRepo.getDiscover(DISCOVER_MOVIE, ++currentMoviesPage)) {
+                    moviesList.addSource(TmdbRepository.getDiscover(DISCOVER_MOVIE, ++currentMoviesPage)) {
                         moviesList.value!!.addAll(it.results)
                         moviesList.value = moviesList.value
                     }
@@ -64,7 +63,7 @@ class HomeViewModel : ViewModel() {
             }
             DISCOVER_TV -> {
                 if (currentShowsPage != lastShowsPage) {
-                    showsList.addSource(tmdbRepo.getDiscover(DISCOVER_TV, ++currentShowsPage)) {
+                    showsList.addSource(TmdbRepository.getDiscover(DISCOVER_TV, ++currentShowsPage)) {
                         showsList.value!!.addAll(it.results)
                         showsList.value = showsList.value
                     }

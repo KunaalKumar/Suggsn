@@ -11,7 +11,6 @@ import com.kunaalkumar.suggsn.tmdb.TMDbItem
 class SearchViewModel : ViewModel() {
 
     val TAG: String = "Suggsn@SearchViewModel"
-    private var tmdbRepo = TmdbRepository.instance
 
     private var currentPage: Int = 0
     private var lastPage: Int = 0
@@ -24,7 +23,7 @@ class SearchViewModel : ViewModel() {
     fun searchFor(query: String, pageNum: Int, includeAdult: Boolean)
             : LiveData<TMDbCallback<TMDbItem>> {
         currentQuery = query
-        searchCallback.addSource(tmdbRepo.getSearchResults(query, pageNum, includeAdult)) {
+        searchCallback.addSource(TmdbRepository.getSearchResults(query, pageNum, includeAdult)) {
             currentPage = it.page
             lastPage = it.total_pages
             searchResults.postValue(ArrayList(it.results))
@@ -38,7 +37,7 @@ class SearchViewModel : ViewModel() {
 
     fun nextPage() {
         if (currentPage != lastPage) {
-            searchResults.addSource(tmdbRepo.getSearchResults(currentQuery, ++currentPage, false)) {
+            searchResults.addSource(TmdbRepository.getSearchResults(currentQuery, ++currentPage, false)) {
                 searchResults.value!!.addAll(it.results)
                 searchResults.value = searchResults.value
             }
@@ -48,12 +47,12 @@ class SearchViewModel : ViewModel() {
     fun getBackdropImageUrl(): LiveData<String> {
         // Check to see if image exists in cache
         if (!::backdropImageUrl.isInitialized) {
-            backdropImageUrl = tmdbRepo.getBackdropUrl()
+            backdropImageUrl = TmdbRepository.getBackdropUrl()
         }
         return backdropImageUrl
     }
 
     fun getConfigStatus(): LiveData<Boolean> {
-        return tmdbRepo.getConfigStatus()
+        return TmdbRepository.getConfigStatus()
     }
 }

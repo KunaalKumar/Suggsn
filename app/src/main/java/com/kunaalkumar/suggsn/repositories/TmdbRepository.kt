@@ -12,30 +12,27 @@ import retrofit2.Response
 /**
  * Singleton class to get data from TMDB
  */
-class TmdbRepository private constructor() {
+object TmdbRepository {
 
-    val TAG: String = "Suggsn@TmdbRepository"
+    val TAG: String = "TmdbRepository"
     private val tmdbService = RetrofitFactory.makeTMDbRetrofitService()
     private var isConfigured = false
 
-    companion object {
-        val instance: TmdbRepository by lazy { TmdbRepository() }
-        var BASE_IMAGE_URL: String = ""
-        var BASE_POSTER_SIZE: String = ""
-        var BASE_BACKDROP_SIZE: String = ""
-        var WIDTH: Int = 0
-        var HEIGHT: Int = 0
-        const val DISCOVER_MOVIE = "MOVIE"
-        const val DISCOVER_TV = "TV"
-        const val MOVIES_POPULAR = "MOVIE_POPULAR"
-        const val MOVIES_TOP_RATED = "MOVIES_TOP_RATED"
-        const val MOVIES_UPCOMING = "MOVIES_UPCOMING"
-        const val MOVIES_NOW_PLAYING = "MOVIES_NOW_PLAYING"
-        const val SHOWS_POPULAR = "SHOWS_POPULAR"
-        const val SHOWS_TOP_RATED = "SHOWS_TOP_RATED"
-        const val SHOWS_ON_AIR = "SHOWS_ON_AIR"
-        const val SHOWS_AIRING_TODAY = "SHOWS_AIRING_TODAY"
-    }
+    var BASE_IMAGE_URL: String = ""
+    var BASE_POSTER_SIZE: String = ""
+    var BASE_BACKDROP_SIZE: String = ""
+    var WIDTH: Int = 0
+    var HEIGHT: Int = 0
+    const val DISCOVER_MOVIE = "MOVIE"
+    const val DISCOVER_TV = "TV"
+    const val MOVIES_POPULAR = "MOVIE_POPULAR"
+    const val MOVIES_TOP_RATED = "MOVIES_TOP_RATED"
+    const val MOVIES_UPCOMING = "MOVIES_UPCOMING"
+    const val MOVIES_NOW_PLAYING = "MOVIES_NOW_PLAYING"
+    const val SHOWS_POPULAR = "SHOWS_POPULAR"
+    const val SHOWS_TOP_RATED = "SHOWS_TOP_RATED"
+    const val SHOWS_ON_AIR = "SHOWS_ON_AIR"
+    const val SHOWS_AIRING_TODAY = "SHOWS_AIRING_TODAY"
 
     init {
         tmdbConfig()
@@ -153,16 +150,16 @@ class TmdbRepository private constructor() {
 
         when (type) {
             MOVIES_POPULAR ->
-                tmdbService.popularMovies(pageNum).enqueue(ApiCallback(data))
+                tmdbService.popularMovies(pageNum).enqueue(CallbackWrapper(data))
 
             MOVIES_TOP_RATED ->
-                tmdbService.topRatedMovies(pageNum).enqueue(ApiCallback(data))
+                tmdbService.topRatedMovies(pageNum).enqueue(CallbackWrapper(data))
 
             MOVIES_UPCOMING ->
-                tmdbService.upcomingMovies(pageNum).enqueue(ApiCallback(data))
+                tmdbService.upcomingMovies(pageNum).enqueue(CallbackWrapper(data))
 
             MOVIES_NOW_PLAYING ->
-                tmdbService.nowPlayingMovies(pageNum).enqueue(ApiCallback(data))
+                tmdbService.nowPlayingMovies(pageNum).enqueue(CallbackWrapper(data))
         }
         return data
     }
@@ -172,58 +169,35 @@ class TmdbRepository private constructor() {
 
         when (type) {
             SHOWS_POPULAR ->
-                tmdbService.popularShows(pageNum).enqueue(ApiCallback(data))
+                tmdbService.popularShows(pageNum).enqueue(CallbackWrapper(data))
             SHOWS_TOP_RATED ->
-                tmdbService.topRatedShows(pageNum).enqueue(ApiCallback(data))
+                tmdbService.topRatedShows(pageNum).enqueue(CallbackWrapper(data))
             SHOWS_ON_AIR ->
-                tmdbService.onAirShows(pageNum).enqueue(ApiCallback(data))
+                tmdbService.onAirShows(pageNum).enqueue(CallbackWrapper(data))
             SHOWS_AIRING_TODAY ->
-                tmdbService.airingTodayShows(pageNum).enqueue(ApiCallback(data))
+                tmdbService.airingTodayShows(pageNum).enqueue(CallbackWrapper(data))
         }
         return data
     }
 
     fun getPopularPeople(pageNum: Int): MutableLiveData<TMDbCallback<TMDbItem>> {
         val data = MutableLiveData<TMDbCallback<TMDbItem>>()
-        tmdbService.popularPeople(pageNum).enqueue(ApiCallback(data))
+        tmdbService.popularPeople(pageNum).enqueue(CallbackWrapper(data))
         return data
     }
 
     // Get movie details by id
     fun getMovieDetails(id: Int): MutableLiveData<TMDbMovieItem> {
         val data = MutableLiveData<TMDbMovieItem>()
-        tmdbService.movieDetails(id).enqueue(DetailedCallback(data))
+        tmdbService.movieDetails(id).enqueue(CallbackWrapper(data))
         return data
     }
 
     // Get videos related to movie
     fun getMovieVideos(id: Int): MutableLiveData<TMDbVideos> {
         val data = MutableLiveData<TMDbVideos>()
-        tmdbService.movieVideos(id).enqueue(DetailedCallback(data))
+        tmdbService.movieVideos(id).enqueue(CallbackWrapper(data))
         return data
     }
 
-    // Standard ApiCallback wrapper class
-    private class ApiCallback<T>(val data: MutableLiveData<TMDbCallback<T>>) : Callback<TMDbCallback<T>> {
-        val TAG: String = "Suggsn@ApiCallback"
-        override fun onResponse(call: Call<TMDbCallback<T>>, response: Response<TMDbCallback<T>>) {
-            data.postValue(response.body())
-        }
-
-        override fun onFailure(call: Call<TMDbCallback<T>>, t: Throwable) {
-            Log.e(TAG, "getMovies: Something went wrong \n$t\n")
-        }
-    }
-
-    // Detailed item callback
-    private class DetailedCallback<T>(val data: MutableLiveData<T>) : Callback<T> {
-        val TAG: String = "Suggsn@DetailedCallback"
-        override fun onResponse(call: Call<T>, response: Response<T>) {
-            data.postValue(response.body())
-        }
-
-        override fun onFailure(call: Call<T>, t: Throwable) {
-            Log.e(TAG, "getMovies: Something went wrong \n$t\n")
-        }
-    }
 }
