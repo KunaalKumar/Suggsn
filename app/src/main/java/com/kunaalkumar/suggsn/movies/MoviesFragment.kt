@@ -30,7 +30,7 @@ class MoviesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adapter = TabsPagerAdapter(activity!!.supportFragmentManager)
+        val adapter = TabsPagerAdapter(childFragmentManager)
         adapter.addFragment(Popular(), "Popular")
         adapter.addFragment(TopRated(), "Top Rated")
         adapter.addFragment(Upcoming(), "Upcoming")

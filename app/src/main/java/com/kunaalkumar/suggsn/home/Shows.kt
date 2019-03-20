@@ -47,11 +47,8 @@ class Shows : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getDiscover(DISCOVER_TV).observe(this, Observer {})
-
-        viewModel.getTVList().observe(this, Observer {
-            if (it != null)
-                viewAdapter.setResults(it)
+        viewModel.getDiscover(DISCOVER_TV).observe(this, Observer {
+            viewAdapter.setResults(ArrayList(it.results))
         })
     }
 

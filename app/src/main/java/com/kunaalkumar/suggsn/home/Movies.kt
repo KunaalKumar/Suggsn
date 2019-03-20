@@ -47,11 +47,8 @@ class Movies : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getDiscover(DISCOVER_MOVIE).observe(this, Observer {})
-
-        viewModel.getMovieList().observe(this, Observer {
-            if (it != null)
-                viewAdapter.setResults(it)
+        viewModel.getDiscover(DISCOVER_MOVIE).observe(this, Observer {
+            viewAdapter.setResults(ArrayList(it.results))
         })
     }
 

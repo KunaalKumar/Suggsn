@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  * create an instance of this fragment.
  *
  */
-class TVFragment : Fragment() {
+class ShowsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,7 @@ class TVFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adapter = TabsPagerAdapter(activity!!.supportFragmentManager)
+        val adapter = TabsPagerAdapter(childFragmentManager)
         adapter.addFragment(Popular(), "Popular")
         adapter.addFragment(TopRated(), "Top Rated")
         adapter.addFragment(OnTV(), "On TV")
