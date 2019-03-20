@@ -32,7 +32,7 @@ class Movies : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var viewAdapter: ResultsAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +53,7 @@ class Movies : Fragment() {
     }
 
     private fun initRecyclerView() {
-        viewManager = GridLayoutManager(context, 2)
+        viewManager = GridLayoutManager(activity, 2)
         viewAdapter = ResultsAdapter(MOVIE_MEDIA_TYPE)
         recycler_view.apply {
             setHasFixedSize(true)
@@ -70,5 +70,11 @@ class Movies : Fragment() {
             }
         })
         Log.i(TAG, "initRecyclerView: initialized recycler view")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recycler_view.adapter = null
+        recycler_view.layoutManager = null
     }
 }

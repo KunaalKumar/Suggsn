@@ -74,4 +74,10 @@ class PeopleFragment : Fragment() {
         })
         Log.e(TAG, "initRecyclerView: initialized recycler view")
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recycler_view.adapter = null
+        recycler_view.layoutManager = null
+    }
 }

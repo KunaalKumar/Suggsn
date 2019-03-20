@@ -69,4 +69,10 @@ class TopRated : Fragment() {
         Log.i(TAG, "initRecyclerView: initialized recycler view")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recycler_view.adapter = null
+        recycler_view.layoutManager = null
+    }
+
 }

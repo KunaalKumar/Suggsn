@@ -32,7 +32,7 @@ class Shows : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var viewAdapter: ResultsAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,5 +70,11 @@ class Shows : Fragment() {
             }
         })
         Log.i(TAG, "initRecyclerView: initialized recycler view")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recycler_view.adapter = null
+        recycler_view.layoutManager = null
     }
 }
