@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.kunaalkumar.suggsn">
+          package="com.kunaalkumar.sugsn">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-            android:name=".Suggsn"
+            android:name="com.kunaalkumar.sugsn.Sugsn"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -15,7 +15,7 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.kunaalkumar.sugsn.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -23,11 +23,11 @@
             </intent-filter>
         </activity>
         <activity
-                android:name="com.kunaalkumar.suggsn.details.MovieDetailsActivity"
+                android:name="com.kunaalkumar.sugsn.details.MovieDetailsActivity"
                 android:theme="@style/AppTheme.Transparent">
         </activity>
         <activity
-                android:name="com.kunaalkumar.suggsn.search.SearchActivity"
+                android:name="com.kunaalkumar.sugsn.search.SearchActivity"
                 android:windowSoftInputMode="adjustResize|adjustPan">
         </activity>
     </application>
