@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.TabsPagerAdapter
+import com.kunaalkumar.suggsn.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -30,7 +30,7 @@ class ShowsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adapter = TabsPagerAdapter(childFragmentManager)
+        val adapter = ViewPagerAdapter(childFragmentManager)
         adapter.addFragment(Popular(), "Popular")
         adapter.addFragment(TopRated(), "Top Rated")
         adapter.addFragment(OnTV(), "On TV")

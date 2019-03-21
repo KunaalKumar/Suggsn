@@ -24,31 +24,27 @@ class MainActivity : AppCompatActivity() {
         TmdbRepository.WIDTH = (displayMetric.widthPixels * 0.5).roundToInt()
         TmdbRepository.HEIGHT = (TmdbRepository.WIDTH * 1.5).roundToInt()
 
-        val homeFragment = HomeFragment()
-        val moviesFragment = MoviesFragment()
-        val showsFragment = ShowsFragment()
-        val peopleFragment = PeopleFragment()
-        openFragment(homeFragment)
+        openFragment(HomeFragment())
 
         bottom_nav_bar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home_dest -> {
-                    openFragment(homeFragment)
+                    openFragment(HomeFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.movies_dest -> {
-                    openFragment(moviesFragment)
+                    openFragment(MoviesFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.shows_dest -> {
-                    openFragment(showsFragment)
+                    openFragment(ShowsFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.people_dest -> {
-                    openFragment(peopleFragment)
+                    openFragment(PeopleFragment())
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -59,8 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
+        transaction.replace(R.id.fragment_container, fragment).disallowAddToBackStack()
         transaction.commit()
     }
 }

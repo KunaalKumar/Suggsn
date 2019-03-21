@@ -48,7 +48,8 @@ class Movies : Fragment() {
         initRecyclerView()
 
         viewModel.getDiscover(DISCOVER_MOVIE).observe(this, Observer {
-            viewAdapter.setResults(ArrayList(it.results))
+            if (it != null)
+                viewAdapter.setResults(ArrayList(it.results))
         })
     }
 

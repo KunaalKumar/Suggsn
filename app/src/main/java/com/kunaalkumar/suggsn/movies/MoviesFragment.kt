@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kunaalkumar.suggsn.R
-import com.kunaalkumar.suggsn.TabsPagerAdapter
+import com.kunaalkumar.suggsn.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class MoviesFragment : Fragment() {
 
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,12 +32,12 @@ class MoviesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val adapter = TabsPagerAdapter(childFragmentManager)
-        adapter.addFragment(Popular(), "Popular")
-        adapter.addFragment(TopRated(), "Top Rated")
-        adapter.addFragment(Upcoming(), "Upcoming")
-        adapter.addFragment(NowPlaying(), "Now Playing")
-        viewPager.adapter = adapter
+        viewPagerAdapter = ViewPagerAdapter(childFragmentManager)
+        viewPagerAdapter.addFragment(Popular(), "Popular")
+        viewPagerAdapter.addFragment(TopRated(), "Top Rated")
+        viewPagerAdapter.addFragment(Upcoming(), "Upcoming")
+        viewPagerAdapter.addFragment(NowPlaying(), "Now Playing")
+        viewPager.adapter = viewPagerAdapter
         tabs.setupWithViewPager(viewPager)
     }
 }

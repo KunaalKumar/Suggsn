@@ -48,7 +48,8 @@ class Shows : Fragment() {
         initRecyclerView()
 
         viewModel.getDiscover(DISCOVER_TV).observe(this, Observer {
-            viewAdapter.setResults(ArrayList(it.results))
+            if (it != null)
+                viewAdapter.setResults(ArrayList(it.results))
         })
     }
 
