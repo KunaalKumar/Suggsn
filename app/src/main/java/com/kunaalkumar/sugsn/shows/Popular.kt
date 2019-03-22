@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.repositories.TmdbRepository.SHOWS_POPULAR
 import com.kunaalkumar.sugsn.results_components.ResultsAdapter
 import com.kunaalkumar.sugsn.tmdb.TV_MEDIA_TYPE
 import com.kunaalkumar.sugsn.view_model.ShowsViewModel
@@ -39,11 +38,11 @@ class Popular : Fragment() {
         viewModel = ViewModelProviders.of(this).get(ShowsViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getShows(SHOWS_POPULAR).observe(this, Observer { })
-
-        viewModel.getPopularList().observe(this, Observer {
-            if (it != null)
-                viewAdapter.setResults(it)
+        viewModel.getShows(ShowsViewModel.POPULAR).observe(this, Observer {
+            if (it != null) {
+                viewModel.setLastPage(ShowsViewModel.POPULAR, it.total_pages)
+                viewAdapter.addResults(ArrayList(it.results))
+            }
         })
     }
 
@@ -60,7 +59,7 @@ class Popular : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.nextPage(SHOWS_POPULAR)
+                    viewModel.nextPage(ShowsViewModel.POPULAR)
                 }
             }
         })

@@ -23,7 +23,7 @@ object TmdbRepository {
     var BASE_BACKDROP_SIZE: String = ""
     var WIDTH: Int = 0
     var HEIGHT: Int = 0
-    const val DISCOVER_MOVIE = "MOVIE"
+    const val DISCOVER_MOVIE = "MOVIES"
     const val DISCOVER_TV = "TV"
     const val MOVIES_POPULAR = "MOVIE_POPULAR"
     const val MOVIES_TOP_RATED = "MOVIES_TOP_RATED"

@@ -1,7 +1,8 @@
 package com.kunaalkumar.sugsn.view_model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.sugsn.repositories.TmdbRepository
 import com.kunaalkumar.sugsn.repositories.TmdbRepository.MOVIES_NOW_PLAYING
@@ -15,105 +16,57 @@ class MoviesViewModel : ViewModel() {
 
     val TAG: String = "Sugsn@MoviesViewModel"
 
-    private var popularCurrentPage: Int = 0
-    private var topRatedCurrentPage: Int = 0
-    private var upcomingCurrentPage: Int = 0
-    private var nowPlayingCurrentPage: Int = 0
-
-    private var lastPopularPage: Int = 0
-    private var lastTopRatedPage: Int = 0
-    private var lastUpcomingPage: Int = 0
-    private var lastNowPlayingPage: Int = 0
-
-    private var popularList = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var topRatedList = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var upcomingList = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var nowPlayingList = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
-
-    fun getMovies(type: String): LiveData<TMDbCallback<TMDbItem>> {
-        when (type) {
-            MOVIES_POPULAR ->
-                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_POPULAR, 1)) {
-                    popularCurrentPage = it.page
-                    lastPopularPage = it.total_pages
-                    popularList.postValue(ArrayList(it.results))
-                }
-
-            MOVIES_TOP_RATED ->
-                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_TOP_RATED, 1)) {
-                    topRatedCurrentPage = it.page
-                    lastTopRatedPage = it.total_pages
-                    topRatedList.postValue(ArrayList(it.results))
-                }
-
-            MOVIES_UPCOMING ->
-                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_UPCOMING, 1)) {
-                    upcomingCurrentPage = it.page
-                    lastUpcomingPage = it.total_pages
-                    upcomingList.postValue(ArrayList(it.results))
-                }
-
-            MOVIES_NOW_PLAYING ->
-                currentCallback.addSource(TmdbRepository.getMovies(MOVIES_NOW_PLAYING, 1)) {
-                    nowPlayingCurrentPage = it.page
-                    lastNowPlayingPage = it.total_pages
-                    nowPlayingList.postValue(ArrayList(it.results))
-                }
-        }
-        return currentCallback
+    /**
+     * 0 -> Popular
+     * 1 -> Top Rated
+     * 2 -> Upcoming
+     * 3 -> Now Playing
+     */
+    companion object {
+        const val POPULAR = 0
+        const val TOP_RATED = 1
+        const val UPCOMING = 2
+        const val NOW_PLAYING = 3
     }
 
-    fun nextPage(type: String) {
-        when (type) {
-            MOVIES_POPULAR ->
-                if (popularCurrentPage != lastPopularPage) {
-                    popularList.addSource(TmdbRepository.getMovies(MOVIES_POPULAR, ++popularCurrentPage)) {
-                        popularList.value!!.addAll(it.results)
-                        popularList.value = popularList.value
-                    }
-                }
+    private val callbacks = Array<LiveData<TMDbCallback<TMDbItem>>>(4) { MutableLiveData<TMDbCallback<TMDbItem>>() }
+    private val lastPages = Array(4) { -1 }
+    private val currentPages = Array(4) {
+        MutableLiveData<Int>().apply {
+            value = 1
+        }
+    }
 
-            MOVIES_TOP_RATED ->
-                if (topRatedCurrentPage != lastTopRatedPage) {
-                    topRatedList.addSource(TmdbRepository.getMovies(MOVIES_TOP_RATED, ++topRatedCurrentPage)) {
-                        topRatedList.value!!.addAll(it.results)
-                        topRatedList.value = topRatedList.value
-                    }
-                }
 
-            MOVIES_UPCOMING ->
-                if (upcomingCurrentPage != lastUpcomingPage) {
-                    upcomingList.addSource(TmdbRepository.getMovies(MOVIES_UPCOMING, ++upcomingCurrentPage)) {
-                        upcomingList.value!!.addAll(it.results)
-                        upcomingList.value = upcomingList.value
-                    }
-                }
-
-            MOVIES_NOW_PLAYING ->
-                if (nowPlayingCurrentPage != lastNowPlayingPage) {
-                    nowPlayingList.addSource(TmdbRepository.getMovies(MOVIES_NOW_PLAYING, ++nowPlayingCurrentPage)) {
-                        nowPlayingList.value!!.addAll(it.results)
-                        nowPlayingList.value = nowPlayingList.value
-                    }
-                }
+    init {
+        callbacks[POPULAR] = Transformations.switchMap(currentPages[POPULAR]) {
+            return@switchMap TmdbRepository.getMovies(MOVIES_POPULAR, it)
         }
 
+        callbacks[TOP_RATED] = Transformations.switchMap(currentPages[TOP_RATED]) {
+            return@switchMap TmdbRepository.getMovies(MOVIES_TOP_RATED, it)
+        }
+
+        callbacks[UPCOMING] = Transformations.switchMap(currentPages[UPCOMING]) {
+            return@switchMap TmdbRepository.getMovies(MOVIES_UPCOMING, it)
+        }
+
+        callbacks[NOW_PLAYING] = Transformations.switchMap(currentPages[NOW_PLAYING]) {
+            return@switchMap TmdbRepository.getMovies(MOVIES_NOW_PLAYING, it)
+        }
     }
 
-    fun getPopularList(): LiveData<ArrayList<TMDbItem>> {
-        return popularList
+    fun getMovies(type: Int): LiveData<TMDbCallback<TMDbItem>> {
+        return callbacks[type]
     }
 
-    fun getTopRatedList(): LiveData<ArrayList<TMDbItem>> {
-        return topRatedList
+    fun nextPage(type: Int) {
+        if (currentPages[type].value!! <= lastPages[type]) {
+            currentPages[type].value = currentPages[type].value!! + 1
+        }
     }
 
-    fun getUpcomingList(): LiveData<ArrayList<TMDbItem>> {
-        return upcomingList
-    }
-
-    fun getNowPlayingList(): LiveData<ArrayList<TMDbItem>> {
-        return nowPlayingList
+    fun setLastPage(type: Int, page: Int) {
+        lastPages[type] = page
     }
 }

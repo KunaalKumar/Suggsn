@@ -33,7 +33,7 @@ class ShowsFragment : Fragment() {
         val adapter = ViewPagerAdapter(childFragmentManager)
         adapter.addFragment(Popular(), "Popular")
         adapter.addFragment(TopRated(), "Top Rated")
-        adapter.addFragment(OnTV(), "On TV")
+        adapter.addFragment(OnAir(), "On TV")
         adapter.addFragment(AiringToday(), "Airing Today")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)

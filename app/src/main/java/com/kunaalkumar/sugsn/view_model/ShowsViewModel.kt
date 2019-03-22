@@ -1,7 +1,8 @@
 package com.kunaalkumar.sugsn.view_model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.sugsn.repositories.TmdbRepository
 import com.kunaalkumar.sugsn.repositories.TmdbRepository.SHOWS_AIRING_TODAY
@@ -15,105 +16,53 @@ class ShowsViewModel : ViewModel() {
 
     val TAG: String = "Sugsn@ShowsViewModel"
 
-    private var popularCurrentPage: Int = 0
-    private var topRatedCurrentPage: Int = 0
-    private var onAirCurrentPage: Int = 0
-    private var airTodayCurrentPage: Int = 0
-
-    private var lastPopularPage: Int = 0
-    private var lastTopRatedPage: Int = 0
-    private var lastOnAirPage: Int = 0
-    private var lastAiringTodayPage: Int = 0
-
-    private var popularList = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var topRatedList = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var onAirList = MediatorLiveData<ArrayList<TMDbItem>>()
-    private var airingTodayList = MediatorLiveData<ArrayList<TMDbItem>>()
-
-    private var currentCallback = MediatorLiveData<TMDbCallback<TMDbItem>>()
-
-    fun getShows(type: String): LiveData<TMDbCallback<TMDbItem>> {
-        when (type) {
-            SHOWS_POPULAR ->
-                currentCallback.addSource(TmdbRepository.getShows(SHOWS_POPULAR, 1)) {
-                    popularCurrentPage = it.page
-                    lastPopularPage = it.total_pages
-                    popularList.postValue(ArrayList(it.results))
-                }
-
-            SHOWS_TOP_RATED ->
-                currentCallback.addSource(TmdbRepository.getShows(SHOWS_TOP_RATED, 1)) {
-                    topRatedCurrentPage = it.page
-                    lastTopRatedPage = it.total_pages
-                    topRatedList.postValue(ArrayList(it.results))
-                }
-
-            SHOWS_ON_AIR ->
-                currentCallback.addSource(TmdbRepository.getShows(SHOWS_ON_AIR, 1)) {
-                    onAirCurrentPage = it.page
-                    lastOnAirPage = it.total_pages
-                    onAirList.postValue(ArrayList(it.results))
-                }
-
-            SHOWS_AIRING_TODAY ->
-                currentCallback.addSource(TmdbRepository.getShows(SHOWS_AIRING_TODAY, 1)) {
-                    airTodayCurrentPage = it.page
-                    lastAiringTodayPage = it.total_pages
-                    airingTodayList.postValue(ArrayList(it.results))
-                }
-        }
-        return currentCallback
+    /**
+     * 0 -> Popular
+     * 1 -> Top Rated
+     * 2 -> On Air
+     * 3 -> Airing Today
+     */
+    companion object {
+        const val POPULAR = 0
+        const val TOP_RATED = 1
+        const val ON_AIR = 2
+        const val AIRING_TODAY = 3
     }
 
-    fun nextPage(type: String) {
-        when (type) {
-            SHOWS_POPULAR ->
-                if (popularCurrentPage != lastPopularPage) {
-                    popularList.addSource(TmdbRepository.getShows(SHOWS_POPULAR, ++popularCurrentPage)) {
-                        popularList.value!!.addAll(it.results)
-                        popularList.value = popularList.value
-                    }
-                }
+    private val callbacks = Array<LiveData<TMDbCallback<TMDbItem>>>(4) { MutableLiveData<TMDbCallback<TMDbItem>>() }
+    private val lastPages = Array(4) { -1 }
+    private val currentPages = Array(4) {
+        MutableLiveData<Int>().apply { value = 1 }
+    }
 
-            SHOWS_TOP_RATED ->
-                if (topRatedCurrentPage != lastTopRatedPage) {
-                    topRatedList.addSource(TmdbRepository.getShows(SHOWS_TOP_RATED, ++topRatedCurrentPage)) {
-                        topRatedList.value!!.addAll(it.results)
-                        topRatedList.value = topRatedList.value
-                    }
-                }
+    init {
+        callbacks[POPULAR] = Transformations.switchMap(currentPages[POPULAR]) {
+            return@switchMap TmdbRepository.getShows(SHOWS_POPULAR, it)
+        }
 
-            SHOWS_ON_AIR ->
-                if (onAirCurrentPage != lastOnAirPage) {
-                    onAirList.addSource(TmdbRepository.getShows(SHOWS_ON_AIR, ++onAirCurrentPage)) {
-                        onAirList.value!!.addAll(it.results)
-                        onAirList.value = onAirList.value
-                    }
-                }
+        callbacks[TOP_RATED] = Transformations.switchMap(currentPages[TOP_RATED]) {
+            return@switchMap TmdbRepository.getShows(SHOWS_TOP_RATED, it)
+        }
 
-            SHOWS_AIRING_TODAY ->
-                if (airTodayCurrentPage != lastAiringTodayPage) {
-                    airingTodayList.addSource(TmdbRepository.getShows(SHOWS_AIRING_TODAY, ++airTodayCurrentPage)) {
-                        airingTodayList.value!!.addAll(it.results)
-                        airingTodayList.value = airingTodayList.value
-                    }
-                }
+        callbacks[ON_AIR] = Transformations.switchMap(currentPages[ON_AIR]) {
+            return@switchMap TmdbRepository.getShows(SHOWS_ON_AIR, it)
+        }
+
+        callbacks[AIRING_TODAY] = Transformations.switchMap(currentPages[AIRING_TODAY]) {
+            return@switchMap TmdbRepository.getShows(SHOWS_AIRING_TODAY, it)
         }
     }
 
-    fun getPopularList(): LiveData<ArrayList<TMDbItem>> {
-        return popularList
+    fun getShows(type: Int): LiveData<TMDbCallback<TMDbItem>> {
+        return callbacks[type]
     }
 
-    fun getTopRatedList(): LiveData<ArrayList<TMDbItem>> {
-        return topRatedList
+    fun nextPage(type: Int) {
+        if (currentPages[type].value!! <= lastPages[type])
+            currentPages[type].value = currentPages[type].value!! + 1
     }
 
-    fun getOnAirList(): LiveData<ArrayList<TMDbItem>> {
-        return onAirList
-    }
-
-    fun getAiringTodayList(): LiveData<ArrayList<TMDbItem>> {
-        return airingTodayList
+    fun setLastPage(type: Int, page: Int) {
+        lastPages[type] = page
     }
 }

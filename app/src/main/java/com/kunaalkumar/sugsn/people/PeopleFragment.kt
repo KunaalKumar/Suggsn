@@ -47,11 +47,11 @@ class PeopleFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(PeopleViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getPopularPeople().observe(this, Observer { })
-
-        viewModel.getPopularPeopleList().observe(this, Observer {
-            if (it != null)
-                viewAdapter.setResults(it)
+        viewModel.getPopularPeople().observe(this, Observer {
+            if (it != null) {
+                viewModel.setLastPage(it.total_pages)
+                viewAdapter.addResults(ArrayList(it.results))
+            }
         })
     }
 

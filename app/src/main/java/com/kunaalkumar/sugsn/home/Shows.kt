@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.repositories.TmdbRepository.DISCOVER_TV
 import com.kunaalkumar.sugsn.results_components.ResultsAdapter
 import com.kunaalkumar.sugsn.tmdb.TV_MEDIA_TYPE
 import com.kunaalkumar.sugsn.view_model.HomeViewModel
@@ -47,9 +46,11 @@ class Shows : Fragment() {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getDiscover(DISCOVER_TV).observe(this, Observer {
-            if (it != null)
-                viewAdapter.setResults(ArrayList(it.results))
+        viewModel.getDiscover(HomeViewModel.SHOWS).observe(this, Observer {
+            if (it != null) {
+                viewModel.setLastPage(HomeViewModel.SHOWS, it.total_pages)
+                viewAdapter.addResults(ArrayList(it.results))
+            }
         })
     }
 
@@ -66,7 +67,7 @@ class Shows : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.nextPage(DISCOVER_TV)
+                    viewModel.nextPage(HomeViewModel.SHOWS)
                 }
             }
         })
