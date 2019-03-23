@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
@@ -25,11 +24,10 @@ import kotlinx.android.synthetic.main.fragments_recylcer_view.*
  * create an instance of this fragment.
  *
  */
-class Shows : Fragment() {
+class Shows(val viewModel: HomeViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@Shows"
 
-    private lateinit var viewModel: HomeViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: GridLayoutManager
 
@@ -43,10 +41,9 @@ class Shows : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getDiscover(HomeViewModel.SHOWS).observe(this, Observer {
+        viewModel.getDiscover(HomeViewModel.SHOWS).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 viewModel.setLastPage(HomeViewModel.SHOWS, it.total_pages)
                 viewAdapter.addResults(ArrayList(it.results))

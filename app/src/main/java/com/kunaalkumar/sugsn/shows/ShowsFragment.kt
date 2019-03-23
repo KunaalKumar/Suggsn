@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.ViewPagerAdapter
+import com.kunaalkumar.sugsn.view_model.ShowsViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -31,10 +33,11 @@ class ShowsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val adapter = ViewPagerAdapter(childFragmentManager)
-        adapter.addFragment(Popular(), "Popular")
-        adapter.addFragment(TopRated(), "Top Rated")
-        adapter.addFragment(OnAir(), "On TV")
-        adapter.addFragment(AiringToday(), "Airing Today")
+        val viewModel = ViewModelProviders.of(this).get(ShowsViewModel::class.java)
+        adapter.addFragment(Popular(viewModel), "Popular")
+        adapter.addFragment(TopRated(viewModel), "Top Rated")
+        adapter.addFragment(OnAir(viewModel), "On TV")
+        adapter.addFragment(AiringToday(viewModel), "Airing Today")
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }

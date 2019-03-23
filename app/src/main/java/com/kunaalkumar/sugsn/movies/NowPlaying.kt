@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
@@ -21,11 +20,10 @@ import kotlinx.android.synthetic.main.activity_search.*
  * A simple [Fragment] subclass.
  *
  */
-class NowPlaying : Fragment() {
+class NowPlaying(val viewModel: MoviesViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@NowPlaying"
 
-    private lateinit var viewModel: MoviesViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -38,10 +36,9 @@ class NowPlaying : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getMovies(MoviesViewModel.NOW_PLAYING).observe(this, Observer {
+        viewModel.getMovies(MoviesViewModel.NOW_PLAYING).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 viewModel.setLastPage(MoviesViewModel.NOW_PLAYING, it.total_pages)
                 viewAdapter.addResults(ArrayList(it.results))

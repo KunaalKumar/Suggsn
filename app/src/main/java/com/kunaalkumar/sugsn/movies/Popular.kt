@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
@@ -16,11 +15,10 @@ import com.kunaalkumar.sugsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.sugsn.view_model.MoviesViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
-class Popular : Fragment() {
+class Popular(val viewModel: MoviesViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@Popular"
 
-    private lateinit var viewModel: MoviesViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -30,10 +28,9 @@ class Popular : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         initRecyclerView()
 
-        viewModel.getMovies(MoviesViewModel.POPULAR).observe(this, Observer {
+        viewModel.getMovies(MoviesViewModel.POPULAR).observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 viewModel.setLastPage(MoviesViewModel.POPULAR, it.total_pages)
                 viewAdapter.addResults(ArrayList(it.results))

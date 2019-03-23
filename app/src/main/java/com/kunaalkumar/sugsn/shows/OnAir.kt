@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
@@ -21,11 +20,10 @@ import kotlinx.android.synthetic.main.activity_search.*
  * A simple [Fragment] subclass.
  *
  */
-class OnAir : Fragment() {
+class OnAir(val viewModel: ShowsViewModel) : Fragment() {
 
     val TAG: String = "Sugssn@Shows/OnAir"
 
-    private lateinit var viewModel: ShowsViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -38,7 +36,6 @@ class OnAir : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ShowsViewModel::class.java)
         initRecyclerView()
 
         viewModel.getShows(ShowsViewModel.ON_AIR).observe(this, Observer {

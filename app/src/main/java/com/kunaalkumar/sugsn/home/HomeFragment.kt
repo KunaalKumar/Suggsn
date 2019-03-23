@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.ViewPagerAdapter
+import com.kunaalkumar.sugsn.view_model.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -31,9 +33,10 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         tabAdapter = ViewPagerAdapter(childFragmentManager)
-        tabAdapter.addFragment(Movies(), "Movies")
-        tabAdapter.addFragment(Shows(), "TV Shows")
+        tabAdapter.addFragment(Movies(viewModel), "Movies")
+        tabAdapter.addFragment(Shows(viewModel), "TV Shows")
         viewPager.adapter = tabAdapter
         tabs.setupWithViewPager(viewPager)
     }

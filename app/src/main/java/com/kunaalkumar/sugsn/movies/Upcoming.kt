@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
@@ -17,11 +16,10 @@ import com.kunaalkumar.sugsn.tmdb.MOVIE_MEDIA_TYPE
 import com.kunaalkumar.sugsn.view_model.MoviesViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
-class Upcoming : Fragment() {
+class Upcoming(val viewModel: MoviesViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@Upcoming"
 
-    private lateinit var viewModel: MoviesViewModel
     private lateinit var viewAdapter: ResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
@@ -34,7 +32,6 @@ class Upcoming : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java)
         initRecyclerView()
 
         viewModel.getMovies(MoviesViewModel.UPCOMING).observe(this, Observer {
