@@ -23,8 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name="com.kunaalkumar.sugsn.details.MovieDetailsActivity"
-                android:theme="@style/AppTheme.Transparent">
+                android:name="com.kunaalkumar.sugsn.details.MovieDetailsActivity">
         </activity>
         <activity
                 android:name="com.kunaalkumar.sugsn.search.SearchActivity"
