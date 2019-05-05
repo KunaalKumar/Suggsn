@@ -14,6 +14,6 @@ class CallbackWrapper<T>(val data: MutableLiveData<T>) : Callback<T> {
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        Log.e(TAG, "getMovies: Something went wrong \n$t\n")
+        Log.e(TAG, "CallbackWrapper: Something went wrong \n$t\n")
     }
 }

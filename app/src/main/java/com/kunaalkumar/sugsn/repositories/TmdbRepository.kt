@@ -14,7 +14,7 @@ import retrofit2.Response
  */
 object TmdbRepository {
 
-    val TAG: String = "TmdbRepository"
+    private val TAG: String = "TmdbRepository"
     private val tmdbService = RetrofitFactory.makeTMDbRetrofitService()
     private var isConfigured = false
 
@@ -35,17 +35,7 @@ object TmdbRepository {
     const val SHOWS_AIRING_TODAY = "SHOWS_AIRING_TODAY"
 
     init {
-        tmdbConfig()
-    }
-
-    fun getConfigStatus(): LiveData<Boolean> {
-        val retval = MutableLiveData<Boolean>()
-        retval.value = isConfigured
-        return retval
-    }
-
-    // Fetch configurations for image paths
-    private fun tmdbConfig() {
+        // Fetch configurations for image paths
         tmdbService.config().enqueue(object : Callback<TMDbConfigCallback> {
 
             override fun onResponse(call: Call<TMDbConfigCallback>, response: Response<TMDbConfigCallback>) {
@@ -54,13 +44,19 @@ object TmdbRepository {
                 BASE_BACKDROP_SIZE =
                     response.body()!!.images.backdrop_sizes[response.body()!!.images.backdrop_sizes.size - 1]
                 isConfigured = true
-                android.util.Log.d(TAG, "tmdbConfig: Configured URLs")
+                Log.d(TAG, "tmdbConfig: Configured URLs")
             }
 
             override fun onFailure(call: Call<TMDbConfigCallback>, t: Throwable) {
-                android.util.Log.d(TAG, "tmdbConfig: Something went wrong \n$t\n")
+                Log.d(TAG, "tmdbConfig: Something went wrong \n$t\n")
             }
         })
+    }
+
+    fun getConfigStatus(): LiveData<Boolean> {
+        val retval = MutableLiveData<Boolean>()
+        retval.value = isConfigured
+        return retval
     }
 
     // Fetch and load a random poster for a popular movie
