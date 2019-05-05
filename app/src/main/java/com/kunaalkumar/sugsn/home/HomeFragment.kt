@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.ViewPagerAdapter
+import com.kunaalkumar.sugsn.util.ViewPagerAdapter
 import com.kunaalkumar.sugsn.view_model.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 

@@ -1,4 +1,4 @@
-package com.kunaalkumar.sugsn
+package com.kunaalkumar.sugsn.util
 
 import com.kunaalkumar.sugsn.tmdb.ITMDbService
 import retrofit2.Retrofit

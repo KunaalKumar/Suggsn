@@ -1,4 +1,4 @@
-package com.kunaalkumar.sugsn
+package com.kunaalkumar.sugsn.util
 
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary

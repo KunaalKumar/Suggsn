@@ -1,4 +1,4 @@
-package com.kunaalkumar.sugsn
+package com.kunaalkumar.sugsn.util
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager

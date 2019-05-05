@@ -3,8 +3,8 @@ package com.kunaalkumar.sugsn.repositories
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.kunaalkumar.sugsn.RetrofitFactory
 import com.kunaalkumar.sugsn.tmdb.*
+import com.kunaalkumar.sugsn.util.RetrofitFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

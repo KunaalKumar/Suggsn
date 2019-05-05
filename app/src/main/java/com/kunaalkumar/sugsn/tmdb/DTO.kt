@@ -9,10 +9,10 @@ const val PERSON_MEDIA_TYPE: String = "person"
 data class TMDbCallback<T>(val page: Int, val total_results: Int, val total_pages: Int, val results: List<T>)
 
 data class TMDbItem(
-    val poster_path: String?, val adult: Boolean, val overview: String, val release_data: String,
-    val id: Int, val media_type: String, val title: String?, val backdrop_path: String?,
+    private val poster_path: String?, val adult: Boolean, val overview: String, val release_data: String,
+    val id: Int, val media_type: String, val title: String?, private val backdrop_path: String?,
     val popularity: Double, val vote_average: Double, val genre_ids: List<Int>,
-    val first_air_date: String, val profile_path: String?, val name: String?, val known_for: List<TMDbItem>?
+    val first_air_date: String, private val profile_path: String?, val name: String?, val known_for: List<TMDbItem>?
 ) {
     fun getPoster(): String? {
         if (poster_path == null) {
@@ -37,9 +37,9 @@ data class TMDbItem(
 }
 
 data class TMDbMovieItem(
-    val adult: Boolean, val backdrop_path: String?, val budget: Int, val genres: List<TMDbGenre>,
+    val adult: Boolean, private val backdrop_path: String?, val budget: Int, val genres: List<TMDbGenre>,
     val homepage: String, val id: Int, val original_title: String, val overview: String,
-    val popularity: Double, val poster_path: String?, val release_date: String, val revenue: Int,
+    val popularity: Double, private val poster_path: String?, val release_date: String, val revenue: Int,
     val runtime: Int, val status: String, val vote_average: Double, val vote_count: Int, val tagline: String
 ) {
     fun getPoster(): String? {
