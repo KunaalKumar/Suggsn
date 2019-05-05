@@ -146,16 +146,16 @@ object TmdbRepository {
 
         when (type) {
             MOVIES_POPULAR ->
-                tmdbService.popularMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.popularMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
 
             MOVIES_TOP_RATED ->
-                tmdbService.topRatedMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.topRatedMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
 
             MOVIES_UPCOMING ->
-                tmdbService.upcomingMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.upcomingMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
 
             MOVIES_NOW_PLAYING ->
-                tmdbService.nowPlayingMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.nowPlayingMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
         }
         return data
     }
@@ -165,34 +165,34 @@ object TmdbRepository {
 
         when (type) {
             SHOWS_POPULAR ->
-                tmdbService.popularShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.popularShows(pageNum).enqueue(TMDbCallbackWrapper(data))
             SHOWS_TOP_RATED ->
-                tmdbService.topRatedShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.topRatedShows(pageNum).enqueue(TMDbCallbackWrapper(data))
             SHOWS_ON_AIR ->
-                tmdbService.onAirShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.onAirShows(pageNum).enqueue(TMDbCallbackWrapper(data))
             SHOWS_AIRING_TODAY ->
-                tmdbService.airingTodayShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.airingTodayShows(pageNum).enqueue(TMDbCallbackWrapper(data))
         }
         return data
     }
 
     fun getPopularPeople(pageNum: Int): MutableLiveData<TMDbCallback<TMDbItem>> {
         val data = MutableLiveData<TMDbCallback<TMDbItem>>()
-        tmdbService.popularPeople(pageNum).enqueue(CallbackWrapper(data))
+        tmdbService.popularPeople(pageNum).enqueue(TMDbCallbackWrapper(data))
         return data
     }
 
     // Get movie details by id
     fun getMovieDetails(id: Int): MutableLiveData<TMDbMovieItem> {
         val data = MutableLiveData<TMDbMovieItem>()
-        tmdbService.movieDetails(id).enqueue(CallbackWrapper(data))
+        tmdbService.movieDetails(id).enqueue(TMDbCallbackWrapper(data))
         return data
     }
 
     // Get videos related to movie
     fun getMovieVideos(id: Int): MutableLiveData<TMDbVideos> {
         val data = MutableLiveData<TMDbVideos>()
-        tmdbService.movieVideos(id).enqueue(CallbackWrapper(data))
+        tmdbService.movieVideos(id).enqueue(TMDbCallbackWrapper(data))
         return data
     }
 

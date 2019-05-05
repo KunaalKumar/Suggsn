@@ -1,5 +1,7 @@
 package com.kunaalkumar.sugsn.trakt
 
+data class TraktResponse<T>(val response: T, val currentPage: Int, val pageLimit: Int, val totalPages: Int)
+
 data class TraktTrendingMovies(
     val watchers: Int, // 18
     val movie: Movie
