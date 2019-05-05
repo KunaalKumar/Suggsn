@@ -19,9 +19,6 @@ class MovieDetailsActivity : AppCompatActivity() {
         const val MOVIE_ID = "MOVIE_ID"
     }
 
-    private var detailColor: Int = 0
-    private var expandedTitleColor: Int = 0
-
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(DetailsViewModel::class.java)
     }
@@ -34,31 +31,5 @@ class MovieDetailsActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
 
         viewModel.loadDetails(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer { })
-//
-//        // Default colors
-//        detailColor = ContextCompat.getColor(
-//            applicationContext,
-//            R.color.colorPrimary
-//        )
-//        expandedTitleColor = ContextCompat.getColor(
-//            applicationContext,
-//            android.R.color.black
-//        )
-//
-//        GlideApp.with(this)
-//            .load(intent.getStringExtra(POSTER))
-//            .thumbnail(0.05f)
-//            .diskCacheStrategy(DiskCacheStrategy.ALL)
-//            .into(item_poster)
-//
-//        GlideApp.with(this)
-//            .load(intent.getStringExtra(BACKDROP))
-//            .into(item_backdrop)
-//
-//        viewModel.getMovieVideos(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer { })
-//        viewModel.getMovieVideos().observe(this, Observer {
-//            //TODO: Link Video by setting on click listener
-////            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=${it.results[0].key}")))
-//        })
     }
 }

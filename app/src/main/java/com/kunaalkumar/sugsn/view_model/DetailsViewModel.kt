@@ -18,28 +18,23 @@ class DetailsViewModel : ViewModel() {
     private val _name = MutableLiveData<String>()
     private val _rating = MutableLiveData<String>()
     private val _image = MutableLiveData<String>()
+    private val _backdrop = MutableLiveData<String>()
+    private val _runtime = MutableLiveData<String>()
 
     val name: LiveData<String> = _name
     val rating: LiveData<String> = _rating
     val image: LiveData<String> = _image
+    val backdrop: LiveData<String> = _backdrop
+    val runtime: LiveData<String> = _runtime
 
     fun loadDetails(id: Int): LiveData<TMDbMovieItem> {
         currentCallback.addSource(TmdbRepository.getMovieDetails(id)) {
             _name.value = it.original_title
             _rating.value = it.vote_average.toString()
             _image.value = it.getPoster().toString()
+            _backdrop.value = it.getBackdrop().toString()
+            _runtime.value = it.runtime.toString().plus("m")
         }
         return currentCallback
-    }
-
-    fun getMovieVideos(id: Int): LiveData<TMDbVideos> {
-        movieVideosCallback.addSource(TmdbRepository.getMovieVideos(id)) {
-            movieVideos.postValue(it)
-        }
-        return movieVideosCallback
-    }
-
-    fun getMovieVideos(): LiveData<TMDbVideos> {
-        return movieVideos
     }
 }
