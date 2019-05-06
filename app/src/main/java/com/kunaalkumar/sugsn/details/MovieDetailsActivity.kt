@@ -2,12 +2,14 @@ package com.kunaalkumar.sugsn.details
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.databinding.ActivityDetailsBinding
+import com.kunaalkumar.sugsn.glide_API.GlideApp
 import com.kunaalkumar.sugsn.view_model.DetailsViewModel
+import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.details_bar.*
 
 class MovieDetailsActivity : AppCompatActivity() {
 
@@ -25,11 +27,23 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_details)
 
-        val binding: ActivityDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_details)
-        binding.lifecycleOwner = this
-        binding.viewmodel = viewModel
+        item_title.text = intent.getStringExtra(ITEM_NAME)
 
-        viewModel.loadDetails(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer { })
+        GlideApp.with(this)
+            .load(intent.getStringExtra(POSTER))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(item_poster)
+
+        GlideApp.with(this)
+            .load(intent.getStringExtra(BACKDROP))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(item_backdrop)
+
+        viewModel.loadDetails(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer {
+            rating_text.text = it.vote_average.toString()
+            runtime_text.text = it.runtime.toString()
+        })
     }
 }
