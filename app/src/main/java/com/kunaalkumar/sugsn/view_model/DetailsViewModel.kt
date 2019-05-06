@@ -6,14 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.sugsn.repositories.TmdbRepository
 import com.kunaalkumar.sugsn.tmdb.TMDbMovieItem
-import com.kunaalkumar.sugsn.tmdb.TMDbVideos
 
 class DetailsViewModel : ViewModel() {
     val TAG: String = "Sugsn@DetailsViewModel"
 
     private var currentCallback = MediatorLiveData<TMDbMovieItem>()
-    private var movieVideosCallback = MediatorLiveData<TMDbVideos>()
-    private var movieVideos = MediatorLiveData<TMDbVideos>()
 
     private val _name = MutableLiveData<String>()
     private val _rating = MutableLiveData<String>()

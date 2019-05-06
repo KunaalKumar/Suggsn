@@ -14,4 +14,5 @@
     <string name="tv_shows">TV Shows</string>
     <string name="popular_people">Popular People</string>
     <string name="movie_or_tv_show">Movie or tv show</string>
+    <string name="trending">Trending</string>
 </resources>

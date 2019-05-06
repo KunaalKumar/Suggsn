@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.kunaalkumar.sugsn.repositories.TmdbRepository
-import com.kunaalkumar.sugsn.repositories.TmdbRepository.DISCOVER_MOVIE
-import com.kunaalkumar.sugsn.repositories.TmdbRepository.DISCOVER_TV
-import com.kunaalkumar.sugsn.tmdb.TMDbCallback
-import com.kunaalkumar.sugsn.tmdb.TMDbItem
+import com.kunaalkumar.sugsn.repositories.TraktRepository
+import com.kunaalkumar.sugsn.trakt.TraktResponse
+import com.kunaalkumar.sugsn.trakt.TraktTrendingMovies
 
 class HomeViewModel : ViewModel() {
 
@@ -23,7 +21,8 @@ class HomeViewModel : ViewModel() {
         const val SHOWS = 1
     }
 
-    private val callbacks = Array<LiveData<TMDbCallback<TMDbItem>>>(2) { MutableLiveData<TMDbCallback<TMDbItem>>() }
+    private val callbacks =
+        Array<LiveData<TraktResponse<List<TraktTrendingMovies>>>>(2) { MutableLiveData<TraktResponse<List<TraktTrendingMovies>>>() }
     private val lastPages = Array(2) { -1 }
     private val currentPages = Array(2) {
         MutableLiveData<Int>().apply { value = 1 }
@@ -31,15 +30,15 @@ class HomeViewModel : ViewModel() {
 
     init {
         callbacks[MOVIES] = Transformations.switchMap(currentPages[MOVIES]) {
-            return@switchMap TmdbRepository.getDiscover(DISCOVER_MOVIE, it)
+            return@switchMap TraktRepository.getTrendingMovies(it)
         }
 
-        callbacks[SHOWS] = Transformations.switchMap(currentPages[SHOWS]) {
-            return@switchMap TmdbRepository.getDiscover(DISCOVER_TV, it)
-        }
+//        callbacks[SHOWS] = Transformations.switchMap(currentPages[SHOWS]) {
+//            return@switchMap TmdbRepository.getDiscover(DISCOVER_TV, it)
+//        }
     }
 
-    fun getDiscover(type: Int): LiveData<TMDbCallback<TMDbItem>> {
+    fun getTrending(type: Int): LiveData<TraktResponse<List<TraktTrendingMovies>>> {
         return callbacks[type]
     }
 

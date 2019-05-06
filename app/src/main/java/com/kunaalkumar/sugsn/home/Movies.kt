@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.results_components.ResultsAdapter
-import com.kunaalkumar.sugsn.tmdb.MOVIE_MEDIA_TYPE
+import com.kunaalkumar.sugsn.repositories.TmdbRepository
+import com.kunaalkumar.sugsn.results_components.TraktResultAdapter
 import com.kunaalkumar.sugsn.view_model.HomeViewModel
 import kotlinx.android.synthetic.main.fragments_recylcer_view.*
 
@@ -28,7 +28,7 @@ class Movies(val viewModel: HomeViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@Movies"
 
-    private lateinit var viewAdapter: ResultsAdapter
+    private lateinit var viewAdapter: TraktResultAdapter
     private lateinit var viewManager: GridLayoutManager
 
     override fun onCreateView(
@@ -39,21 +39,9 @@ class Movies(val viewModel: HomeViewModel) : Fragment() {
         return inflater.inflate(R.layout.fragments_recylcer_view, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initRecyclerView()
-
-        viewModel.getDiscover(HomeViewModel.MOVIES).observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                viewModel.setLastPage(HomeViewModel.MOVIES, it.total_pages)
-                viewAdapter.addResults(ArrayList(it.results))
-            }
-        })
-    }
-
     private fun initRecyclerView() {
         viewManager = GridLayoutManager(activity, 2)
-        viewAdapter = ResultsAdapter(MOVIE_MEDIA_TYPE)
+        viewAdapter = TraktResultAdapter()
         recycler_view.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(40)
@@ -69,6 +57,21 @@ class Movies(val viewModel: HomeViewModel) : Fragment() {
             }
         })
         Log.i(TAG, "initRecyclerView: initialized recycler view")
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initRecyclerView()
+
+        viewModel.getTrending(HomeViewModel.MOVIES).observe(viewLifecycleOwner, Observer {
+            viewModel.setLastPage(HomeViewModel.MOVIES, it.totalPages)
+            it.response.forEach {
+                TmdbRepository.getMovieDetails(it.movie.ids.tmdb).observe(viewLifecycleOwner, Observer {
+                    if (it != null)
+                        viewAdapter.addResults(it)
+                })
+            }
+        })
     }
 
     override fun onDestroyView() {

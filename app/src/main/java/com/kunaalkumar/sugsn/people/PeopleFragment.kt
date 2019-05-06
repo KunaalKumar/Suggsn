@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.results_components.ResultsAdapter
+import com.kunaalkumar.sugsn.results_components.TmdbResultsAdapter
 import com.kunaalkumar.sugsn.tmdb.PERSON_MEDIA_TYPE
 import com.kunaalkumar.sugsn.view_model.PeopleViewModel
 import kotlinx.android.synthetic.main.activity_search.*
@@ -31,7 +31,7 @@ class PeopleFragment : Fragment() {
     val TAG: String = "Sugsn@PeopleFragment"
 
     private lateinit var viewModel: PeopleViewModel
-    private lateinit var viewAdapter: ResultsAdapter
+    private lateinit var viewAdapterTmdb: TmdbResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreateView(
@@ -50,19 +50,19 @@ class PeopleFragment : Fragment() {
         viewModel.getPopularPeople().observe(this, Observer {
             if (it != null) {
                 viewModel.setLastPage(it.total_pages)
-                viewAdapter.addResults(ArrayList(it.results))
+                viewAdapterTmdb.addResults(ArrayList(it.results))
             }
         })
     }
 
     private fun initRecyclerView() {
         viewManager = GridLayoutManager(context, 2)
-        viewAdapter = ResultsAdapter(PERSON_MEDIA_TYPE)
+        viewAdapterTmdb = TmdbResultsAdapter(PERSON_MEDIA_TYPE)
         recycler_view.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(40)
             layoutManager = viewManager
-            adapter = viewAdapter
+            adapter = viewAdapterTmdb
         }
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

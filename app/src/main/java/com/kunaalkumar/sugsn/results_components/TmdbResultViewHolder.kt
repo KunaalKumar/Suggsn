@@ -20,9 +20,9 @@ import com.kunaalkumar.sugsn.tmdb.PERSON_MEDIA_TYPE
 import com.kunaalkumar.sugsn.tmdb.TMDbItem
 import kotlinx.android.synthetic.main.result_list_item.view.*
 
-class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TmdbResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val TAG: String = "ResultViewHolder"
+    private val TAG: String = "TmdbResultViewHolder"
 
     fun bindView(data: TMDbItem, mediaType: String?) {
 

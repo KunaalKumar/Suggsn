@@ -37,6 +37,6 @@ class TraktCallbackWrapper<T>(val data: MutableLiveData<TraktResponse<T>>) : Cal
     }
 
     override fun onFailure(call: Call<T>, t: Throwable) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.e(TAG, "Something went wrong \n$t\n")
     }
 }

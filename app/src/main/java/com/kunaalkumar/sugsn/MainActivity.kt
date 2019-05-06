@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.kunaalkumar.sugsn.home.HomeFragment
 import com.kunaalkumar.sugsn.movies.MoviesFragment
 import com.kunaalkumar.sugsn.people.PeopleFragment
 import com.kunaalkumar.sugsn.repositories.TmdbRepository
-import com.kunaalkumar.sugsn.repositories.TraktRepository
 import com.kunaalkumar.sugsn.shows.ShowsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.roundToInt
@@ -19,9 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        TraktRepository.getTrendingMovies(1).observe(this, Observer {
-        })
 
         // Get screen size and convert to pixels from dpi for poster images
         val displayMetric = DisplayMetrics()

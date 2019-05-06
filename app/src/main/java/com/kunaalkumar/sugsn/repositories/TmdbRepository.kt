@@ -119,7 +119,7 @@ object TmdbRepository {
                     }
 
                     override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
-                        Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
+                        Log.e(TAG, "getTrending: Something went wrong \n$t\n")
                     }
                 })
             }
@@ -133,7 +133,7 @@ object TmdbRepository {
                     }
 
                     override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
-                        Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
+                        Log.e(TAG, "getTrending: Something went wrong \n$t\n")
                     }
                 })
             }
