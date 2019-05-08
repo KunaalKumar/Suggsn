@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -30,9 +29,9 @@ class TmdbResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.poster.layoutParams.height = TmdbRepository.HEIGHT
 
         if (mediaType.equals(PERSON_MEDIA_TYPE)) {
-            if (data.getProfilePath() != null) {
-                loadImage(data.getProfilePath().toString())
-            }
+//            if (data.getProfilePath() != null) {
+//                loadImage(data.getProfilePath().toString())
+//            }
         } else {
             if (data.getPoster() != null)
                 loadImage(data.getPoster().toString())
@@ -40,11 +39,11 @@ class TmdbResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         // Show item title/name on long press
         itemView.poster.setOnLongClickListener {
-            var name: String? = data.name.toString()
+            //            var name: String? = data.name.toString()
             when (mediaType) {
-                "movie" -> name = data.title.toString()
+//                "movie" -> name = data.title.toString()
             }
-            Toast.makeText(it.context, name, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(it.context, name, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
 
@@ -61,10 +60,10 @@ class TmdbResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             //WARNING: ONLY FOR MOVIES
             // Poster/Backdrop url, movie id, and name
-            intent.putExtra(MovieDetailsActivity.POSTER, data.getPoster().toString())
-            intent.putExtra(MovieDetailsActivity.BACKDROP, data.getBackdrop().toString())
-            intent.putExtra(MovieDetailsActivity.MOVIE_ID, data.id.toString())
-            intent.putExtra(MovieDetailsActivity.ITEM_NAME, data.title.toString())
+//            intent.putExtra(MovieDetailsActivity.POSTER, data.getPoster().toString())
+//            intent.putExtra(MovieDetailsActivity.BACKDROP, data.getBackdrop().toString())
+//            intent.putExtra(MovieDetailsActivity.MOVIE_ID, data.id.toString())
+//            intent.putExtra(MovieDetailsActivity.ITEM_NAME, data.title.toString())
 
             itemView.context.startActivity(intent, options.toBundle())
         }

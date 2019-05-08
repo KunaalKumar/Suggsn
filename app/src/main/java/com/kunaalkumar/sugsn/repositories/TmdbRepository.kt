@@ -183,8 +183,8 @@ object TmdbRepository {
     }
 
     // Get movie details by id
-    fun getMovieDetails(id: Int): MutableLiveData<TMDbMovieItem> {
-        val data = MutableLiveData<TMDbMovieItem>()
+    fun getMovieDetails(id: Int): MutableLiveData<TMDbMovieDetails> {
+        val data = MutableLiveData<TMDbMovieDetails>()
         tmdbService.movieDetails(id).enqueue(TMDbCallbackWrapper(data))
         return data
     }

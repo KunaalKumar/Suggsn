@@ -16,45 +16,38 @@ import com.bumptech.glide.request.target.Target
 import com.kunaalkumar.sugsn.details.MovieDetailsActivity
 import com.kunaalkumar.sugsn.glide_API.GlideApp
 import com.kunaalkumar.sugsn.repositories.TmdbRepository
-import com.kunaalkumar.sugsn.tmdb.TMDbMovieItem
+import com.kunaalkumar.sugsn.tmdb.TMDbMovieDetails
 import kotlinx.android.synthetic.main.result_list_item.view.*
 
 class TraktResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val TAG: String = "TraktResultViewHolder"
 
-    fun bindView(data: TMDbMovieItem) {
-//        Log.d(TAG, "Result is : ${data.movie.title}")
+    fun bindView(data: Any?) {
+        if (data is TMDbMovieDetails) {
+            itemView.poster.layoutParams.width = TmdbRepository.WIDTH
+            itemView.poster.layoutParams.height = TmdbRepository.HEIGHT
+            loadImage(data.getPoster() ?: "http://noodleblvd.com/wp-content/uploads/2016/10/No-Image-Available.jpg")
 
-        itemView.poster.layoutParams.width = TmdbRepository.WIDTH
-        itemView.poster.layoutParams.height = TmdbRepository.HEIGHT
-        loadImage(data.getPoster() ?: "http://noodleblvd.com/wp-content/uploads/2016/10/No-Image-Available.jpg")
+            // Show item title/name on long press
+            itemView.poster.setOnLongClickListener {
+                val name: String? = data.original_title
+                Toast.makeText(it.context, name, Toast.LENGTH_SHORT).show()
+                return@setOnLongClickListener true
+            }
 
-        // Show item title/name on long press
-        itemView.poster.setOnLongClickListener {
-            var name: String? = data.original_title
-            Toast.makeText(it.context, name, Toast.LENGTH_SHORT).show()
-            return@setOnLongClickListener true
-        }
+            itemView.poster.setOnClickListener {
+                val intent = Intent(itemView.context, MovieDetailsActivity::class.java)
 
-        itemView.poster.setOnClickListener {
-            val intent = Intent(itemView.context, MovieDetailsActivity::class.java)
+                // Shared element transition elements
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    itemView.context as Activity, itemView.poster,
+                    ViewCompat.getTransitionName(itemView.poster)!!
+                )
 
-            // Shared element transition elements
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                itemView.context as Activity, itemView.poster,
-                ViewCompat.getTransitionName(itemView.poster)!!
-            )
-
-            //TODO: Implement TV and People
-
-            //WARNING: ONLY FOR MOVIES
-            // Poster/Backdrop url, movie id, and name
-            intent.putExtra(MovieDetailsActivity.POSTER, data.getPoster().toString())
-            intent.putExtra(MovieDetailsActivity.BACKDROP, data.getBackdrop().toString())
-            intent.putExtra(MovieDetailsActivity.MOVIE_ID, data.id.toString())
-            intent.putExtra(MovieDetailsActivity.ITEM_NAME, data.original_title)
-
-            itemView.context.startActivity(intent, options.toBundle())
+                // Poster/Backdrop url, movie id, and name
+                intent.putExtra(MovieDetailsActivity.ITEM_DATA, data)
+                itemView.context.startActivity(intent, options.toBundle())
+            }
         }
     }
 

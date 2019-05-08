@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.repositories.TmdbRepository
 import com.kunaalkumar.sugsn.results_components.TraktResultAdapter
+import com.kunaalkumar.sugsn.tmdb.TMDbMovieDetails
 import com.kunaalkumar.sugsn.view_model.HomeViewModel
 import kotlinx.android.synthetic.main.fragments_recylcer_view.*
 
@@ -28,7 +29,7 @@ class Movies(val viewModel: HomeViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@Movies"
 
-    private lateinit var viewAdapter: TraktResultAdapter
+    private lateinit var viewAdapter: TraktResultAdapter<TMDbMovieDetails>
     private lateinit var viewManager: GridLayoutManager
 
     override fun onCreateView(
@@ -64,11 +65,14 @@ class Movies(val viewModel: HomeViewModel) : Fragment() {
         initRecyclerView()
 
         viewModel.getTrending(HomeViewModel.MOVIES).observe(viewLifecycleOwner, Observer {
+            // Set current and last pages
             viewModel.setLastPage(HomeViewModel.MOVIES, it.totalPages)
+
+            // Get image for each result
             it.response.forEach {
-                TmdbRepository.getMovieDetails(it.movie.ids.tmdb).observe(viewLifecycleOwner, Observer {
-                    if (it != null)
-                        viewAdapter.addResults(it)
+                TmdbRepository.getMovieDetails(it.movie.ids.tmdb).observe(viewLifecycleOwner, Observer { movie ->
+                    if (movie != null)
+                        viewAdapter.addResults(movie)
                 })
             }
         })

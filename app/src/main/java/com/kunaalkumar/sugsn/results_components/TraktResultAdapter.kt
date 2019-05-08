@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.tmdb.TMDbMovieItem
 
-class TraktResultAdapter : RecyclerView.Adapter<TraktResultViewHolder>() {
+class TraktResultAdapter<T> : RecyclerView.Adapter<TraktResultViewHolder>() {
 
-    private val dataSet = ArrayList<TMDbMovieItem>()
+    private val dataSet = ArrayList<T>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TraktResultViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.result_list_item, parent, false)
@@ -23,7 +22,7 @@ class TraktResultAdapter : RecyclerView.Adapter<TraktResultViewHolder>() {
         holder.bindView(dataSet[position])
     }
 
-    fun addResults(results: TMDbMovieItem) {
+    fun addResults(results: T) {
         dataSet.add(results)
         notifyDataSetChanged()
     }
