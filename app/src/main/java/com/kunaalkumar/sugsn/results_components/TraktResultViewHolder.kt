@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.kunaalkumar.sugsn.details.MovieDetailsActivity
 import com.kunaalkumar.sugsn.glide_API.GlideApp
-import com.kunaalkumar.sugsn.repositories.TmdbRepository
 import com.kunaalkumar.sugsn.tmdb.TMDbMovieDetails
 import kotlinx.android.synthetic.main.result_list_item.view.*
 
@@ -23,9 +22,8 @@ class TraktResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     val TAG: String = "TraktResultViewHolder"
 
     fun bindView(data: Any?) {
+
         if (data is TMDbMovieDetails) {
-            itemView.poster.layoutParams.width = TmdbRepository.WIDTH
-            itemView.poster.layoutParams.height = TmdbRepository.HEIGHT
             loadImage(data.getPoster() ?: "http://noodleblvd.com/wp-content/uploads/2016/10/No-Image-Available.jpg")
 
             // Show item title/name on long press
