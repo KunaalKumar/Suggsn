@@ -16,6 +16,7 @@ import com.bumptech.glide.request.target.Target
 import com.kunaalkumar.sugsn.details.MovieDetailsActivity
 import com.kunaalkumar.sugsn.glide_API.GlideApp
 import com.kunaalkumar.sugsn.tmdb.TMDbMovieDetails
+import com.kunaalkumar.sugsn.trakt.TraktTrendingMovies
 import kotlinx.android.synthetic.main.result_list_item.view.*
 
 class TraktResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -45,6 +46,12 @@ class TraktResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
                 // Poster/Backdrop url, movie id, and name
                 intent.putExtra(MovieDetailsActivity.ITEM_DATA, data)
                 itemView.context.startActivity(intent, options.toBundle())
+            }
+        } else if (data is TraktTrendingMovies) {
+            itemView.poster.setOnLongClickListener {
+                val name: String? = data.movie.title
+                Toast.makeText(it.context, name, Toast.LENGTH_SHORT).show()
+                return@setOnLongClickListener true
             }
         }
     }

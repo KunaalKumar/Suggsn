@@ -23,7 +23,8 @@ class TMDbCallbackWrapper<T>(val data: MutableLiveData<T>) : Callback<T> {
     }
 }
 
-class TraktCallbackWrapper<T>(val data: MutableLiveData<TraktResponse<T>>) : Callback<T> {
+class TraktCallbackWrapper<T>(val data: MutableLiveData<TraktResponse<T>>) :
+    Callback<T> {
     val TAG: String = "TraktCallbackWrapper"
     override fun onResponse(call: Call<T>, response: Response<T>) {
         data.postValue(

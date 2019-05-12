@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.results_components.TraktResultAdapter
-import com.kunaalkumar.sugsn.trakt.TraktTrendingMovies
 import com.kunaalkumar.sugsn.view_model.HomeViewModel
 import kotlinx.android.synthetic.main.fragments_recylcer_view.*
 
@@ -28,7 +28,7 @@ class Movies : Fragment() {
 
     val TAG: String = "Sugsn@Movies"
 
-    private lateinit var viewAdapter: TraktResultAdapter<TraktTrendingMovies>
+    private lateinit var viewAdapter: TraktResultAdapter
     private lateinit var viewManager: GridLayoutManager
 
     private val viewModel: HomeViewModel by lazy {
@@ -53,14 +53,14 @@ class Movies : Fragment() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
-//        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                if (!recyclerView.canScrollVertically(1)) {
-//                    viewModel.nextPage(HomeViewModel.MOVIES)
-//                }
-//            }
-//        })
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.nextPage(HomeViewModel.MOVIES)
+                }
+            }
+        })
         Log.i(TAG, "initRecyclerView: initialized recycler view")
     }
 

@@ -10,9 +10,9 @@ import com.kunaalkumar.sugsn.repositories.TmdbRepository
 import com.kunaalkumar.sugsn.trakt.TraktTrendingMovies
 import kotlinx.android.synthetic.main.result_list_item.view.*
 
-class TraktResultAdapter<T>(val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<TraktResultViewHolder>() {
+class TraktResultAdapter(private val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<TraktResultViewHolder>() {
 
-    private val dataSet = ArrayList<T>()
+    private val dataSet = ArrayList<TraktTrendingMovies>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TraktResultViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.result_list_item, parent, false)
@@ -23,19 +23,25 @@ class TraktResultAdapter<T>(val lifecycleOwner: LifecycleOwner) : RecyclerView.A
         return dataSet.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun onBindViewHolder(holder: TraktResultViewHolder, position: Int) {
 
+        // Set poster sizes
         holder.itemView.poster.layoutParams.width = TmdbRepository.WIDTH
         holder.itemView.poster.layoutParams.height = TmdbRepository.HEIGHT
 
-        TmdbRepository.getMovieDetails((dataSet as ArrayList<TraktTrendingMovies>)[position].movie.ids.tmdb)
+        // Fetch details about movie from TMDb
+        TmdbRepository.getMovieDetails(dataSet[position].movie.ids.tmdb)
             .observe(lifecycleOwner, Observer {
                 holder.bindView(it)
             })
     }
 
-    fun addResults(results: List<T>) {
+    fun addResults(results: List<TraktTrendingMovies>) {
         dataSet.addAll(ArrayList(results))
-        notifyDataSetChanged()
+        notifyItemRangeInserted(dataSet.size - results.size, results.size)
     }
 }
