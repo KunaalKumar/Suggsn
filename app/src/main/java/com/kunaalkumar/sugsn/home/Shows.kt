@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.results_components.ResultsAdapter
+import com.kunaalkumar.sugsn.results_components.TmdbResultsAdapter
 import com.kunaalkumar.sugsn.tmdb.TV_MEDIA_TYPE
 import com.kunaalkumar.sugsn.view_model.HomeViewModel
 import kotlinx.android.synthetic.main.fragments_recylcer_view.*
@@ -28,7 +28,7 @@ class Shows(val viewModel: HomeViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@Shows"
 
-    private lateinit var viewAdapter: ResultsAdapter
+    private lateinit var viewAdapterTmdb: TmdbResultsAdapter
     private lateinit var viewManager: GridLayoutManager
 
     override fun onCreateView(
@@ -43,22 +43,22 @@ class Shows(val viewModel: HomeViewModel) : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initRecyclerView()
 
-        viewModel.getDiscover(HomeViewModel.SHOWS).observe(viewLifecycleOwner, Observer {
+        viewModel.getTrending(HomeViewModel.SHOWS).observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                viewModel.setLastPage(HomeViewModel.SHOWS, it.total_pages)
-                viewAdapter.addResults(ArrayList(it.results))
+//                viewModel.setLastPage(HomeViewModel.SHOWS, it.total_pages)
+//                viewAdapterTmdb.addResults(ArrayList(it.results))
             }
         })
     }
 
     private fun initRecyclerView() {
         viewManager = GridLayoutManager(context, 2)
-        viewAdapter = ResultsAdapter(TV_MEDIA_TYPE)
+        viewAdapterTmdb = TmdbResultsAdapter(TV_MEDIA_TYPE)
         recycler_view.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(40)
             layoutManager = viewManager
-            adapter = viewAdapter
+            adapter = viewAdapterTmdb
         }
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

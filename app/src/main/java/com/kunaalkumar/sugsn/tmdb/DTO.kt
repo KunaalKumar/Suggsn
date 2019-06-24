@@ -1,6 +1,7 @@
 package com.kunaalkumar.sugsn.tmdb
 
 import com.kunaalkumar.sugsn.repositories.TmdbRepository
+import java.io.Serializable
 
 const val TV_MEDIA_TYPE: String = "tv"
 const val MOVIE_MEDIA_TYPE: String = "movie"
@@ -8,54 +9,81 @@ const val PERSON_MEDIA_TYPE: String = "person"
 
 data class TMDbCallback<T>(val page: Int, val total_results: Int, val total_pages: Int, val results: List<T>)
 
-data class TMDbItem(
-    val poster_path: String?, val adult: Boolean, val overview: String, val release_data: String,
-    val id: Int, val media_type: String, val title: String?, val backdrop_path: String?,
-    val popularity: Double, val vote_average: Double, val genre_ids: List<Int>,
-    val first_air_date: String, val profile_path: String?, val name: String?, val known_for: List<TMDbItem>?
-) {
+interface TMDbItem {
+    val poster_path: String
+    val popularity: Double
+    val id: Int
+    val backdrop_path: String
+    val vote_average: Double
+    val overview: String
+    val genre_ids: List<Int>
+    val original_language: String
+    val vote_count: Int
+
     fun getPoster(): String? {
-        if (poster_path == null) {
-            return null
-        }
         return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_POSTER_SIZE + poster_path
     }
 
     fun getBackdrop(): String? {
-        if (backdrop_path == null) {
-            return null
-        }
         return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_BACKDROP_SIZE + backdrop_path
     }
+}
 
-    fun getProfilePath(): String? {
-        if (profile_path == null) {
-            return null
-        }
-        return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_POSTER_SIZE + profile_path
-    }
+interface TMDbMovieInfo : TMDbItem {
+    override val poster_path: String
+    override val popularity: Double
+    override val id: Int
+    override val backdrop_path: String
+    override val vote_average: Double
+    override val overview: String
+    override val genre_ids: List<Int>
+    override val original_language: String
+    override val vote_count: Int
+    val adult: Boolean
+    val release_data: String
+    val original_title: String
+    val title: String
+    val video: Boolean
 }
 
 data class TMDbMovieItem(
-    val adult: Boolean, val backdrop_path: String?, val budget: Int, val genres: List<TMDbGenre>,
-    val homepage: String, val id: Int, val original_title: String, val overview: String,
-    val popularity: Double, val poster_path: String?, val release_date: String, val revenue: Int,
-    val runtime: Int, val status: String, val vote_average: Double, val vote_count: Int, val tagline: String
-) {
-    fun getPoster(): String? {
-        if (poster_path == null) {
-            return null
-        }
-        return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_POSTER_SIZE + poster_path
-    }
+    override val poster_path: String,
+    override val popularity: Double,
+    override val id: Int,
+    override val backdrop_path: String,
+    override val vote_average: Double,
+    override val overview: String,
+    override val genre_ids: List<Int>,
+    override val original_language: String,
+    override val vote_count: Int,
+    override val adult: Boolean,
+    override val release_data: String,
+    override val original_title: String,
+    override val title: String,
+    override val video: Boolean
+) : TMDbMovieInfo
 
-    fun getBackdrop(): String? {
-        if (backdrop_path == null) {
-            return null
-        }
-        return TmdbRepository.BASE_IMAGE_URL + TmdbRepository.BASE_BACKDROP_SIZE + backdrop_path
-    }
-}
+data class TMDbMovieDetails(
+    override val poster_path: String,
+    override val popularity: Double,
+    override val id: Int,
+    override val backdrop_path: String,
+    override val vote_average: Double,
+    override val overview: String,
+    override val genre_ids: List<Int>,
+    override val original_language: String,
+    override val vote_count: Int,
+    override val adult: Boolean,
+    override val release_data: String,
+    override val original_title: String,
+    override val title: String,
+    override val video: Boolean,
+    val runtime: String,
+    val homepage: String,
+    val imdb_id: String,
+    val tagline: String,
+    val status: String
+) : TMDbMovieInfo, Serializable
 
 data class TMDbConfigCallback(val images: TMDbImageConfig)
 

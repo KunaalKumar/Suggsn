@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.glide_API.GlideApp
-import com.kunaalkumar.sugsn.results_components.ResultsAdapter
+import com.kunaalkumar.sugsn.results_components.TmdbResultsAdapter
 import com.kunaalkumar.sugsn.view_model.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.search_main.*
@@ -30,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
     private val TAG = "Sugsn@ SearchActivity"
     private lateinit var viewModel: SearchViewModel
 
-    private lateinit var viewAdapter: ResultsAdapter
+    private lateinit var viewAdapterTmdb: TmdbResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
                 .observe(this, Observer {
                     android.util.Log.d(TAG, "onCreate: searchFor changed")
                     if (it != null) {
-                        viewAdapter.setResults(it)
+                        viewAdapterTmdb.setResults(it)
                     }
                 })
         }
@@ -119,12 +119,12 @@ class SearchActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         android.util.Log.d(TAG, "initRecyclerView: Initializing recycler view")
         viewManager = LinearLayoutManager(this)
-        viewAdapter = ResultsAdapter(null)
+        viewAdapterTmdb = TmdbResultsAdapter(null)
         recycler_view.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(40) // Cache 40 items to ensure minimum loading times
             layoutManager = viewManager
-            adapter = viewAdapter
+            adapter = viewAdapterTmdb
         }
 
         // Detect when recycler view is at bottom

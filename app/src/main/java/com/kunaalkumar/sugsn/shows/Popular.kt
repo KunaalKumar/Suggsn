@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.results_components.ResultsAdapter
+import com.kunaalkumar.sugsn.results_components.TmdbResultsAdapter
 import com.kunaalkumar.sugsn.tmdb.TV_MEDIA_TYPE
 import com.kunaalkumar.sugsn.view_model.ShowsViewModel
 import kotlinx.android.synthetic.main.activity_search.*
@@ -24,7 +24,7 @@ class Popular(val viewModel: ShowsViewModel) : Fragment() {
 
     val TAG: String = "Sugsn@Popular"
 
-    private lateinit var viewAdapter: ResultsAdapter
+    private lateinit var viewAdapterTmdb: TmdbResultsAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,19 +38,19 @@ class Popular(val viewModel: ShowsViewModel) : Fragment() {
         viewModel.getShows(ShowsViewModel.POPULAR).observe(this, Observer {
             if (it != null) {
                 viewModel.setLastPage(ShowsViewModel.POPULAR, it.total_pages)
-                viewAdapter.addResults(ArrayList(it.results))
+                viewAdapterTmdb.addResults(ArrayList(it.results))
             }
         })
     }
 
     private fun initRecyclerView() {
         viewManager = GridLayoutManager(context, 2)
-        viewAdapter = ResultsAdapter(TV_MEDIA_TYPE)
+        viewAdapterTmdb = TmdbResultsAdapter(TV_MEDIA_TYPE)
         recycler_view.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(40)
             layoutManager = viewManager
-            adapter = viewAdapter
+            adapter = viewAdapterTmdb
         }
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

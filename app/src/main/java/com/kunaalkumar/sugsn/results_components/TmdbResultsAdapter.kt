@@ -7,24 +7,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.tmdb.TMDbItem
 
-class ResultsAdapter(private val mediaType: String?) : RecyclerView.Adapter<ResultViewHolder>() {
+class TmdbResultsAdapter(private val mediaType: String?) : RecyclerView.Adapter<TmdbResultViewHolder>() {
 
-    private val TAG: String = "ResultsAdapter"
+    private val TAG: String = "TmdbResultsAdapter"
     private val dataSet = ArrayList<TMDbItem>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TmdbResultViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.result_list_item, parent, false)
 //        val height = parent.measuredHeight.
-        return ResultViewHolder(view)
+        return TmdbResultViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return dataSet.size
     }
 
-    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
+    override fun onBindViewHolder(holderTmdb: TmdbResultViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder: Binding $position")
-        holder.bindView(dataSet[position], mediaType)
+        holderTmdb.bindView(dataSet[position], mediaType)
     }
 
     // Clear dataSet and add contents of results into it

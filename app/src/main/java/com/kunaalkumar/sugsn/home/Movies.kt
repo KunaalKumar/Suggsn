@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import com.kunaalkumar.sugsn.results_components.ResultsAdapter
-import com.kunaalkumar.sugsn.tmdb.MOVIE_MEDIA_TYPE
+import com.kunaalkumar.sugsn.results_components.TraktResultAdapter
 import com.kunaalkumar.sugsn.view_model.HomeViewModel
 import kotlinx.android.synthetic.main.fragments_recylcer_view.*
 
@@ -24,12 +24,18 @@ import kotlinx.android.synthetic.main.fragments_recylcer_view.*
  * create an instance of this fragment.
  *
  */
-class Movies(val viewModel: HomeViewModel) : Fragment() {
+class Movies : Fragment() {
 
     val TAG: String = "Sugsn@Movies"
 
-    private lateinit var viewAdapter: ResultsAdapter
+    private lateinit var viewAdapter: TraktResultAdapter
     private lateinit var viewManager: GridLayoutManager
+
+    private val viewModel: HomeViewModel by lazy {
+        activity?.run {
+            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,24 +45,11 @@ class Movies(val viewModel: HomeViewModel) : Fragment() {
         return inflater.inflate(R.layout.fragments_recylcer_view, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        initRecyclerView()
-
-        viewModel.getDiscover(HomeViewModel.MOVIES).observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                viewModel.setLastPage(HomeViewModel.MOVIES, it.total_pages)
-                viewAdapter.addResults(ArrayList(it.results))
-            }
-        })
-    }
-
     private fun initRecyclerView() {
         viewManager = GridLayoutManager(activity, 2)
-        viewAdapter = ResultsAdapter(MOVIE_MEDIA_TYPE)
+        viewAdapter = TraktResultAdapter(viewLifecycleOwner)
         recycler_view.apply {
             setHasFixedSize(true)
-            setItemViewCacheSize(40)
             layoutManager = viewManager
             adapter = viewAdapter
         }
@@ -69,6 +62,17 @@ class Movies(val viewModel: HomeViewModel) : Fragment() {
             }
         })
         Log.i(TAG, "initRecyclerView: initialized recycler view")
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initRecyclerView()
+
+        viewModel.getTrending(HomeViewModel.MOVIES).observe(viewLifecycleOwner, Observer {
+            // Set current and last pages
+            viewModel.setLastPage(HomeViewModel.MOVIES, it.totalPages)
+            viewAdapter.addResults(it.response)
+        })
     }
 
     override fun onDestroyView() {

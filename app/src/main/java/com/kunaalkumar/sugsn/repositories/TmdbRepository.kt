@@ -3,8 +3,8 @@ package com.kunaalkumar.sugsn.repositories
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.kunaalkumar.sugsn.RetrofitFactory
 import com.kunaalkumar.sugsn.tmdb.*
+import com.kunaalkumar.sugsn.util.RetrofitFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,7 +14,7 @@ import retrofit2.Response
  */
 object TmdbRepository {
 
-    val TAG: String = "TmdbRepository"
+    private val TAG: String = "TmdbRepository"
     private val tmdbService = RetrofitFactory.makeTMDbRetrofitService()
     private var isConfigured = false
 
@@ -35,17 +35,7 @@ object TmdbRepository {
     const val SHOWS_AIRING_TODAY = "SHOWS_AIRING_TODAY"
 
     init {
-        tmdbConfig()
-    }
-
-    fun getConfigStatus(): LiveData<Boolean> {
-        val retval = MutableLiveData<Boolean>()
-        retval.value = isConfigured
-        return retval
-    }
-
-    // Fetch configurations for image paths
-    private fun tmdbConfig() {
+        // Fetch configurations for image paths
         tmdbService.config().enqueue(object : Callback<TMDbConfigCallback> {
 
             override fun onResponse(call: Call<TMDbConfigCallback>, response: Response<TMDbConfigCallback>) {
@@ -54,13 +44,19 @@ object TmdbRepository {
                 BASE_BACKDROP_SIZE =
                     response.body()!!.images.backdrop_sizes[response.body()!!.images.backdrop_sizes.size - 1]
                 isConfigured = true
-                android.util.Log.d(TAG, "tmdbConfig: Configured URLs")
+                Log.d(TAG, "tmdbConfig: Configured URLs")
             }
 
             override fun onFailure(call: Call<TMDbConfigCallback>, t: Throwable) {
-                android.util.Log.d(TAG, "tmdbConfig: Something went wrong \n$t\n")
+                Log.d(TAG, "tmdbConfig: Something went wrong \n$t\n")
             }
         })
+    }
+
+    fun getConfigStatus(): LiveData<Boolean> {
+        val retval = MutableLiveData<Boolean>()
+        retval.value = isConfigured
+        return retval
     }
 
     // Fetch and load a random poster for a popular movie
@@ -123,7 +119,7 @@ object TmdbRepository {
                     }
 
                     override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
-                        Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
+                        Log.e(TAG, "getTrending: Something went wrong \n$t\n")
                     }
                 })
             }
@@ -137,7 +133,7 @@ object TmdbRepository {
                     }
 
                     override fun onFailure(call: Call<TMDbCallback<TMDbItem>>, t: Throwable) {
-                        Log.e(TAG, "getDiscover: Something went wrong \n$t\n")
+                        Log.e(TAG, "getTrending: Something went wrong \n$t\n")
                     }
                 })
             }
@@ -150,16 +146,16 @@ object TmdbRepository {
 
         when (type) {
             MOVIES_POPULAR ->
-                tmdbService.popularMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.popularMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
 
             MOVIES_TOP_RATED ->
-                tmdbService.topRatedMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.topRatedMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
 
             MOVIES_UPCOMING ->
-                tmdbService.upcomingMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.upcomingMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
 
             MOVIES_NOW_PLAYING ->
-                tmdbService.nowPlayingMovies(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.nowPlayingMovies(pageNum).enqueue(TMDbCallbackWrapper(data))
         }
         return data
     }
@@ -169,34 +165,34 @@ object TmdbRepository {
 
         when (type) {
             SHOWS_POPULAR ->
-                tmdbService.popularShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.popularShows(pageNum).enqueue(TMDbCallbackWrapper(data))
             SHOWS_TOP_RATED ->
-                tmdbService.topRatedShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.topRatedShows(pageNum).enqueue(TMDbCallbackWrapper(data))
             SHOWS_ON_AIR ->
-                tmdbService.onAirShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.onAirShows(pageNum).enqueue(TMDbCallbackWrapper(data))
             SHOWS_AIRING_TODAY ->
-                tmdbService.airingTodayShows(pageNum).enqueue(CallbackWrapper(data))
+                tmdbService.airingTodayShows(pageNum).enqueue(TMDbCallbackWrapper(data))
         }
         return data
     }
 
     fun getPopularPeople(pageNum: Int): MutableLiveData<TMDbCallback<TMDbItem>> {
         val data = MutableLiveData<TMDbCallback<TMDbItem>>()
-        tmdbService.popularPeople(pageNum).enqueue(CallbackWrapper(data))
+        tmdbService.popularPeople(pageNum).enqueue(TMDbCallbackWrapper(data))
         return data
     }
 
     // Get movie details by id
-    fun getMovieDetails(id: Int): MutableLiveData<TMDbMovieItem> {
-        val data = MutableLiveData<TMDbMovieItem>()
-        tmdbService.movieDetails(id).enqueue(CallbackWrapper(data))
+    fun getMovieDetails(id: Int): MutableLiveData<TMDbMovieDetails> {
+        val data = MutableLiveData<TMDbMovieDetails>()
+        tmdbService.movieDetails(id).enqueue(TMDbCallbackWrapper(data))
         return data
     }
 
     // Get videos related to movie
     fun getMovieVideos(id: Int): MutableLiveData<TMDbVideos> {
         val data = MutableLiveData<TMDbVideos>()
-        tmdbService.movieVideos(id).enqueue(CallbackWrapper(data))
+        tmdbService.movieVideos(id).enqueue(TMDbCallbackWrapper(data))
         return data
     }
 

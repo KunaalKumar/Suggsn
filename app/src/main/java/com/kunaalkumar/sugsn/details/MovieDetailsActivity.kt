@@ -1,149 +1,46 @@
 package com.kunaalkumar.sugsn.details
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.palette.graphics.Palette
-import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.glide_API.GlideApp
+import com.kunaalkumar.sugsn.tmdb.TMDbMovieDetails
 import com.kunaalkumar.sugsn.view_model.DetailsViewModel
 import kotlinx.android.synthetic.main.activity_details.*
+import kotlinx.android.synthetic.main.details_bar.*
 
 class MovieDetailsActivity : AppCompatActivity() {
 
     companion object {
         // Intent extra tags
-        const val ITEM_NAME = "ITEM_NAME"
-        const val BACKDROP = "BACKDROP"
-        const val POSTER = "POSTER"
-        const val MOVIE_ID = "MOVIE_ID"
+        const val ITEM_DATA = "ITEM_DATA"
     }
 
-    private var detailColor: Int = 0
-    private var expandedTitleColor: Int = 0
-
-    private lateinit var viewModel: DetailsViewModel
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
-        viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+        val data = intent.getSerializableExtra(ITEM_DATA) as TMDbMovieDetails
 
-        // Default colors
-        detailColor = ContextCompat.getColor(
-            applicationContext,
-            R.color.colorPrimary
-        )
-        expandedTitleColor = ContextCompat.getColor(
-            applicationContext,
-            android.R.color.black
-        )
-        collapsing_toolbar.title = intent.getStringExtra(ITEM_NAME)
-        setSupportActionBar(toolbar)
+        item_title.text = data.title
 
-        // Load image and enable colors
-        loadImageAndSetDetailColor(intent.getStringExtra(POSTER), item_poster)
-
-        viewModel.getMovieDetails(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer {})
-        viewModel.getMovieData().observe(this, Observer {
-            item_tagline.text = it.tagline
-            item_rating.text = it.vote_average.toString()
-        })
-
-        viewModel.getMovieVideos(intent.getStringExtra(MOVIE_ID).toInt()).observe(this, Observer { })
-        viewModel.getMovieVideos().observe(this, Observer {
-            //TODO: Link Video by setting on click listener
-//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=${it.results[0].key}")))
-        })
-    }
-
-    // Load image into given imageView and extract detail color using palette
-    private fun loadImageAndSetDetailColor(image: String, imageView: ImageView) {
         GlideApp.with(this)
-            .asBitmap()
-            .load(image)
-            .listener(object : RequestListener<Bitmap> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Bitmap>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-//                    itemView.progress_bar.visibility = View.GONE
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    model: Any?,
-                    target: Target<Bitmap>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-//                    itemView.progress_bar.visibility = View.GONE
-                    Palette.from(resource).generate { palette: Palette? ->
-                        detailColor = palette!!.getDarkVibrantColor(
-                            ContextCompat.getColor(
-                                applicationContext,
-                                R.color.darkGray
-                            )
-                        )
-
-                        expandedTitleColor = palette.getVibrantColor(
-                            ContextCompat.getColor(
-                                applicationContext,
-                                android.R.color.white
-                            )
-                        )
-                        loadImageAndUpdateColors(intent.getStringExtra(BACKDROP), movie_backdrop)
-                    }
-                    return false
-                }
-            })
+            .load(data.getPoster())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(imageView)
-    }
+            .into(item_poster)
 
-    private fun loadImageAndUpdateColors(image: String, imageView: ImageView) {
         GlideApp.with(this)
-            .load(image)
+            .load(data.getBackdrop())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
+            .into(item_backdrop)
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    // Update colors
-                    collapsing_toolbar.setCollapsedTitleTextColor(detailColor)
-                    collapsing_toolbar.setExpandedTitleColor(expandedTitleColor)
-                    item_tagline.setTextColor(expandedTitleColor)
-                    item_rating.setTextColor(expandedTitleColor)
-                    return false
-                }
-            })
-            .into(imageView)
+        rating_text.text = data.vote_average.toString()
+        runtime_text.text = data.runtime.plus("m")
     }
 }

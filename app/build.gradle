@@ -16,6 +16,7 @@ android {
     buildTypes {
         buildTypes.each {
             it.buildConfigField 'String', 'TMDb_API_KEY', THE_MOVIE_DB_API_KEY
+            it.buildConfigField 'String', 'TRAKT_API_KEY', TRAKT_API_KEY
         }
         release {
             minifyEnabled false
@@ -32,22 +33,22 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
     implementation 'androidx.core:core-ktx:1.1.0-alpha05'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13-beta-2'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha05'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha05'
 
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation 'com.google.android.material:material:1.1.0-alpha06'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.5.0'
 
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0-alpha03'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0-alpha04'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
@@ -61,5 +62,4 @@ dependencies {
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
     // Optional, if you use support library fragments:
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
-
 }
