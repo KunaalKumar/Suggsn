@@ -33,28 +33,6 @@ class MainActivity : AppCompatActivity() {
         TmdbRepository.WIDTH = (displayMetric.widthPixels * 0.5).roundToInt()
         TmdbRepository.HEIGHT = (TmdbRepository.WIDTH * 1.5).roundToInt()
 
-        /*****/
-
-        val imdbService = RetrofitFactory.makeImdbRetrofitService()
-
-        imdbService.getMoviesInTheaters().enqueue(object : Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                val doc = Jsoup.parse(response.body())
-                Log.d(TAG, "Response body: ${doc.getElementsByClass("list detail sub-list")[0]
-                    .getElementsByAttributeValue("itemType","http://schema.org/Movie")[0]
-                    .getElementsByClass("overview-top")[0]
-                    .getElementsByTag("a")[0]
-                    .attr("title")}")
-            }
-        })
-
-        /********/
-//        openFragment(HomeFragment())
-
         bottom_nav_bar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home_dest -> {

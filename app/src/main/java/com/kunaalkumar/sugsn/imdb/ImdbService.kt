@@ -11,4 +11,7 @@ interface ImdbService {
     @GET("movies-in-theaters/")
     fun getMoviesInTheaters(): Call<String>
 
+    @GET("chart/top/")
+    fun getTopRatedMovies(): Call<String>
+
 }
