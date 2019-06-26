@@ -1,5 +1,6 @@
 package com.kunaalkumar.sugsn.imdb
 
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -12,6 +13,6 @@ interface ImdbService {
     fun getMoviesInTheaters(): Call<String>
 
     @GET("chart/top/")
-    fun getTopRatedMovies(): Call<String>
+    fun getTopRatedMovies(): Single<String>
 
 }

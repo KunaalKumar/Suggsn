@@ -2,21 +2,13 @@ package com.kunaalkumar.sugsn
 
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.kunaalkumar.sugsn.home.HomeFragment
-import com.kunaalkumar.sugsn.imdb.ImdbService
-import com.kunaalkumar.sugsn.movies.MoviesFragment
-import com.kunaalkumar.sugsn.people.PeopleFragment
-import com.kunaalkumar.sugsn.repositories.TmdbRepository
-import com.kunaalkumar.sugsn.shows.ShowsFragment
-import com.kunaalkumar.sugsn.util.RetrofitFactory
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.kunaalkumar.sugsn.view_model.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jsoup.Jsoup
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
@@ -30,8 +22,14 @@ class MainActivity : AppCompatActivity() {
         // Get screen size and convert to pixels from dpi for poster images
         val displayMetric = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetric)
-        TmdbRepository.WIDTH = (displayMetric.widthPixels * 0.5).roundToInt()
-        TmdbRepository.HEIGHT = (TmdbRepository.WIDTH * 1.5).roundToInt()
+        val width = (displayMetric.widthPixels * 0.5).roundToInt()
+        val height = (width * 1.5).roundToInt()
+
+        val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+
+        viewModel.topRatedMoviesList.observe(this, Observer<String> {
+            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        })
 
         bottom_nav_bar.setOnNavigationItemSelectedListener {
             when (it.itemId) {
