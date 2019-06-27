@@ -2,7 +2,8 @@ package com.kunaalkumar.sugsn.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.kunaalkumar.sugsn.repositories.ImdbRepository
+import com.kunaalkumar.sugsn.imdb.ImdbListItem
+import com.kunaalkumar.sugsn.imdb.ImdbRepository
 import io.reactivex.disposables.CompositeDisposable
 
 class MainActivityViewModel() : ViewModel() {
@@ -11,7 +12,7 @@ class MainActivityViewModel() : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    val topRatedMoviesList: LiveData<String> by lazy {
+    val topRatedMoviesList: LiveData<ArrayList<ImdbListItem>> by lazy {
         ImdbRepository.getTopRatedMovies(compositeDisposable)
     }
 

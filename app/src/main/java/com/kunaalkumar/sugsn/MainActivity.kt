@@ -2,6 +2,7 @@ package com.kunaalkumar.sugsn
 
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -27,8 +28,10 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
-        viewModel.topRatedMoviesList.observe(this, Observer<String> {
-            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+        viewModel.topRatedMoviesList.observe(this, Observer { movieList ->
+            movieList.forEachIndexed { index, movie ->
+                Log.d(TAG, "${index}: ${movie.title}")
+            }
         })
 
         bottom_nav_bar.setOnNavigationItemSelectedListener {
@@ -62,5 +65,9 @@ class MainActivity : AppCompatActivity() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, fragment).disallowAddToBackStack()
         transaction.commit()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }
