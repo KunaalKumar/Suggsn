@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kunaalkumar.sugsn.view_model.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.math.roundToInt
@@ -26,45 +27,18 @@ class MainActivity : AppCompatActivity() {
         val width = (displayMetric.widthPixels * 0.5).roundToInt()
         val height = (width * 1.5).roundToInt()
 
+        top_movies_rv.layoutManager = LinearLayoutManager(this)
+
+        val adapter = RecyclerViewAdapter(this)
+        top_movies_rv.adapter = adapter
+
         val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
 
         viewModel.topRatedMoviesList.observe(this, Observer { movieList ->
             movieList.forEachIndexed { index, movie ->
-                Log.d(TAG, "${index}: ${movie.title}")
+                adapter.addItem(ListItemModel(movie.title, movie.poster))
             }
         })
-
-        bottom_nav_bar.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.home_dest -> {
-                    //openFragment(HomeFragment())
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.movies_dest -> {
-                    //openFragment(MoviesFragment())
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.shows_dest -> {
-                    //openFragment(ShowsFragment())
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.people_dest -> {
-                    //openFragment(PeopleFragment())
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                else -> return@setOnNavigationItemSelectedListener false
-            }
-        }
-    }
-
-    private fun openFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment).disallowAddToBackStack()
-        transaction.commit()
     }
 
     override fun onDestroy() {

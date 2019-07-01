@@ -1,11 +1,9 @@
 package com.kunaalkumar.sugsn.util
 
-import com.kunaalkumar.sugsn.BuildConfig
 import com.kunaalkumar.sugsn.imdb.ImdbService
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object RetrofitFactory {

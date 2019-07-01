@@ -26,13 +26,13 @@ object ImdbRepository {
                     // Create list of ImdbListItems from response
                     val doc = Jsoup.parse(response)
                     val listOfMovies = ArrayList<ImdbListItem>()
+
                     doc.select("tbody.lister-list").select("tr").forEach { listItem ->
                         listOfMovies.add(
-                            parseMovie(
-                                listItem
-                            )
+                            parseMovie(listItem)
                         )
                     }
+
                     return@map listOfMovies
                 }
                 .subscribeOn(Schedulers.io())
