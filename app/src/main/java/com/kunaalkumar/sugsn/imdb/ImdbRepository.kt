@@ -8,7 +8,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import kotlin.collections.ArrayList
 
 object ImdbRepository {
     val TAG: String = "ImdbRepository"
@@ -32,7 +31,6 @@ object ImdbRepository {
                             parseMovie(listItem)
                         )
                     }
-
                     return@map listOfMovies
                 }
                 .subscribeOn(Schedulers.io())

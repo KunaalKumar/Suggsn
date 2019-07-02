@@ -5,8 +5,8 @@
     <data>
 
         <variable
-                name="viewModel"
-                type="com.kunaalkumar.sugsn.ListItemModel" />
+                name="item"
+                type="com.kunaalkumar.sugsn.imdb.ImdbListItem" />
     </data>
 
     <LinearLayout
@@ -19,14 +19,16 @@
                 android:id="@+id/item_image"
                 android:layout_width="200dp"
                 android:layout_height="250dp"
-                app:imgSrc="@{viewModel.poster}" />
+                android:layout_gravity="center"
+                app:imgSrc="@{item.poster}" />
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@{viewModel.title, default=item_title}" />
+                android:padding="16dp"
+                android:text="@{item.title, default=item_title}" />
 
     </LinearLayout>
 </layout>
