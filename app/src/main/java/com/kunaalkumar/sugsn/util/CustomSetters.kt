@@ -1,12 +1,63 @@
 package com.kunaalkumar.sugsn.util
 
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
+import androidx.palette.graphics.Palette
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.kunaalkumar.sugsn.glide_API.GlideApp
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 @BindingAdapter("imgSrc")
 fun setImageSrc(view: AppCompatImageView, poster: String) {
     GlideApp.with(view.context)
         .load(poster)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(view)
+}
+
+@BindingAdapter("paletteBackgroundSrc")
+fun setPaletteBackgroundSrc(view: View, poster: String) {
+
+    Glide.with(view.context)
+        .asBitmap()
+        .load(poster)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                val palette = Palette.from(resource).generate()
+                view.setBackgroundColor(
+                    manipulateColor(
+                        palette.getDarkMutedColor(Color.GRAY),
+                        0.5f
+                    )
+                )
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+                // this is called when imageView is cleared on lifecycle call or for
+                // some other reason.
+                // if you are referencing the bitmap somewhere else too other than this imageView
+                // clear it here as you can no longer have the bitmap
+            }
+        })
+}
+
+fun manipulateColor(color: Int, factor: Float): Int {
+    val a = Color.alpha(color)
+    val r = (Color.red(color) * factor).roundToInt()
+    val g = (Color.green(color) * factor).roundToInt()
+    val b = (Color.blue(color) * factor).roundToInt()
+    return Color.argb(
+        a,
+        min(r, 255),
+        min(g, 255),
+        min(b, 255)
+    )
 }
