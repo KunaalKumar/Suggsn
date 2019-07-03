@@ -1,7 +1,10 @@
 package com.kunaalkumar.sugsn.util
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -32,12 +35,22 @@ fun setPaletteBackgroundSrc(view: View, poster: String) {
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 val palette = Palette.from(resource).generate()
-                view.setBackgroundColor(
-                    manipulateColor(
-                        palette.getDarkMutedColor(Color.GRAY),
-                        0.5f
-                    )
+                val colorFrom = (view.background as ColorDrawable).color
+                val colorTo = manipulateColor(
+                    palette.getDominantColor(Color.BLACK),
+                    0.65f
                 )
+                // Animate color change
+                ObjectAnimator.ofObject(
+                    view,
+                    "backgroundColor",
+                    ArgbEvaluator(),
+                    colorFrom,
+                    colorTo
+                ).apply {
+                    duration = 500
+                    start()
+                }
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {

@@ -22,10 +22,27 @@
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 app:imgSrc="@{item.poster}"
-                app:layout_constraintBottom_toTopOf="@+id/item_title"
                 app:layout_constraintDimensionRatio="27:40"
+                app:layout_constraintEnd_toStartOf="@+id/item_title"
+                app:layout_constraintHorizontal_bias="0.432"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/item_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:paddingStart="6dp"
+                android:text="@{item.rating, default=item_rating}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/item_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_title"
@@ -36,10 +53,20 @@
                 android:text="@{item.title, default=item_title}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/item_image"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/item_image" />
+                android:textSize="26sp"
+                app:layout_constraintBottom_toTopOf="@+id/item_rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_image"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="76dp"
+                android:src="@drawable/ic_star"
+                app:layout_constraintBottom_toBottomOf="@+id/item_rating"
+                app:layout_constraintStart_toEndOf="@+id/item_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

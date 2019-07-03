@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         top_movies_rv.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = this.adapter
-//            setItemViewCacheSize(20)
         }
 
         val viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
