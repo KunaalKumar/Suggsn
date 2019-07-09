@@ -7,12 +7,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.databinding.RecyclerViewItemBinding
-import com.kunaalkumar.sugsn.imdb.ImdbListItem
+import com.kunaalkumar.sugsn.imdb.ListItem
 
 class RecyclerViewAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
-    private val data = ArrayList<ImdbListItem>()
+    private val data = ArrayList<ListItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: RecyclerViewItemBinding = DataBindingUtil.inflate(
@@ -28,14 +28,14 @@ class RecyclerViewAdapter(private val context: Context) :
         holder.bind(context, data[position])
     }
 
-    fun addItem(item: ImdbListItem) {
+    fun addItem(item: ListItem) {
         data.add(item)
         notifyItemInserted(data.size)
     }
 
     class ViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(context: Context, data: ImdbListItem) {
+        fun bind(context: Context, data: ListItem) {
             binding.item = data
             binding.root.setOnClickListener {
                 Toast.makeText(context, "Clicked on ${data.title}", Toast.LENGTH_LONG).show()

@@ -6,7 +6,7 @@
 
         <variable
                 name="item"
-                type="com.kunaalkumar.sugsn.imdb.ImdbListItem" />
+                type="com.kunaalkumar.sugsn.imdb.ListItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
