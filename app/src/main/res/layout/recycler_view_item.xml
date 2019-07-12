@@ -6,7 +6,11 @@
 
         <variable
                 name="item"
-                type="com.kunaalkumar.sugsn.imdb.ListItem" />
+                type="com.kunaalkumar.sugsn.util.ListItem" />
+
+        <variable
+                name="rotten_rating"
+                type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

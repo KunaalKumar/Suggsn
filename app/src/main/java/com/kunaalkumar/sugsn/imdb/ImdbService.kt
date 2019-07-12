@@ -1,6 +1,6 @@
 package com.kunaalkumar.sugsn.imdb
 
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -10,6 +10,6 @@ interface ImdbService {
     fun getMoviesInTheaters(): Call<String>
 
     @GET("chart/top/")
-    fun getTopRatedMovies(): Flowable<String>
+    fun getTopRatedMovies(): Observable<String>
 
 }

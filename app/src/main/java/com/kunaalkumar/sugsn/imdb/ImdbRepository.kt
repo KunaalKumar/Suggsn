@@ -1,25 +1,17 @@
 package com.kunaalkumar.sugsn.imdb
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.kunaalkumar.sugsn.rotten.RottenRepository
+import com.kunaalkumar.sugsn.util.ListItem
 import com.kunaalkumar.sugsn.util.RetrofitFactory
-import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
-import java.util.*
-import kotlin.collections.ArrayList
 
 object ImdbRepository {
     val TAG: String = "ImdbRepository"
     private val imdbService = RetrofitFactory.makeImdbRetrofitService()
 
-    fun getTopRatedMovies(): Flowable<ArrayList<ListItem>> {
+    fun getTopRatedMovies(): Observable<ArrayList<ListItem>> {
         return imdbService.getTopRatedMovies().map { response ->
             val doc = Jsoup.parse(response)
             val listOfMovies = ArrayList<ListItem>()
@@ -31,7 +23,7 @@ object ImdbRepository {
             }
 
             return@map listOfMovies
-        }
+        }.subscribeOn(Schedulers.io())
     }
 
     // Parse movie list jsoup element and return as ListItem

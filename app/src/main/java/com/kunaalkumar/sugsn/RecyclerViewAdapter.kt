@@ -7,11 +7,10 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.databinding.RecyclerViewItemBinding
-import com.kunaalkumar.sugsn.imdb.ListItem
+import com.kunaalkumar.sugsn.util.ListItem
 
 class RecyclerViewAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
-
     private val data = ArrayList<ListItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,8 +34,12 @@ class RecyclerViewAdapter(private val context: Context) :
 
     class ViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val TAG: String = "ViewHolder"
+
         fun bind(context: Context, data: ListItem) {
             binding.item = data
+
             binding.root.setOnClickListener {
                 Toast.makeText(context, "Clicked on ${data.title}", Toast.LENGTH_LONG).show()
             }

@@ -1,25 +1,21 @@
 package com.kunaalkumar.sugsn.rotten
 
-import android.annotation.SuppressLint
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.kunaalkumar.sugsn.imdb.ListItem
 import com.kunaalkumar.sugsn.util.RetrofitFactory
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.Observable
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-fun main() {
-    RottenRepository.getTV("the boys")
-}
-
 object RottenRepository {
-    val TAG: String = "RottenRepository"
+
+    enum class SearchType {
+        MOVIE, TV
+    }
+
+    private val TAG: String = "RottenRepository"
     private val rottenService = RetrofitFactory.makeRottenRetrofitService()
 
     fun getTV(name: String) {
@@ -44,17 +40,27 @@ object RottenRepository {
         })
     }
 
-    fun getSearchResult(query: String, compositeDisposable: CompositeDisposable) {
-        compositeDisposable.add(
-            rottenService.getSearchResults(query).map { response ->
-                Log.d(TAG, "Responded with: $response")
-                return@map response
+    fun getMovie(name: String): Observable<String> {
+        return rottenService.getMovie(name).map { response ->
+            val doc = Jsoup.parse(response)
+            doc.select("span.mop-ratings-wrap__percentage").first().text()
+            return@map "10"
+        }
+    }
+
+    fun getSearchResult(query: String, searchType: SearchType): Observable<String> {
+        return rottenService.getSearchResults(query).map { response ->
+            val doc = Jsoup.parse(response)
+            when (searchType) {
+                RottenRepository.SearchType.MOVIE -> {
+                    val test = doc.select("ul.results_ul")
+                    println("Got this ${test.size}")
+                }
+                RottenRepository.SearchType.TV -> {
+                }
             }
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    Log.d(TAG, "Test for : $query")
-                }, {
-                })
-        )
+            Log.d(TAG, "Responded with: $response")
+            return@map response
+        }
     }
 }
