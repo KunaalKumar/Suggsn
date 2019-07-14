@@ -1,5 +1,8 @@
 package com.kunaalkumar.sugsn.util
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+
 data class ListItem(
     val title: String,
     val poster: String,
@@ -11,14 +14,15 @@ data class ListItem(
     }
 }
 
-
-data class OMDB_Result(
-    val Title: String,
-    val Ratings: List<OMDB_RATING>,
+@JsonClass(generateAdapter = true)
+data class OmdbObject(
+    @Json(name = "Title") val title: String,
+    @Json(name = "Ratings") val ratings: List<OmdbRating>,
     val tomatoURL: String
 )
 
-data class OMDB_RATING(
-    val Source: String,
-    val Value: String
+@JsonClass(generateAdapter = true)
+data class OmdbRating(
+    @Json(name = "Source") val source: String,
+    @Json(name = "Value") val value: String
 )

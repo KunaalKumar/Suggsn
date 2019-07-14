@@ -11,12 +11,12 @@ object OMDBRepository {
     private val omdbService = RetrofitFactory.makeOMDBRetrofitService()
 
     fun getRottenRating(imdbId: String): Observable<String> {
-        return omdbService.getRottenLink(BuildConfig.OMDB_API_KEY, imdbId).map {
-            it.Ratings.forEach {
-                if (it.Source.equals("Rotten Tomatoes"))
-                    return@map it.Value
+        return omdbService.getRottenLink(BuildConfig.OMDB_API_KEY, imdbId).map { movie ->
+            movie.ratings.forEach { movieRatings ->
+                if (movieRatings.source.equals("Rotten Tomatoes"))
+                    return@map movieRatings.value
             }
-            return@map it.Ratings[0].Value
+            return@map "Not Found"
         }.subscribeOn(Schedulers.io())
     }
 }

@@ -57,17 +57,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { response ->
+                    //                    TODO("Update adapter")
                     Log.d(TAG, "$response")
                 }
         )
-
-//        mDisposable.add(
-//            OMDBRepository.getRottenRating("tt8079248")
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe {
-//                    Log.d(TAG, "Response is: $it")
-//                }
-//        )
 
         // Scroll additional items once user reaches end of list
         top_movies_rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
