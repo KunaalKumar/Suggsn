@@ -6,7 +6,8 @@ import com.squareup.moshi.JsonClass
 data class ListItem(
     val title: String,
     val poster: String,
-    val rating: String,
+    val imdbRating: String,
+    var rottenRating: String?,
     val link: String
 ) {
     fun getId(): String {

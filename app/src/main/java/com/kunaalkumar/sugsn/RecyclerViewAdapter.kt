@@ -32,6 +32,12 @@ class RecyclerViewAdapter(private val context: Context) :
         notifyItemInserted(data.size)
     }
 
+    fun updateItem(item: ListItem) {
+        val itemPos = data.indexOf(item)
+        data.set(itemPos, item)
+        notifyItemChanged(itemPos)
+    }
+
     class ViewHolder(private val binding: RecyclerViewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

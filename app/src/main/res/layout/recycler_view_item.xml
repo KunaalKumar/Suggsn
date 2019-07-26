@@ -34,21 +34,6 @@
                 app:layout_constraintVertical_bias="0.0" />
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/item_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
-                android:paddingStart="6dp"
-                android:text="@{item.rating, default=item_rating}"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/item_title" />
-
-        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/item_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -58,19 +43,62 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="26sp"
-                app:layout_constraintBottom_toTopOf="@+id/item_rating"
+                app:layout_constraintBottom_toTopOf="@+id/imdb_rating"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/item_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-                android:id="@+id/imageView"
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imdb_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="76dp"
+                android:padding="8dp"
                 android:src="@drawable/ic_star"
-                app:layout_constraintBottom_toBottomOf="@+id/item_rating"
-                app:layout_constraintStart_toEndOf="@+id/item_image" />
+                app:layout_constraintBottom_toBottomOf="@+id/imdb_rating"
+                app:layout_constraintEnd_toStartOf="@+id/imdb_rating"
+                app:layout_constraintTop_toTopOf="@+id/imdb_rating" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/imdb_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeTextType="uniform"
+                android:padding="8dp"
+                android:text="@{item.imdbRating, default=imdb_rating}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@+id/rotten_rating"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.65"
+                app:layout_constraintStart_toEndOf="@+id/item_image"
+                app:layout_constraintTop_toBottomOf="@+id/item_title" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/rotten_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:src="@drawable/ic_star"
+                app:layout_constraintBottom_toBottomOf="@+id/rotten_rating"
+                app:layout_constraintEnd_toStartOf="@+id/imdb_rating"
+                app:layout_constraintStart_toStartOf="@+id/imdb_icon"
+                app:layout_constraintTop_toTopOf="@+id/rotten_rating" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/rotten_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:autoSizeTextType="uniform"
+                android:padding="8dp"
+                android:text="@{item.rottenRating, default=rotten_rating}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imdb_rating"
+                app:layout_constraintStart_toStartOf="@+id/imdb_rating"
+                app:layout_constraintTop_toBottomOf="@+id/imdb_rating" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

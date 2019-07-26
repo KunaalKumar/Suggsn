@@ -36,6 +36,7 @@ object ImdbRepository {
                 .attr("src")
                 .replace(".jpg", "#\$1.jpg"), // Replace to increase poster resolution
             movie.selectFirst("td.ratingColumn.imdbRating").selectFirst("strong").text(),
+            null,
             movie.selectFirst("td.titleColumn").selectFirst("a").attr("href")
         )
     }
