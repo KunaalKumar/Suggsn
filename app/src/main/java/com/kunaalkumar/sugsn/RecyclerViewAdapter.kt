@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.databinding.RecyclerViewItemBinding
@@ -45,6 +46,13 @@ class RecyclerViewAdapter(private val context: Context) :
 
         fun bind(context: Context, data: ListItem) {
             binding.item = data
+
+            if (data.rottenRating != null) {
+                binding.rottenIc = when (data.rottenRating!!.substringBefore('%').toInt() >= 60) {
+                    true -> ContextCompat.getDrawable(context, R.drawable.ic_rotten_fresh)
+                    false -> ContextCompat.getDrawable(context, R.drawable.ic_rotten_rotten)
+                }
+            }
 
             binding.root.setOnClickListener {
                 Toast.makeText(context, "Clicked on ${data.title}", Toast.LENGTH_LONG).show()

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,6 +12,10 @@
         <variable
                 name="rotten_rating"
                 type="String" />
+
+        <variable
+                name="rottenIc"
+                type="android.graphics.drawable.Drawable" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +48,7 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="26sp"
-                app:layout_constraintBottom_toTopOf="@+id/imdb_rating"
+                app:layout_constraintBottom_toTopOf="@+id/rotten_rating"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/item_image"
@@ -52,9 +57,9 @@
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imdb_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:src="@drawable/ic_star"
+                android:layout_height="0dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_imdb"
                 app:layout_constraintBottom_toBottomOf="@+id/imdb_rating"
                 app:layout_constraintEnd_toStartOf="@+id/imdb_rating"
                 app:layout_constraintTop_toTopOf="@+id/imdb_rating" />
@@ -63,42 +68,42 @@
                 android:id="@+id/imdb_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:autoSizeTextType="uniform"
                 android:padding="8dp"
-                android:text="@{item.imdbRating, default=imdb_rating}"
+                android:text="@{item.imdbRating, default=0.0}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@+id/rotten_rating"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.65"
-                app:layout_constraintStart_toEndOf="@+id/item_image"
-                app:layout_constraintTop_toBottomOf="@+id/item_title" />
+                app:layout_constraintBottom_toBottomOf="@+id/rotten_icon"
+                app:layout_constraintEnd_toStartOf="@+id/rotten_icon"
+                app:layout_constraintTop_toTopOf="@+id/rotten_icon" />
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/rotten_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:src="@drawable/ic_star"
+                android:layout_height="0dp"
+                android:padding="4dp"
+                android:src="@{rottenIc}"
                 app:layout_constraintBottom_toBottomOf="@+id/rotten_rating"
-                app:layout_constraintEnd_toStartOf="@+id/imdb_rating"
-                app:layout_constraintStart_toStartOf="@+id/imdb_icon"
-                app:layout_constraintTop_toTopOf="@+id/rotten_rating" />
+                app:layout_constraintEnd_toStartOf="@+id/rotten_rating"
+                app:layout_constraintTop_toTopOf="@+id/rotten_rating"
+                app:layout_constraintVertical_bias="0.0"
+                tools:src="@drawable/ic_rotten_fresh" />
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/rotten_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginBottom="32dp"
                 android:autoSizeTextType="uniform"
                 android:padding="8dp"
-                android:text="@{item.rottenRating, default=rotten_rating}"
+                android:text="@{item.rottenRating, default=00}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/imdb_rating"
-                app:layout_constraintStart_toStartOf="@+id/imdb_rating"
-                app:layout_constraintTop_toBottomOf="@+id/imdb_rating" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.825"
+                app:layout_constraintStart_toEndOf="@+id/item_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
