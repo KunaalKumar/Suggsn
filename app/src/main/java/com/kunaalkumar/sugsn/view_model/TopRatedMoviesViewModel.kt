@@ -7,11 +7,12 @@ import com.kunaalkumar.sugsn.omdb.OMDBRepository
 import com.kunaalkumar.sugsn.util.ListItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class MainActivityViewModel : ViewModel() {
+class TopRatedMoviesViewModel : ViewModel() {
 
-    val TAG: String = "Sugsn@MainActivityViewModel"
+    val TAG: String = "Sugsn@TopRatedMoviesViewModel"
     val adapter: RecyclerViewAdapter = RecyclerViewAdapter()
 
     private lateinit var itemQueue: Queue<ListItem>
@@ -20,9 +21,14 @@ class MainActivityViewModel : ViewModel() {
         ImdbRepository.getTopRatedMovies()
     }
 
-    fun getTopMovies() {
+    init {
+        getTopMovies()
+    }
+
+    private fun getTopMovies() {
         mDisposable.add(topRatedMoviesList
             .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
             .subscribe { movieList ->
                 itemQueue = LinkedList(movieList)
                 loadNextTenItems()
@@ -37,6 +43,7 @@ class MainActivityViewModel : ViewModel() {
             mDisposable.add(
                 OMDBRepository.getRottenRating(item.getId())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
                     .subscribe { response ->
                         item.rottenRating = response
                         adapter.updateItem(item)
