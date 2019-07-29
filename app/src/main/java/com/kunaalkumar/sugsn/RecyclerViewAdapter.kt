@@ -1,6 +1,5 @@
 package com.kunaalkumar.sugsn
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.databinding.RecyclerViewItemBinding
 import com.kunaalkumar.sugsn.util.ListItem
 
-class RecyclerViewAdapter(private val context: Context) :
+class RecyclerViewAdapter :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
     private val data = ArrayList<ListItem>()
 
@@ -25,7 +24,7 @@ class RecyclerViewAdapter(private val context: Context) :
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, data[position])
+        holder.bind(data[position])
     }
 
     fun addItem(item: ListItem) {
@@ -44,18 +43,21 @@ class RecyclerViewAdapter(private val context: Context) :
 
         val TAG: String = "ViewHolder"
 
-        fun bind(context: Context, data: ListItem) {
+        fun bind(data: ListItem) {
             binding.item = data
-
             if (data.rottenRating != null) {
                 binding.rottenIc = when (data.rottenRating!!.substringBefore('%').toInt() >= 60) {
-                    true -> ContextCompat.getDrawable(context, R.drawable.ic_rotten_fresh)
-                    false -> ContextCompat.getDrawable(context, R.drawable.ic_rotten_rotten)
+                    true -> ContextCompat.getDrawable(itemView.context, R.drawable.ic_rotten_fresh)
+                    false -> ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.ic_rotten_rotten
+                    )
                 }
             }
 
             binding.root.setOnClickListener {
-                Toast.makeText(context, "Clicked on ${data.title}", Toast.LENGTH_LONG).show()
+                Toast.makeText(itemView.context, "Clicked on ${data.title}", Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }

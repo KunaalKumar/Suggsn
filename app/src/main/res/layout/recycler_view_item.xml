@@ -90,6 +90,17 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:src="@drawable/ic_rotten_fresh" />
 
+        <androidx.cardview.widget.CardView
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:layout_margin="4dp"
+                android:backgroundTint="@android:color/white"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rotten_icon"
+                app:layout_constraintEnd_toStartOf="@+id/rotten_icon"
+                app:layout_constraintStart_toEndOf="@+id/imdb_rating"
+                app:layout_constraintTop_toTopOf="@+id/rotten_icon" />
+
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/rotten_rating"
                 android:layout_width="wrap_content"
