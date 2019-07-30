@@ -30,7 +30,10 @@ object ImdbRepository {
     private fun parseMovie(movie: Element): ListItem {
         return ListItem(
             movie.selectFirst("td.titleColumn").selectFirst("a").text(),
-            movie.selectFirst("td.titleColumn > span.secondaryInfo").text(),
+            movie.selectFirst("td.titleColumn > span.secondaryInfo").text().removeSurrounding(
+                "(",
+                ")"
+            ),
             movie.selectFirst("td.posterColumn")
                 .selectFirst("a")
                 .selectFirst("img")

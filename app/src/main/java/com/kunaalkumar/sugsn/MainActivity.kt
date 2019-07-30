@@ -19,6 +19,4 @@ class MainActivity : AppCompatActivity() {
 //        val height = (width * 1.5).roundToInt()
 
     }
-
-
 }
