@@ -6,7 +6,7 @@
         app:startDestination="@id/topRatedMoviesFragment2">
     <fragment
             android:id="@+id/topRatedMoviesFragment2"
-            android:name="com.kunaalkumar.sugsn.TopRatedMoviesFragment"
+            android:name="com.kunaalkumar.sugsn.top_rated_movies.TopRatedMoviesFragment"
             android:label="fragment_top_rated_movies"
             tools:layout="@layout/fragment_top_rated_movies" />
 </navigation>

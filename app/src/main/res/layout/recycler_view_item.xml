@@ -18,103 +18,127 @@
                 type="android.graphics.drawable.Drawable" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/darkGray"
-            android:orientation="vertical"
-            android:padding="16dp"
-            app:paletteBackgroundSrc="@{item.poster}">
+            android:layout_margin="12dp"
+            android:outlineProvider="background"
+            app:cardCornerRadius="8dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/item_image"
-                android:layout_width="0dp"
-                android:layout_height="200dp"
-                app:imgSrc="@{item.poster}"
-                app:layout_constraintDimensionRatio="27:40"
-                app:layout_constraintEnd_toStartOf="@+id/item_title"
-                app:layout_constraintHorizontal_bias="0.432"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/item_title"
-                android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoSizeTextType="uniform"
+                android:background="@color/darkGray"
+                android:orientation="vertical"
                 android:padding="16dp"
-                android:text="@{item.title, default=item_title}"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="26sp"
-                app:layout_constraintBottom_toTopOf="@+id/rotten_rating"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/item_image"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:paletteBackgroundSrc="@{item.poster}">
 
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imdb_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:padding="4dp"
-                android:src="@drawable/ic_imdb"
-                app:layout_constraintBottom_toBottomOf="@+id/imdb_rating"
-                app:layout_constraintEnd_toStartOf="@+id/imdb_rating"
-                app:layout_constraintTop_toTopOf="@+id/imdb_rating" />
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/item_image"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    app:imgSrc="@{item.poster}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintDimensionRatio="27:40"
+                    app:layout_constraintEnd_toStartOf="@+id/item_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/imdb_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:autoSizeTextType="uniform"
-                android:padding="8dp"
-                android:text="@{item.imdbRating, default=0.0}"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="@+id/rotten_icon"
-                app:layout_constraintEnd_toStartOf="@+id/rotten_icon"
-                app:layout_constraintTop_toTopOf="@+id/rotten_icon" />
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_title"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@{item.title, default=item_title}"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="26sp"
+                    app:autoSizeMaxTextSize="26sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toTopOf="@+id/item_year"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/item_image"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/rotten_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:padding="4dp"
-                android:src="@{rottenIc}"
-                app:layout_constraintBottom_toBottomOf="@+id/rotten_rating"
-                app:layout_constraintEnd_toStartOf="@+id/rotten_rating"
-                app:layout_constraintTop_toTopOf="@+id/rotten_rating"
-                app:layout_constraintVertical_bias="0.0"
-                tools:src="@drawable/ic_rotten_fresh" />
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/item_year"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:text="@{item.year, default=item_year}"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    app:autoSizeMaxTextSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toTopOf="@+id/imdb_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/item_image"
+                    app:layout_constraintTop_toBottomOf="@+id/item_title" />
 
-        <androidx.cardview.widget.CardView
-                android:layout_width="2dp"
-                android:layout_height="0dp"
-                android:layout_margin="4dp"
-                android:backgroundTint="@android:color/white"
-                app:cardCornerRadius="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/rotten_icon"
-                app:layout_constraintEnd_toStartOf="@+id/rotten_icon"
-                app:layout_constraintStart_toEndOf="@+id/imdb_rating"
-                app:layout_constraintTop_toTopOf="@+id/rotten_icon" />
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imdb_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_imdb"
+                    app:layout_constraintBottom_toBottomOf="@+id/imdb_rating"
+                    app:layout_constraintEnd_toStartOf="@+id/imdb_rating"
+                    app:layout_constraintTop_toTopOf="@+id/imdb_rating" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/rotten_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:autoSizeTextType="uniform"
-                android:padding="8dp"
-                android:text="@{item.rottenRating, default=00}"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.825"
-                app:layout_constraintStart_toEndOf="@+id/item_image" />
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/imdb_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:autoSizeTextType="uniform"
+                    android:padding="8dp"
+                    android:text="@{item.imdbRating, default=0.0}"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotten_icon"
+                    app:layout_constraintEnd_toStartOf="@+id/rotten_icon"
+                    app:layout_constraintTop_toTopOf="@+id/rotten_icon" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/rotten_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:padding="4dp"
+                    android:src="@{rottenIc}"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotten_rating"
+                    app:layout_constraintEnd_toStartOf="@+id/rotten_rating"
+                    app:layout_constraintTop_toTopOf="@+id/rotten_rating"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:src="@drawable/ic_rotten_fresh" />
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="2dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="4dp"
+                    android:backgroundTint="@android:color/white"
+                    app:cardCornerRadius="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rotten_icon"
+                    app:layout_constraintEnd_toStartOf="@+id/rotten_icon"
+                    app:layout_constraintStart_toEndOf="@+id/imdb_rating"
+                    app:layout_constraintTop_toTopOf="@+id/rotten_icon" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/rotten_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:autoSizeTextType="uniform"
+                    android:padding="8dp"
+                    android:text="@{item.rottenRating, default=00}"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.825"
+                    app:layout_constraintStart_toEndOf="@+id/item_image" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

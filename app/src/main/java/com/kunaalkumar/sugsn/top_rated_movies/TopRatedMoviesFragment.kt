@@ -1,4 +1,4 @@
-package com.kunaalkumar.sugsn
+package com.kunaalkumar.sugsn.top_rated_movies
 
 
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kunaalkumar.sugsn.view_model.TopRatedMoviesViewModel
+import com.kunaalkumar.sugsn.R
 import kotlinx.android.synthetic.main.fragment_top_rated_movies.*
 
 /**
