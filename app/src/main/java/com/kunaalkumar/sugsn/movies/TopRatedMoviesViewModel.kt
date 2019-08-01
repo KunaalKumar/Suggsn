@@ -1,4 +1,4 @@
-package com.kunaalkumar.sugsn.top_rated_movies
+package com.kunaalkumar.sugsn.movies
 
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.sugsn.RecyclerViewAdapter

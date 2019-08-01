@@ -1,4 +1,4 @@
-package com.kunaalkumar.sugsn.top_rated_movies
+package com.kunaalkumar.sugsn.movies
 
 
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.R
-import kotlinx.android.synthetic.main.fragment_top_rated_movies.*
+import kotlinx.android.synthetic.main.fragment_recycler_view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -26,24 +26,24 @@ class TopRatedMoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_rated_movies, container, false)
+        return inflater.inflate(R.layout.fragment_recycler_view, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        top_movies_rv.layoutManager = LinearLayoutManager(context)
-        top_movies_rv.adapter = viewModel.adapter
-        top_movies_rv.setItemViewCacheSize(20)
-        top_movies_rv.hasFixedSize()
+        recycler_view.layoutManager = LinearLayoutManager(context)
+        recycler_view.adapter = viewModel.adapter
+        recycler_view.setItemViewCacheSize(20)
+        recycler_view.hasFixedSize()
 
-        top_movies_rv.apply {
+        recycler_view.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this.adapter
         }
 
         // Scroll additional items once user reaches end of list
-        top_movies_rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
