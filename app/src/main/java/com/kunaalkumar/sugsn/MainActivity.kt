@@ -25,8 +25,10 @@ class MainActivity : AppCompatActivity() {
 //        val width = (displayMetric.widthPixels * 0.5).roundToInt()
 //        val height = (width * 1.5).roundToInt()
 
-        if (savedInstanceState == null)
-            openFragment(viewModel.moviesFragment)
+        if (savedInstanceState != null)
+            return
+
+        openFragment(viewModel.moviesFragment)
 
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -46,8 +48,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment).disallowAddToBackStack()
-        transaction.commit()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, fragment)
+            addToBackStack(null)
+            commit()
+        }
     }
 }

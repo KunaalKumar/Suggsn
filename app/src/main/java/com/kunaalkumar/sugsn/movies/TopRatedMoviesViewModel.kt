@@ -39,17 +39,19 @@ class TopRatedMoviesViewModel : ViewModel() {
     // Removes the first ten elements from the queue and adds them to the adapter
     fun loadNextTenItems() {
         for (i in 1..10) { // Pop first ten items from queue
-            val item = itemQueue.remove()
-            mDisposable.add(
-                OMDBRepository.getRottenRating(item.getId())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe { response ->
-                        item.rottenRating = response
-                        adapter.updateItem(item)
-                    }
-            )
-            adapter.addItem(item)
+            if (::itemQueue.isInitialized) {
+                val item = itemQueue.remove()
+                mDisposable.add(
+                    OMDBRepository.getRottenRating(item.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe { response ->
+                            item.rottenRating = response
+                            adapter.updateItem(item)
+                        }
+                )
+                adapter.addItem(item)
+            }
         }
     }
 

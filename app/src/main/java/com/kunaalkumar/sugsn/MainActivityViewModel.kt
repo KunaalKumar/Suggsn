@@ -5,7 +5,6 @@ import com.kunaalkumar.sugsn.movies.MoviesFragment
 
 class MainActivityViewModel : ViewModel() {
 
-    val moviesFragment by lazy {
-        return@lazy MoviesFragment()
-    }
+    val moviesFragment: MoviesFragment = MoviesFragment()
+
 }
