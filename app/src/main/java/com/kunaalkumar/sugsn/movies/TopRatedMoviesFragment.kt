@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kunaalkumar.sugsn.MainActivity
 import com.kunaalkumar.sugsn.R
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
 
 /**
@@ -48,6 +50,16 @@ class TopRatedMoviesFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
                     viewModel.loadNextTenItems()
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val fab = (activity as MainActivity).search_fab
+                if (dy > 0) {
+                    fab.hide()
+                } else if (dy < 0) {
+                    fab.show()
                 }
             }
         })
