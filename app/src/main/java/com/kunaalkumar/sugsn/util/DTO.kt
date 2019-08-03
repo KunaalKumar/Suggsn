@@ -7,7 +7,7 @@ data class ListItem(
     val title: String,
     val year: String,
     val poster: String,
-    val imdbRating: String,
+    val imdbRating: String?,
     var rottenRating: String?,
     val link: String
 ) {

@@ -1,6 +1,5 @@
 package com.kunaalkumar.sugsn.movies
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +10,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.MainActivity
 import com.kunaalkumar.sugsn.R
+import com.kunaalkumar.sugsn.movies.viewModels.PopularMoviesViewModel
+import com.kunaalkumar.sugsn.movies.viewModels.TopRatedMoviesViewModel
+import com.kunaalkumar.sugsn.movies.viewModels.VMWrapper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_recycler_view.*
 
-/**
- * A simple [Fragment] subclass.
- */
-class TopRatedMoviesFragment : Fragment() {
+class ChildMoviesFragment : Fragment() {
 
-    private val viewModel by lazy {
-        ViewModelProviders.of(this).get(TopRatedMoviesViewModel::class.java)
+    companion object {
+        const val TOP_MOVIE = "TOP_MOVIE"
+        const val POPULAR_MOVIE = "POPULAR_MOVIE"
+    }
+
+    lateinit var viewModel: VMWrapper
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("viewModelType", arguments!!.getString("viewModelType"))
     }
 
     override fun onCreateView(
@@ -33,6 +40,18 @@ class TopRatedMoviesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (arguments == null)
+            return
+        when (arguments!!.getString("viewModelType")) {
+            TOP_MOVIE -> {
+                viewModel = ViewModelProviders.of(this)
+                    .get(TopRatedMoviesViewModel::class.java)
+            }
+            POPULAR_MOVIE -> viewModel = ViewModelProviders.of(this).get(
+                PopularMoviesViewModel::class.java
+            )
+        }
 
         recycler_view.layoutManager = LinearLayoutManager(context)
         recycler_view.adapter = viewModel.adapter

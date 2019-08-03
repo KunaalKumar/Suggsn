@@ -26,13 +26,6 @@
             app:tabRippleColor="@color/colorAccentLight"
             app:tabSelectedTextColor="@color/colorPrimary" />
 
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--            android:id="@+id/search_fab"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:src="@drawable/ic_search_white_24dp"-->
-    <!--            app:useCompatPadding="true" />-->
-
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.kunaalkumar.sugsn.movies
+package com.kunaalkumar.sugsn.movies.viewModels
 
 import androidx.lifecycle.ViewModel
 import com.kunaalkumar.sugsn.RecyclerViewAdapter
@@ -10,23 +10,21 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
-class TopRatedMoviesViewModel : ViewModel() {
-
-    val TAG: String = "Sugsn@TopRatedMoviesViewModel"
-    val adapter: RecyclerViewAdapter = RecyclerViewAdapter()
+class PopularMoviesViewModel : ViewModel(), VMWrapper {
+    override val adapter: RecyclerViewAdapter = RecyclerViewAdapter()
 
     private lateinit var itemQueue: Queue<ListItem>
     private val mDisposable = CompositeDisposable()
-    private val topRatedMoviesList by lazy {
-        ImdbRepository.getTopRatedMovies()
+    private val mostPopularMoviesList by lazy {
+        ImdbRepository.getPopularMovies()
     }
 
     init {
-        getTopMovies()
+        getMostPopularMovies()
     }
 
-    private fun getTopMovies() {
-        mDisposable.add(topRatedMoviesList
+    private fun getMostPopularMovies() {
+        mDisposable.add(mostPopularMoviesList
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe { movieList ->
@@ -37,7 +35,7 @@ class TopRatedMoviesViewModel : ViewModel() {
     }
 
     // Removes the first ten elements from the queue and adds them to the adapter
-    fun loadNextTenItems() {
+    override fun loadNextTenItems() {
         for (i in 1..10) { // Pop first ten items from queue
             if (::itemQueue.isInitialized) {
                 val item = itemQueue.remove()
@@ -60,4 +58,3 @@ class TopRatedMoviesViewModel : ViewModel() {
         mDisposable.clear()
     }
 }
-

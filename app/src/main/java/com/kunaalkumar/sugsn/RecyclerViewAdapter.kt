@@ -45,7 +45,7 @@ class RecyclerViewAdapter :
 
         fun bind(data: ListItem) {
             binding.item = data
-            if (data.rottenRating != null) {
+            if (data.rottenRating != null && data.rottenRating!! != "Not Found") {
                 binding.rottenIc = when (data.rottenRating!!.substringBefore('%').toInt() >= 60) {
                     true -> ContextCompat.getDrawable(itemView.context, R.drawable.ic_rotten_fresh)
                     false -> ContextCompat.getDrawable(

@@ -12,4 +12,7 @@ interface ImdbService {
     @GET("chart/top/")
     fun getTopRatedMovies(): Observable<String>
 
+    @GET("chart/moviemeter")
+    fun getMostPopularMovies(): Observable<String>
+
 }

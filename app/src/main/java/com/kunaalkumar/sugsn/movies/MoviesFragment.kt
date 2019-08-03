@@ -22,8 +22,20 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val tabAdapter = ViewPagerAdapter(childFragmentManager)
-        tabAdapter.addFragment(TopRatedMoviesFragment(), "Top Rated")
+
+        tabAdapter.addFragment(getFragmentWithVM(ChildMoviesFragment.TOP_MOVIE), "Top Rated")
+        tabAdapter.addFragment(getFragmentWithVM(ChildMoviesFragment.POPULAR_MOVIE), "Popular")
+
         viewPager.adapter = tabAdapter
         tabs.setupWithViewPager(viewPager)
+    }
+
+    // Returns ChildMoviesFragment with given viewModel type in args
+    private fun getFragmentWithVM(viewModelType: String): Fragment {
+        val fragment = ChildMoviesFragment()
+        val args = Bundle()
+        args.putString("viewModelType", viewModelType)
+        fragment.arguments = args
+        return fragment
     }
 }
