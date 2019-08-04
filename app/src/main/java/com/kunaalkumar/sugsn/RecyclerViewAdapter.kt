@@ -1,6 +1,7 @@
 package com.kunaalkumar.sugsn
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -8,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.kunaalkumar.sugsn.databinding.RecyclerViewItemBinding
 import com.kunaalkumar.sugsn.util.ListItem
+import kotlinx.android.synthetic.main.recycler_view_item.view.*
 
 class RecyclerViewAdapter :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
@@ -44,15 +46,37 @@ class RecyclerViewAdapter :
         val TAG: String = "ViewHolder"
 
         fun bind(data: ListItem) {
+
             binding.item = data
-            if (data.rottenRating != null && data.rottenRating!! != "Not Found") {
-                binding.rottenIc = when (data.rottenRating!!.substringBefore('%').toInt() >= 60) {
-                    true -> ContextCompat.getDrawable(itemView.context, R.drawable.ic_rotten_fresh)
-                    false -> ContextCompat.getDrawable(
-                        itemView.context,
-                        R.drawable.ic_rotten_rotten
-                    )
+            if (data.rottenRating != null) {
+                if (data.rottenRating != "Not Found") { // Set appropriate rotten drawable based on rating
+                    binding.rottenIc =
+                        when (data.rottenRating!!.substringBefore('%').toInt() >= 60) {
+                            true -> ContextCompat.getDrawable(
+                                itemView.context,
+                                R.drawable.ic_rotten_fresh
+                            )
+                            false -> ContextCompat.getDrawable(
+                                itemView.context,
+                                R.drawable.ic_rotten_rotten
+                            )
+                        }
+                } else if (data.rottenRating == "Not Found") { // hide if nothing to show
+                    itemView.rotten_icon.visibility = View.GONE
+                    itemView.rotten_rating.visibility = View.GONE
                 }
+            }
+
+            if (data.imdbRating != null) { // Set imdb icon only if a rating was found
+                binding.imdbIc = ContextCompat.getDrawable(itemView.context, R.drawable.ic_imdb)
+            } else { // Hide if nothing to show
+                itemView.imdb_icon.visibility = View.GONE
+                itemView.imdb_rating.visibility = View.GONE
+            }
+
+            // Hide divider if only one rating to show
+            if (itemView.rotten_rating.visibility == View.GONE || itemView.imdb_rating.visibility == View.GONE) {
+                itemView.rating_divider.visibility = View.GONE
             }
 
             binding.root.setOnClickListener {

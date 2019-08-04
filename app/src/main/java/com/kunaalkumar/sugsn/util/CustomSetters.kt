@@ -4,24 +4,41 @@ import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.palette.graphics.Palette
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.glide_API.GlideApp
 import kotlin.math.min
 import kotlin.math.roundToInt
 
 @BindingAdapter("imgSrc")
 fun setImageSrc(view: AppCompatImageView, poster: String) {
+
+    val circularProgressDrawable = CircularProgressDrawable(view.context)
+    circularProgressDrawable.strokeWidth = 15F
+    circularProgressDrawable.centerRadius = 50F
+    circularProgressDrawable.setColorFilter(
+        ContextCompat.getColor(
+            view.context,
+            R.color.colorPrimary
+        ), PorterDuff.Mode.SRC_OVER
+    )
+    circularProgressDrawable.start()
+
     GlideApp.with(view.context)
         .load(poster)
+        .placeholder(circularProgressDrawable)
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .into(view)
 }
