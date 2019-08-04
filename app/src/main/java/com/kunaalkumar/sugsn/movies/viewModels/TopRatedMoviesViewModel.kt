@@ -18,7 +18,7 @@ class TopRatedMoviesViewModel : ViewModel(), VMWrapper {
     private lateinit var itemQueue: Queue<ListItem>
     private val mDisposable = CompositeDisposable()
     private val topRatedMoviesList by lazy {
-        ImdbRepository.getTopRatedMovies()
+        ImdbRepository.getDetailedTopRatedMovies()
     }
 
     init {
@@ -41,7 +41,7 @@ class TopRatedMoviesViewModel : ViewModel(), VMWrapper {
         for (i in 1..10) { // Pop first ten items from queue
             if (::itemQueue.isInitialized) {
                 val item = itemQueue.remove()
-                mDisposable.add(
+                mDisposable.add( // Make call to OMDB API
                     OMDBRepository.getRottenRating(item.getId())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.io())

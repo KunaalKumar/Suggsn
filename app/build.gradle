@@ -4,13 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    signingConfigs {
-        Sugsn {
-            storeFile file('/Users/kunaalkumar/Desktop/SugsnKey')
-            storePassword 'Arjobisn1!'
-            keyPassword 'Arjobisn1!'
-        }
-    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.kunaalkumar.sugsn"

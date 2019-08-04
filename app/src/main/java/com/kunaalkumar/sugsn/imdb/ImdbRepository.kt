@@ -8,59 +8,55 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
 object ImdbRepository {
+
     val TAG: String = "ImdbRepository"
     private val imdbService = RetrofitFactory.makeImdbRetrofitService()
 
-    fun getTopRatedMovies(): Observable<ArrayList<ListItem>> {
-        return imdbService.getTopRatedMovies().map { response ->
+    fun getPopularMovies(): Observable<ArrayList<ListItem>> {
+        return imdbService.getDetailedPopularMovies().map { response ->
             val doc = Jsoup.parse(response)
             val listOfMovies = ArrayList<ListItem>()
 
-            doc.select("tbody.lister-list").select("tr").forEach { listItem ->
-                listOfMovies.add(
-                    parseMovie(listItem)
-                )
-            }
-
+            doc.select("div.lister-list").select("div.lister-item.mode-advanced")
+                .forEach { listItem ->
+                    listOfMovies.add(parseMovieAdv(listItem))
+                }
             return@map listOfMovies
         }.subscribeOn(Schedulers.io())
     }
 
-    fun getPopularMovies(): Observable<ArrayList<ListItem>> {
-        return imdbService.getMostPopularMovies().map { response ->
+    fun getDetailedTopRatedMovies(): Observable<ArrayList<ListItem>> {
+        return imdbService.getDetailedTopRatedMovies().map { response ->
             val doc = Jsoup.parse(response)
-            val listOfMovies = ArrayList<ListItem>()
-
-            doc.select("tbody.lister-list").select("tr").forEach { listItem ->
-                listOfMovies.add(
-                    parseMovie(listItem)
-                )
-            }
-            return@map listOfMovies
+            val listofMovies = ArrayList<ListItem>()
+            doc.select("div.lister-list").select("div.lister-item.mode-advanced")
+                .forEach { listItem ->
+                    listofMovies.add(parseMovieAdv(listItem))
+                }
+            return@map listofMovies
         }.subscribeOn(Schedulers.io())
     }
 
     // Parse movie list jsoup element and return as ListItem
-    private fun parseMovie(movie: Element): ListItem {
-        val ratingElement = movie.selectFirst("td.ratingColumn.imdbRating").selectFirst("strong")
-        val imdbRating =
-            if (ratingElement == null) null else
-                ratingElement.text()
+    private fun parseMovieAdv(movie: Element): ListItem {
+        val ratingBar = movie.selectFirst("div.ratings-bar")
+        var imdbRating: String? = null
+        if (ratingBar != null) {
+            imdbRating = ratingBar.selectFirst("strong")?.text()
+        }
 
         return ListItem(
-            movie.selectFirst("td.titleColumn").selectFirst("a").text(),
-            movie.selectFirst("td.titleColumn > span.secondaryInfo").text().removeSurrounding(
+            movie.selectFirst("h3.lister-item-header > a").text(),
+            movie.selectFirst("h3.lister-item-header > span.lister-item-year.text-muted.unbold").text().removeSurrounding(
                 "(",
                 ")"
             ),
-            movie.selectFirst("td.posterColumn")
-                .selectFirst("a")
-                .selectFirst("img")
-                .attr("src")
+            movie.selectFirst("div.lister-item-image.float-left > a > img").attr("loadlate")
                 .replace(".jpg", "#\$1.jpg"), // Replace to increase poster resolution
             imdbRating,
             null,
-            movie.selectFirst("td.titleColumn").selectFirst("a").attr("href")
+            movie.selectFirst("h3.lister-item-header > a").attr("href")
         )
     }
+
 }

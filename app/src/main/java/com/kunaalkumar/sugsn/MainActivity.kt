@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
 
     val TAG: String = "MainActivity"
 
+
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
     }
