@@ -30,21 +30,24 @@
             app:cardCornerRadius="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/darkGray"
                 android:orientation="vertical"
-                android:padding="16dp"
-                app:paletteBackgroundSrc="@{item.poster}">
+                android:padding="16dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/item_image"
+                    imgSrc="@{item.poster}"
+                    parentLayout="@{parent}"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
-                    app:imgSrc="@{item.poster}"
+                    android:layout_marginEnd="12dp"
+                    android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="27:40"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline"
+                    app:layout_constraintEnd_toStartOf="@id/guideline"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,7 +94,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@id/item_image"
+                    app:layout_constraintStart_toEndOf="@id/guideline"
                     app:layout_constraintTop_toBottomOf="@+id/item_year">
 
                 <androidx.appcompat.widget.AppCompatImageView

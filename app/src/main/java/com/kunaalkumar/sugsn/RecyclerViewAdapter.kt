@@ -29,6 +29,11 @@ class RecyclerViewAdapter :
         holder.bind(data[position])
     }
 
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.itemView.item_image.setImageDrawable(null)
+    }
+
     fun addItem(item: ListItem) {
         data.add(item)
         notifyItemInserted(data.size)

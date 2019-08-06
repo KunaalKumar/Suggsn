@@ -9,12 +9,14 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.palette.graphics.Palette
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.kunaalkumar.sugsn.R
@@ -22,8 +24,8 @@ import com.kunaalkumar.sugsn.glide_API.GlideApp
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-@BindingAdapter("imgSrc")
-fun setImageSrc(view: AppCompatImageView, poster: String) {
+@BindingAdapter("imgSrc", "parentLayout")
+fun setImageSrc(view: AppCompatImageView, poster: String, parentLayout: View) {
 
     val circularProgressDrawable = CircularProgressDrawable(view.context)
     circularProgressDrawable.strokeWidth = 15F
@@ -35,32 +37,29 @@ fun setImageSrc(view: AppCompatImageView, poster: String) {
         ), PorterDuff.Mode.SRC_OVER
     )
     circularProgressDrawable.start()
+    view.setImageDrawable(circularProgressDrawable)
 
     GlideApp.with(view.context)
-        .load(poster)
-        .placeholder(circularProgressDrawable)
-        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-        .into(view)
-}
-
-@BindingAdapter("paletteBackgroundSrc")
-fun setPaletteBackgroundSrc(view: View, poster: String) {
-
-    Glide.with(view.context)
         .asBitmap()
         .load(poster)
+        .apply(RequestOptions().override(view.width, view.height))
         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                // Stop progress bar; load poster into view
+                circularProgressDrawable.stop()
+                view.setImageBitmap(resource)
+
+                // Extract color and set as parent bg
                 val palette = Palette.from(resource).generate()
-                val colorFrom = (view.background as ColorDrawable).color
+                val colorFrom = (parentLayout.background as ColorDrawable).color
                 val colorTo = manipulateColor(
                     palette.getDominantColor(Color.BLACK),
                     0.65f
                 )
                 // Animate color change
                 ObjectAnimator.ofObject(
-                    view,
+                    parentLayout,
                     "backgroundColor",
                     ArgbEvaluator(),
                     colorFrom,
