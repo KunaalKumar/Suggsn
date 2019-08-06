@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun openFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragment_container, fragment)
-            addToBackStack(null)
+            disallowAddToBackStack()
             commit()
         }
     }

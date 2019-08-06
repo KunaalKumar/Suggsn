@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 data class ListItem(
     val title: String,
-    val year: String,
+    val year: String?,
     val poster: String,
     val imdbRating: String?,
     var rottenRating: String?,
@@ -18,9 +18,9 @@ data class ListItem(
 
 @JsonClass(generateAdapter = true)
 data class OmdbObject(
-    @Json(name = "Title") val title: String,
-    @Json(name = "Ratings") val ratings: List<OmdbRating>,
-    val tomatoURL: String
+    @Json(name = "Title") val title: String?,
+    @Json(name = "Ratings") val ratings: List<OmdbRating>?,
+    val tomatoURL: String?
 )
 
 @JsonClass(generateAdapter = true)

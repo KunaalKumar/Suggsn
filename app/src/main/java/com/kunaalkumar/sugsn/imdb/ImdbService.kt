@@ -1,16 +1,15 @@
 package com.kunaalkumar.sugsn.imdb
 
-import io.reactivex.Observable
 import retrofit2.http.GET
 
 interface ImdbService {
 
     @GET("chart/moviemeter")
-    fun getMostPopularMovies(): Observable<String>
+    suspend fun getMostPopularMovies(): String
 
     @GET("search/title/?title_type=feature")
-    fun getDetailedPopularMovies(): Observable<String>
+    suspend fun getPopularMovies(): String
 
     @GET("search/title/?title_type=feature&num_votes=250000,&sort=user_rating&view=advanced")
-    fun getDetailedTopRatedMovies(): Observable<String>
+    suspend fun getTopRatedMovies(): String
 }

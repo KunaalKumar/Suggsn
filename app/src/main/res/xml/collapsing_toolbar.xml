@@ -17,21 +17,31 @@
     <ConstraintSet android:id="@+id/expanded">
         <Constraint
                 android:id="@id/title"
+                android:layout_width="0dp"
                 android:layout_height="?actionBarSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+            <!--            <CustomAttribute-->
+            <!--                    app:attributeName="elevation"-->
+            <!--                    app:customFloatValue="0" />-->
+        </Constraint>
 
         <Constraint
                 android:id="@id/tabs"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
+                app:layout_constraintTop_toBottomOf="@id/title">
+            <!--            <CustomAttribute-->
+            <!--                    app:attributeName="elevation"-->
+            <!--                    app:customFloatValue="0" />-->
+        </Constraint>
 
         <Constraint
                 android:id="@id/viewPager"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tabs" />
@@ -40,21 +50,31 @@
     <ConstraintSet android:id="@+id/collapsed">
         <Constraint
                 android:id="@id/title"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="?actionBarSize"
                 app:layout_constraintBottom_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
+            <!--            <CustomAttribute-->
+            <!--                    app:attributeName="elevation"-->
+            <!--                    app:customFloatValue="20" />-->
+        </Constraint>
 
         <Constraint
                 android:id="@id/tabs"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
+                app:layout_constraintTop_toBottomOf="@id/title">
+            <!--            <CustomAttribute-->
+            <!--                    app:attributeName="elevation"-->
+            <!--                    app:customFloatValue="10" />-->
+        </Constraint>
 
         <Constraint
                 android:id="@id/viewPager"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tabs" />

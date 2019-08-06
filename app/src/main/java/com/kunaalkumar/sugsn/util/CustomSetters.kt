@@ -39,7 +39,7 @@ fun setImageSrc(view: AppCompatImageView, poster: String) {
     GlideApp.with(view.context)
         .load(poster)
         .placeholder(circularProgressDrawable)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .into(view)
 }
 
@@ -49,6 +49,7 @@ fun setPaletteBackgroundSrc(view: View, poster: String) {
     Glide.with(view.context)
         .asBitmap()
         .load(poster)
+        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 val palette = Palette.from(resource).generate()
