@@ -1,8 +1,10 @@
 package com.kunaalkumar.sugsn.movies.viewModels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.kunaalkumar.sugsn.RecyclerViewAdapter
 import com.kunaalkumar.sugsn.imdb.ImdbRepository
+import com.kunaalkumar.sugsn.movies.MOVIE_TYPE
 import com.kunaalkumar.sugsn.omdb.OMDBRepository
 import com.kunaalkumar.sugsn.util.ListItem
 import kotlinx.coroutines.CoroutineScope
@@ -12,21 +14,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class TopRatedMoviesViewModel : ViewModel(), VMWrapper {
 
-    val TAG: String = "Sugsn@TopRatedMoviesViewModel"
+class PopularMoviesViewModel(val type: MOVIE_TYPE) : ViewModel(), VMWrapper {
+
     override val adapter: RecyclerViewAdapter = RecyclerViewAdapter()
 
     private lateinit var itemQueue: Queue<ListItem>
 
     init {
         CoroutineScope(IO).launch {
-            getTopMovies()
+            getMostPopularMovies()
         }
     }
 
-    private suspend fun getTopMovies() {
-        itemQueue = LinkedList(ImdbRepository.getTopRatedMovies())
+    private suspend fun getMostPopularMovies() {
+        itemQueue = when (type) {
+            MOVIE_TYPE.TOP -> LinkedList(ImdbRepository.getTopRatedMovies())
+            MOVIE_TYPE.POPULAR -> LinkedList(ImdbRepository.getPopularMovies())
+        }
         withContext(Main) {
             loadNextTenItems()
         }
@@ -49,3 +54,9 @@ class TopRatedMoviesViewModel : ViewModel(), VMWrapper {
     }
 }
 
+class FactoryViewModel(private val type: MOVIE_TYPE) : ViewModelProvider.NewInstanceFactory() {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return PopularMoviesViewModel(type) as T
+    }
+}

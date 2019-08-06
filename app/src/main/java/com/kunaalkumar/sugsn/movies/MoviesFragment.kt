@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import com.kunaalkumar.sugsn.R
 import com.kunaalkumar.sugsn.util.ViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_movies.*
+import java.io.Serializable
+
+enum class MOVIE_TYPE : Serializable { TOP, POPULAR }
 
 class MoviesFragment : Fragment() {
 
@@ -23,18 +26,18 @@ class MoviesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val tabAdapter = ViewPagerAdapter(childFragmentManager)
 
-        tabAdapter.addFragment(getFragmentWithVM(ChildMoviesFragment.TOP_MOVIE), "Top Rated")
-        tabAdapter.addFragment(getFragmentWithVM(ChildMoviesFragment.POPULAR_MOVIE), "Popular")
+        tabAdapter.addFragment(getFragmentWithVM(MOVIE_TYPE.TOP), "Top Rated")
+        tabAdapter.addFragment(getFragmentWithVM(MOVIE_TYPE.POPULAR), "Popular")
 
         viewPager.adapter = tabAdapter
         tabs.setupWithViewPager(viewPager)
     }
 
     // Returns ChildMoviesFragment with given viewModel type in args
-    private fun getFragmentWithVM(viewModelType: String): Fragment {
+    private fun getFragmentWithVM(viewModelType: MOVIE_TYPE): Fragment {
         val fragment = ChildMoviesFragment()
         val args = Bundle()
-        args.putString("viewModelType", viewModelType)
+        args.putSerializable("viewModelType", viewModelType)
         fragment.arguments = args
         return fragment
     }
