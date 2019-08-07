@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        RecyclerViewAdapter.bottomNavTransition = parent_motion_layout
+
         // Get screen size and convert to pixels from dpi for poster images
 //        val displayMetric = DisplayMetrics()
 //        windowManager.defaultDisplay.getMetrics(displayMetric)

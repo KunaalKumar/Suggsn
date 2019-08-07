@@ -1,5 +1,6 @@
 package com.kunaalkumar.sugsn.movies.viewModels
 
+import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.kunaalkumar.sugsn.RecyclerViewAdapter
@@ -15,9 +16,12 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class PopularMoviesViewModel(val type: MOVIE_TYPE) : ViewModel(), VMWrapper {
+// Needs to be set with FactoryViewModel
+class ChildMovieViewModel(val type: MOVIE_TYPE) : ViewModel() {
 
-    override val adapter: RecyclerViewAdapter = RecyclerViewAdapter()
+    lateinit var adapter: RecyclerViewAdapter
+    var listState: Parcelable? = null
+    var isAdapterInitialized = false
 
     private lateinit var itemQueue: Queue<ListItem>
 
@@ -38,7 +42,7 @@ class PopularMoviesViewModel(val type: MOVIE_TYPE) : ViewModel(), VMWrapper {
     }
 
     // Removes the first ten elements from the queue and adds them to the adapter
-    override fun loadNextTenItems() {
+    fun loadNextTenItems() {
         for (i in 1..10) { // Pop first ten items from queue
             if (::itemQueue.isInitialized && itemQueue.size != 0) {
                 val item = itemQueue.remove()
@@ -57,6 +61,6 @@ class PopularMoviesViewModel(val type: MOVIE_TYPE) : ViewModel(), VMWrapper {
 class FactoryViewModel(private val type: MOVIE_TYPE) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return PopularMoviesViewModel(type) as T
+        return ChildMovieViewModel(type) as T
     }
 }

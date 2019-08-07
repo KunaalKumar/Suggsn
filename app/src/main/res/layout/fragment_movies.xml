@@ -5,15 +5,22 @@
         android:layout_height="match_parent"
         app:layoutDescription="@xml/collapsing_toolbar">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.cardview.widget.CardView
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:padding="8dp"
-            android:text="@string/movies"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:layout_height="?actionBarSize"
+            app:cardCornerRadius="0dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:padding="8dp"
+                android:text="@string/movies"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

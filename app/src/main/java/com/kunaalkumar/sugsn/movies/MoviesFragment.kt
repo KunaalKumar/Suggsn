@@ -37,7 +37,7 @@ class MoviesFragment : Fragment() {
     private fun getFragmentWithVM(viewModelType: MOVIE_TYPE): Fragment {
         val fragment = ChildMoviesFragment()
         val args = Bundle()
-        args.putSerializable("viewModelType", viewModelType)
+        args.putSerializable(ChildMoviesFragment.VIEW_MODEL_TYPE_KEY, viewModelType)
         fragment.arguments = args
         return fragment
     }
